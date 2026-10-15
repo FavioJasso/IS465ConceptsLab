@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive study lab for NJIT IS 465 Lectures 4 and 5: inferential statistics and data visualization.">
+<title>IS 465 Concept Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,650&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: graph-paper ground, a sticky course map on the left, one reading column of concepts; every interactive lab sits on a white "worksheet" card */
+:root{
+  --paper:#F1F3F0; --surface:#FFFFFF; --ink:#17202A; --muted:#5A6570; --line:#D3D9DD; --grid:#E3E7E2;
+  --accent:#2450C8; --accent-soft:#DBE4FA; --tail:#C4342A; --tail-soft:#F7D9D5;
+  --amber:#9A6510; --amber-soft:#F5E5C4; --good:#2B7448; --good-soft:#D9EEE1;
+  --c1:#0072B2; --c2:#D98A00; --c3:#009E73; --c4:#CC79A7; --c5:#56B4E9;
+  --f-display:"Literata", Georgia, "Times New Roman", serif;
+  --f-body:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10151A; --surface:#171E25; --ink:#E3E8ED; --muted:#94A1AD; --line:#2D3843; --grid:#19212A;
+  --accent:#8AABFF; --accent-soft:#233259; --tail:#FF7D70; --tail-soft:#4B2522;
+  --amber:#E6B65E; --amber-soft:#43361C; --good:#6FCB96; --good-soft:#1C3A29;
+  --c1:#56A8E8; --c2:#F0B54A; --c3:#3CC59A; --c4:#E59BC6; --c5:#8DD2F5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#10151A; --surface:#171E25; --ink:#E3E8ED; --muted:#94A1AD; --line:#2D3843; --grid:#19212A;
+  --accent:#8AABFF; --accent-soft:#233259; --tail:#FF7D70; --tail-soft:#4B2522;
+  --amber:#E6B65E; --amber-soft:#43361C; --good:#6FCB96; --good-soft:#1C3A29;
+  --c1:#56A8E8; --c2:#F0B54A; --c3:#3CC59A; --c4:#E59BC6; --c5:#8DD2F5; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background-color:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;max-width:1140px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 96px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+.mono,code{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* course map */
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:18px;max-height:calc(100vh - 48px);overflow:auto;padding-bottom:12px}
+.toc .prog{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--good);transition:width .3s}
+.toc h4{margin:0 0 6px;font:600 11px/1 var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:1px}
+.toc a{display:grid;grid-template-columns:24px 1fr 14px;gap:6px;align-items:baseline;padding:4px 8px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px;line-height:1.35}
+.toc a:hover{background:var(--surface)}
+.toc a.on{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.toc a .n{font:12px var(--f-mono);color:var(--muted)}
+.toc a .ck{color:var(--good);font-size:12px;visibility:hidden}
+.toc a.done .ck{visibility:visible}
+
+main{display:grid;gap:88px;min-width:0}
+.hero{display:grid;gap:14px;max-width:46rem}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(34px,5vw,50px);font-weight:650;letter-spacing:-.01em}
+.hero p{font-size:18px;color:var(--muted);max-width:40rem}
+.howto{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:14px;color:var(--muted)}
+.howto span{display:flex;gap:8px;align-items:center}
+.howto b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font:600 11px var(--f-mono);color:var(--ink)}
+
+.gloss summary{cursor:pointer;list-style:none}
+.gloss summary::-webkit-details-marker{display:none}
+.gloss summary .lab-h h3::after{content:" ▾";color:var(--muted)}
+.gloss:not([open]) summary .lab-h h3::after{content:" ▸"}
+.gloss dl{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 24px}
+.gloss dl>div{display:grid;grid-template-columns:78px minmax(0,1fr) 26px;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.gloss dt{font:600 15px var(--f-mono)}
+.gloss dt i{display:block;font:400 11px var(--f-body);color:var(--muted)}
+.gloss dd{margin:0}
+.gloss a{font:12px var(--f-mono);color:var(--accent);text-decoration:none;text-align:right}
+.part{display:grid;gap:8px;border-top:2px solid var(--ink);padding-top:14px}
+.part h2{font-size:28px}
+.part p{color:var(--muted);max-width:42rem}
+
+section.concept{display:grid;gap:22px;scroll-margin-top:24px}
+.concept > header{display:grid;gap:8px}
+.concept h2{font-size:clamp(26px,3.4vw,32px);font-weight:650}
+.lead{font-size:17px;max-width:42rem}
+.lead em{font-style:normal;background:var(--accent-soft);padding:0 3px;border-radius:3px}
+
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:16px;min-width:0}
+.lab-h{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.lab-h h3{font:600 13px/1.3 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lab-h .hint{font-size:13px;color:var(--muted)}
+.cap{font-size:14px;color:var(--muted);max-width:44rem}
+.controls{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:end}
+.ctl{display:grid;gap:4px;flex:1 1 170px;min-width:0}
+.ctl label{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.ctl output{font:600 13px var(--f-mono);color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:3px;background:var(--paper);border:1px solid var(--line);border-radius:9px}
+.seg button{border:0;background:transparent;padding:6px 11px;border-radius:6px;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12),inset 0 0 0 1px var(--line)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:8px;font-size:14px;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.plot{min-width:0;width:100%}
+svg.chart{display:block;overflow:visible}
+svg.chart text{font:11px var(--f-mono);fill:var(--muted)}
+svg.chart .ti{fill:var(--ink)} svg.chart .ta{fill:var(--accent)} svg.chart .tt{fill:var(--tail)} svg.chart .tg{fill:var(--amber)}
+svg.chart .b{font-weight:600} svg.chart .lg{font-size:13px} svg.chart .sans{font-family:var(--f-body)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px}
+.stat{border-top:2px solid var(--line);padding-top:6px;display:grid;gap:2px;min-width:0}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font:600 18px/1.25 var(--f-mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat.hl{border-color:var(--accent)}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:13px;font-weight:600}
+.pill.rej{background:var(--tail-soft);color:var(--tail)}
+.pill.keep{background:var(--good-soft);color:var(--good)}
+.pill.neu{background:var(--accent-soft);color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+.notes{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px}
+.keys h3,.trap h3{font:600 12px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.keys ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.keys li{padding-left:20px;position:relative;font-size:15px}
+.keys li::before{content:"";position:absolute;left:3px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--accent)}
+.trap{background:var(--amber-soft);border-radius:10px;padding:14px 16px;font-size:15px;align-self:start}
+.trap h3{color:var(--amber)}
+
+.check{border:1px dashed var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px}
+.check .q{font-weight:600}
+.check .q small{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.opts{display:grid;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--surface);padding:8px 12px;border-radius:8px;font-size:15px}
+.opts button:hover{border-color:var(--accent)}
+.opts button.right{border-color:var(--good);background:var(--good-soft)}
+.opts button.wrong{border-color:var(--tail);background:var(--tail-soft)}
+.fb{font-size:15px}
+.done{justify-self:start;border:1px solid var(--line);background:transparent;padding:6px 12px;border-radius:99px;font-size:13px;color:var(--muted)}
+.done[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:0}
+.steps .k{font:600 15px var(--f-mono);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.steps li>div>b{display:block}
+.steps p{font-size:15px;color:var(--muted)}
+.steps p .v{color:var(--ink)}
+
+table.t{border-collapse:collapse;font-size:14px;width:100%}
+table.t th,table.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.t th{font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+table.t td.n{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto;min-width:0}
+.err td{font-size:14px}
+.cell-bad{background:var(--tail-soft)} .cell-ok{background:var(--good-soft)} .cell-amb{background:var(--amber-soft)}
+
+.result{display:grid;gap:6px;padding:14px 16px;border-radius:10px;background:var(--accent-soft)}
+.result b{font-family:var(--f-display);font-size:22px;font-weight:650}
+.qgrid{display:grid;gap:10px}
+.qgroup{display:grid;gap:6px}
+.qgroup > span{font-size:13px;color:var(--muted)}
+.scen{display:grid;gap:8px}
+.scen details{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
+.scen summary{cursor:pointer;font-size:15px}
+.scen details p{margin-top:8px;font-size:15px;color:var(--muted)}
+.scen details p b{color:var(--ink)}
+
+.cells{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
+.cells div{border:1px solid var(--line);border-radius:6px;padding:6px 2px;text-align:center;font:11px var(--f-mono);color:var(--muted);background:var(--surface)}
+.cells div.hit{background:var(--tail);color:var(--surface);border-color:var(--tail);font-weight:600}
+@media (max-width:520px){.cells{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+.myths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.myth{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px 14px;text-align:left;display:grid;gap:6px;font-size:15px}
+.myth .m{text-decoration:line-through;text-decoration-color:var(--tail);color:var(--muted)}
+.myth .r{display:none}
+.myth[aria-pressed="true"] .r{display:block}
+.myth small{font-size:12px;color:var(--accent)}
+
+.ladder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.ladder ol{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.ladder li{display:grid;grid-template-columns:minmax(0,1fr) 80px;gap:10px;align-items:center;font-size:14px}
+.ladder li i{height:8px;border-radius:4px;background:var(--accent)}
+.ladder h4{margin:0 0 8px;font-size:13px;color:var(--muted);font-weight:600}
+
+.swatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sw{display:grid;gap:6px;font-size:14px}
+.sw .g{height:30px;border-radius:6px}
+.sw b{font-weight:600}
+.sw span{color:var(--muted);font-size:13px}
+
+.rules{counter-reset:r;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 22px;margin:0;padding:0;list-style:none}
+.rules li{display:grid;gap:2px;font-size:15px;padding-top:10px;border-top:1px solid var(--line)}
+.rules li b{font-weight:600}
+.rules li span{color:var(--muted)}
+.foot{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:880px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:0 72px}
+  .toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;max-height:none;overflow:visible;background:var(--paper);
+    margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);gap:8px}
+  .toc h4,.toc .grp-label{display:none}
+  .toc .lists{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .toc ol{display:flex;gap:4px}
+  .toc a{display:flex;white-space:nowrap;gap:6px;padding:5px 10px;background:var(--surface);border:1px solid var(--line);font-size:13px}
+  .toc a .t{display:none}
+  .toc a.on .t{display:inline}
+  .hero{padding-top:16px}
+  .notes,.two,.ladder,.myths,.rules{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<div class="layout">
+<nav class="toc" aria-label="Concepts">
+  <div class="prog"><span><b id="prog-n">0</b> of 17 understood</span><div class="bar"><i id="prog-bar"></i></div></div>
+  <div class="lists">
+    <div><h4>Lecture 5 · Inference</h4><ol id="toc-5"></ol></div>
+    <div><h4>Lecture 4 · Visualization</h4><ol id="toc-4"></ol></div>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <span class="eyebrow">IS 465 · Lectures 4 &amp; 5</span>
+  <h1>Concept Lab</h1>
+  <p>Seventeen concepts in the order they build on each other. Each one gives you the idea in a few sentences, a picture you can change to see why it works, the mistake people usually make, and one check question.</p>
+  <div class="howto"><span><b>1</b>Read the idea</span><span><b>2</b>Move the sliders</span><span><b>3</b>Answer the check</span><span><b>4</b>Mark it understood</span></div>
+</header>
+
+<details class="lab gloss" open>
+  <summary><span class="lab-h"><h3>Shorthand used on this page</h3><span class="hint">each one is explained in the concept linked on the right</span></span></summary>
+  <dl>
+    <div><dt>μ <i>mu</i></dt><dd>Population mean</dd><a href="#sample">01</a></div>
+    <div><dt>x̄ <i>x-bar</i></dt><dd>Sample mean</dd><a href="#sample">01</a></div>
+    <div><dt>n</dt><dd>Sample size</dd><a href="#sample">01</a></div>
+    <div><dt>σ, SD <i>sigma</i></dt><dd>Standard deviation (spread)</dd><a href="#normal">02</a></div>
+    <div><dt>z</dt><dd>z-score: how many SDs from the mean</dd><a href="#normal">02</a></div>
+    <div><dt>CLT</dt><dd>Central Limit Theorem</dd><a href="#clt">03</a></div>
+    <div><dt>s</dt><dd>Standard deviation of your sample</dd><a href="#se">04</a></div>
+    <div><dt>SE</dt><dd>Standard error = s / √n</dd><a href="#se">04</a></div>
+    <div><dt>H₀, H₁</dt><dd>Null ("no effect") and alternative hypothesis</dd><a href="#framework">05</a></div>
+    <div><dt>α <i>alpha</i></dt><dd>Significance level, usually 0.05</dd><a href="#framework">05</a></div>
+    <div><dt>p</dt><dd>p-value</dd><a href="#framework">05</a></div>
+    <div><dt>t, t*</dt><dd>t-statistic and its critical cutoff</dd><a href="#tstat">06</a></div>
+    <div><dt>df</dt><dd>Degrees of freedom (n − 1 here)</dd><a href="#tstat">06</a></div>
+    <div><dt>β <i>beta</i></dt><dd>Type II (false negative) rate; power = 1 − β</dd><a href="#errors">07</a></div>
+    <div><dt>CI</dt><dd>Confidence interval</dd><a href="#ci">10</a></div>
+  </dl>
+</details>
+
+<div class="part"><span class="eyebrow">Part 1</span><h2>Inferential statistics</h2><p>How a sample lets you say something about a whole population, and how sure you can be.</p></div>
+
+<!-- 01 -->
+<section class="concept" id="sample" data-lec="5" data-t="Sample → population">
+  <header><span class="eyebrow">L5 · 01</span><h2>From a sample to a population</h2></header>
+  <p class="lead"><b>Descriptive</b> statistics summarize the data you have. <b>Inferential</b> statistics use that data to say something about a bigger group you never fully measure. A number describing the whole population is a <em>parameter</em>, like the population mean <b>μ</b> ("mu"), which is usually unknown. A number computed from your sample is a <em>statistic</em>, like the sample mean <b>x̄</b> ("x-bar"). <b>n</b> is the sample size.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Who is in your sample?</h3><span class="hint">300 simulated NJIT commutes</span></div>
+    <div class="row" id="pop-btns">
+      <button class="btn pri" data-k="rand">Random sample, n = 9</button>
+      <button class="btn" data-k="room9">Only this classroom, n = 9</button>
+      <button class="btn" data-k="room40">Only this classroom, n = 40</button>
+    </div>
+    <div class="plot" id="pop-chart"></div>
+    <div class="read">
+      <div class="stat"><span>Population mean μ</span><b id="pop-mu">–</b></div>
+      <div class="stat hl"><span>Sample mean x̄</span><b id="pop-xbar">–</b></div>
+      <div class="stat"><span>Miss</span><b id="pop-err">–</b></div>
+    </div>
+    <p class="cap">In this simulation the classroom only contains commuters (the long right cluster). Repeat the random sample a few times: it wobbles around μ. The classroom sample is consistently too high, and making it bigger does not fix that.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Descriptive: "here is what happened." Inferential: "here is what we can infer."</li>
+      <li>Every method in Lecture 5 assumes a <b>random sample</b> from the population you care about.</li>
+      <li>A bigger sample (larger n) from a biased source just gets you a more confident answer that is still wrong.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>The class's average commute (42 min) describes students like the ones in that class (one upper-level IS section), not necessarily all NJIT students. No calculation later in the lecture can fix a sample that was not random.</div>
+  </div>
+  <div class="check" data-q="sample"></div>
+  <button class="done" data-id="sample" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 02 -->
+<section class="concept" id="normal" data-lec="5" data-t="Probability as area">
+  <header><span class="eyebrow">L5 · 02</span><h2>Probability as area, and the normal curve</h2></header>
+  <p class="lead">For values like times and scores, you ask about <b>ranges</b>. The probability of a range is the <em>area under the density curve</em> over that range, and the total area is 1. A normal curve is set by two numbers: the mean μ (center) and the standard deviation σ (spread). The z-score <span class="mono">z = (x − μ) / σ</span> says how many σ a value sits from the mean.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Exam scores ~ Normal(μ = 70, σ = 10)</h3><span class="hint">drag the edges of the shaded range</span></div>
+    <div class="row" id="nm-pre">
+      <button class="btn" data-a="60" data-b="80">Within 1σ</button>
+      <button class="btn" data-a="50" data-b="90">Within 2σ</button>
+      <button class="btn" data-a="40" data-b="100">Within 3σ</button>
+      <button class="btn pri" data-a="90" data-b="110">Above 90</button>
+    </div>
+    <div class="plot" id="nm-chart"></div>
+    <div class="controls">
+      <div class="ctl"><label for="nm-lo">From <output id="nm-lo-o"></output></label><input type="range" id="nm-lo" min="30" max="110" step="1" value="90"></div>
+      <div class="ctl"><label for="nm-hi">To <output id="nm-hi-o"></output></label><input type="range" id="nm-hi" min="30" max="110" step="1" value="110"></div>
+    </div>
+    <div class="read">
+      <div class="stat hl"><span>Probability (area)</span><b id="nm-p">–</b></div>
+      <div class="stat"><span>z range</span><b id="nm-z">–</b></div>
+      <div class="stat"><span>Rule of thumb says</span><b id="nm-rule">–</b></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>68–95–99.7</b>: share of values within 1, 2 and 3 standard deviations (SD, σ) of the mean. The exact 95% cutoff is <b>1.96σ</b>. Remember 95% and 1.96: they come back in concepts 05 and 10.</li>
+      <li>The curve's height is not a probability. Only area is.</li>
+      <li>|z| &gt; 3 happens only 0.3% of the time, which is why Lecture 3 used it to flag outliers.</li>
+      <li>Most real variables are not normal: taxi fares, commutes and incomes are right-skewed. Concept 03 explains why normal-based tests still work.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"Above 90" is one tail only. 5% falls outside ±2σ in total, so only about <b>2.5%</b> is above 90 (exactly 2.28%).</div>
+  </div>
+  <div class="check" data-q="normal"></div>
+  <button class="done" data-id="normal" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 03 -->
+<section class="concept" id="clt" data-lec="5" data-t="Central Limit Theorem">
+  <header><span class="eyebrow">L5 · 03</span><h2>The Central Limit Theorem</h2></header>
+  <p class="lead">Take a sample of size n, compute its mean, and repeat many times. Even when the population is skewed, those <em>sample means</em> pile up into a roughly normal shape centered on μ. The pile gets narrower as n grows.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Sampling from a skewed population</h3><span class="hint">μ = 3, σ = 3</span></div>
+    <div class="controls">
+      <div class="qgroup"><span>Sample size n</span><div class="seg" id="clt-n"><button data-v="1" aria-pressed="false">1</button><button data-v="2" aria-pressed="false">2</button><button data-v="5" aria-pressed="true">5</button><button data-v="30" aria-pressed="false">30</button></div></div>
+      <div class="row"><button class="btn" id="clt-1">Draw 1 sample</button><button class="btn pri" id="clt-1000">Draw 1,000 samples</button><button class="btn" id="clt-r">Reset</button></div>
+    </div>
+    <div class="two"><div class="plot" id="clt-pop"></div><div class="plot" id="clt-means"></div></div>
+    <div class="read">
+      <div class="stat"><span>Samples drawn</span><b id="clt-cnt">–</b></div>
+      <div class="stat"><span>Mean of the x̄'s</span><b id="clt-m">–</b></div>
+      <div class="stat hl"><span>SD of the x̄'s</span><b id="clt-sd">–</b></div>
+      <div class="stat"><span>σ / √n predicts</span><b id="clt-se">–</b></div>
+    </div>
+    <p class="cap">Left: the population, with the latest sample's values marked. Right: every sample mean so far. The dashed curve is the normal shape the CLT predicts. Try n = 1 (no averaging, so it looks like the population) and then n = 30.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>The CLT gives the <b>shape</b> of the sampling distribution: normal.</li>
+      <li>It is centered on the population <b>mean</b> μ, not the median.</li>
+      <li>Its spread is σ/√n, the standard error (next concept).</li>
+      <li>With about 30+ values per sample, moderate skew is fine. Small and skewed data needs different tests (concept 08).</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>The CLT is about the distribution of <b>sample means</b>. The raw data stay just as skewed as before.</div>
+  </div>
+  <div class="check" data-q="clt"></div>
+  <button class="done" data-id="clt" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 04 -->
+<section class="concept" id="se" data-lec="5" data-t="Standard error">
+  <header><span class="eyebrow">L5 · 04</span><h2>Standard error</h2></header>
+  <p class="lead">The standard error measures how much a statistic would bounce around if you repeated the study with the same sample size. For a mean, <span class="mono">SE = s / √n</span>, where s is the standard deviation of your sample and n is the sample size. The square root makes precision expensive: to <em>halve</em> the SE you need <em>four times</em> the data.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>SE shrinks as n grows (s = 10)</h3></div>
+    <div class="plot" id="se-chart"></div>
+    <div class="controls">
+      <div class="ctl"><label for="se-n">Sample size n <output id="se-n-o"></output></label><input type="range" id="se-n" min="4" max="500" step="1" value="30"></div>
+      <div class="row"><button class="btn pri" id="se-x4">Collect 4× the data</button><button class="btn" id="se-x2">Collect 2× the data</button></div>
+    </div>
+    <div class="read">
+      <div class="stat hl"><span>SE</span><b id="se-v">–</b></div>
+      <div class="stat"><span>Last change</span><b id="se-chg">–</b></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>SD</b> describes how spread out individual values are. <b>SE</b> describes how spread out the sample <b>mean</b> is.</li>
+      <li>Taxi fares: SE is $1.16 with 100 rides, so $0.58 with 400 rides.</li>
+      <li>The Central Limit Theorem (CLT) gives the shape and the SE gives the width. Together they power every test in this course.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Doubling n does not halve the SE. It divides it by √2, about 1.41.</div>
+  </div>
+  <div class="check" data-q="se"></div>
+  <button class="done" data-id="se" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 05 -->
+<section class="concept" id="framework" data-lec="5" data-t="5-step hypothesis test">
+  <header><span class="eyebrow">L5 · 05</span><h2>The 5-step hypothesis test</h2></header>
+  <p class="lead">A hypothesis test asks one question: <em>if nothing were going on, how surprising would my data be?</em> You assume "no effect" (H₀), measure how far your data land from it, and reject H₀ only if that result would be rare.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>The steps, in order</h3></div>
+    <ol class="steps">
+      <li><span class="k">1</span><div><b>Formulate hypotheses</b><p>H₀ says there is no difference and always uses "=" (μ<sub>A</sub> = μ<sub>B</sub>). H₁ says there is one: "≠" for a two-tailed test. This course always uses two-tailed tests.</p></div></li>
+      <li><span class="k">2</span><div><b>Choose α</b><p>The significance level, usually 0.05. Confidence level = 1 − α = 95%. Choose it before looking at the data.</p></div></li>
+      <li><span class="k">3</span><div><b>Choose the test and compute the statistic</b><p>The statistic (t, z, χ²) measures how far the sample is from what H₀ predicts.</p></div></li>
+      <li><span class="k">4</span><div><b>Find the p-value</b><p>The probability of a result this extreme or more extreme, <b>assuming H₀ is true</b>.</p></div></li>
+      <li><span class="k">5</span><div><b>Decide</b><p>p ≤ α: reject H₀. Otherwise: fail to reject H₀. You never "accept" H₀.</p></div></li>
+    </ol>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Is this coin fair? 100 flips</h3><span class="hint">H₀: P(heads) = 0.5</span></div>
+    <div class="ctl"><label for="coin-k">Heads you observed <output id="coin-k-o"></output></label><input type="range" id="coin-k" min="0" max="100" step="1" value="60"></div>
+    <div class="plot" id="coin-chart"></div>
+    <div class="read">
+      <div class="stat hl"><span>p-value (two-tailed)</span><b id="coin-p">–</b></div>
+      <div class="stat"><span>Decision at α = 0.05</span><b id="coin-d">–</b></div>
+    </div>
+    <p class="cap">The bars show how often each count happens with a truly fair coin. Red bars are results at least as far from 50 as yours, in either direction. Their total height is the p-value. The slide's example of 85 heads is astronomically unlikely, so you reject "fair".</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>H₀ is the "no effect" assumption, so it always gets the equals sign. Never write H₀: μ<sub>A</sub> ≠ μ<sub>B</sub>.</li>
+      <li>Reject H₀ → the groups differ, and the means tell you which direction.</li>
+      <li>Fail to reject → no statistically significant evidence of a difference. That is not proof there is none; the sample may be too small.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>With α = 0.05 and p = 0.12 you <b>fail to reject</b> H₀. You may not conclude the two designs are the same.</div>
+  </div>
+  <div class="check" data-q="framework"></div>
+  <button class="done" data-id="framework" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 06 -->
+<section class="concept" id="tstat" data-lec="5" data-t="t-statistic & p-value">
+  <header><span class="eyebrow">L5 · 06</span><h2>The t-statistic and the p-value</h2></header>
+  <p class="lead">A t-statistic is <em>signal ÷ noise</em>: the difference in means divided by its standard error. A bigger difference or less noisy data gives a bigger t. You then check where t lands on the t-distribution for your <b>degrees of freedom</b> (df = n − 1 for one sample or paired data). Small samples have heavier tails, so they need a bigger t to reject.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Where does your t land under H₀?</h3><span class="hint">t = x̄<sub>diff</sub> / (s / √n)</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="t-d">Signal: mean difference <output id="t-d-o"></output></label><input type="range" id="t-d" min="0" max="2" step="0.05" value="0.6"></div>
+      <div class="ctl"><label for="t-s">Noise: standard deviation s <output id="t-s-o"></output></label><input type="range" id="t-s" min="0.3" max="3" step="0.05" value="1.4"></div>
+      <div class="ctl"><label for="t-n">Sample size n <output id="t-n-o"></output></label><input type="range" id="t-n" min="3" max="60" step="1" value="15"></div>
+    </div>
+    <div class="plot" id="t-chart"></div>
+    <div class="legend"><span><i style="background:var(--tail-soft)"></i>Rejection region (α = 0.05 split over both tails)</span><span><i style="background:var(--tail)"></i>p-value</span><span><i style="background:transparent;border:1px dashed var(--muted)"></i>Standard normal, for comparison</span></div>
+    <div class="read">
+      <div class="stat"><span>SE = s/√n</span><b id="t-se">–</b></div>
+      <div class="stat hl"><span>t</span><b id="t-t">–</b></div>
+      <div class="stat"><span>Critical t* (df)</span><b id="t-c">–</b></div>
+      <div class="stat"><span>p-value</span><b id="t-p">–</b></div>
+      <div class="stat"><span>Decision</span><b id="t-dec">–</b></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>p-value = area under the t-curve beyond ±|t|. α = the total red area you agreed to call "too rare".</li>
+      <li>t lands in the red tails ⟺ p &lt; α ⟺ reject H₀.</li>
+      <li>As n → ∞ the t-distribution becomes the standard normal, and t* approaches 1.96.</li>
+      <li><b>Statistical significance ≠ effect size.</b> A huge sample can make a tiny, useless difference "significant". Report both.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>A p-value is <b>not</b> the probability that H₀ is true. It is computed by assuming H₀ is true.</div>
+  </div>
+  <div class="check" data-q="tstat"></div>
+  <button class="done" data-id="tstat" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 07 -->
+<section class="concept" id="errors" data-lec="5" data-t="Type I & II errors">
+  <header><span class="eyebrow">L5 · 07</span><h2>Type I and Type II errors</h2></header>
+  <p class="lead">Every decision can be wrong in two ways. A <b>Type I</b> error rejects a true H₀ (a false positive), and you set its rate up front with α. A <b>Type II</b> error misses a real effect (a false negative). Its rate, β, depends on how big the real effect is and how much data you have.</p>
+  <div class="lab">
+    <div class="scroll"><table class="t err">
+      <tr><th></th><th>H₀ actually true</th><th>H₀ actually false</th></tr>
+      <tr><th>Reject H₀</th><td class="cell-bad"><b>Type I error</b><br>False positive · rate α</td><td class="cell-ok"><b>Correct</b><br>Power = 1 − β</td></tr>
+      <tr><th>Fail to reject</th><td class="cell-ok"><b>Correct</b></td><td class="cell-amb"><b>Type II error</b><br>False negative · rate β</td></tr>
+    </table></div>
+    <div class="controls">
+      <div class="ctl"><label for="e-a">Significance level α <output id="e-a-o"></output></label><input type="range" id="e-a" min="0.01" max="0.2" step="0.01" value="0.05"></div>
+      <div class="ctl"><label for="e-d">Real effect × sample size (how far apart the worlds are) <output id="e-d-o"></output></label><input type="range" id="e-d" min="0" max="4.5" step="0.1" value="2.2"></div>
+    </div>
+    <div class="plot" id="e-chart"></div>
+    <div class="legend"><span><i style="background:var(--tail)"></i>Type I: H₀ true but statistic lands past the cutoffs (α)</span><span><i style="background:var(--amber)"></i>Type II: effect is real but statistic lands inside the cutoffs (β)</span></div>
+    <div class="read">
+      <div class="stat"><span>α (false positive rate)</span><b id="e-av">–</b></div>
+      <div class="stat"><span>β (false negative rate)</span><b id="e-bv">–</b></div>
+      <div class="stat hl"><span>Power = 1 − β</span><b id="e-pv">–</b></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Larger α</b> → more false positives, fewer false negatives.</li>
+      <li><b>Smaller α</b> → fewer false positives, more false negatives.</li>
+      <li>More data (or a bigger real effect) pulls the two curves apart, which raises power without touching α.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"Not significant" often just means low power. An underpowered study can easily miss a real effect.</div>
+  </div>
+  <div class="check" data-q="errors"></div>
+  <button class="done" data-id="errors" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 08 -->
+<section class="concept" id="choose" data-lec="5" data-t="Which test?">
+  <header><span class="eyebrow">L5 · 08</span><h2>Which test do I use?</h2></header>
+  <p class="lead">Three questions pick the test: <em>what type of data</em>, <em>how many groups</em>, and <em>are the same people measured twice</em>. This course works with the three t-tests for comparing means; the others are on the map so you can recognize them.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Test picker</h3></div>
+    <div class="qgrid">
+      <div class="qgroup"><span>1 · What are you measuring?</span><div class="seg" id="ch-type">
+        <button data-v="cont" aria-pressed="true">Continuous values</button><button data-v="ord" aria-pressed="false">Ordinal, or small &amp; skewed</button><button data-v="cat" aria-pressed="false">Two categorical variables</button><button data-v="prop" aria-pressed="false">Proportions</button><button data-v="rel" aria-pressed="false">Relationship of two continuous</button></div></div>
+      <div class="qgroup" id="ch-g-wrap"><span>2 · How many groups?</span><div class="seg" id="ch-groups">
+        <button data-v="1" aria-pressed="false">One vs. a known value</button><button data-v="2" aria-pressed="true">Two</button><button data-v="3" aria-pressed="false">Three or more</button></div></div>
+      <div class="qgroup" id="ch-s-wrap"><span>3 · Same people measured in both conditions?</span><div class="seg" id="ch-same">
+        <button data-v="y" aria-pressed="true">Yes, same people</button><button data-v="n" aria-pressed="false">No, different people</button></div></div>
+    </div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)" id="ch-tag">USE</span><b id="ch-name">–</b><span id="ch-why"></span></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Practice: name the test, then open to check</h3></div>
+    <div class="scen" id="scen"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>One-sample t</b>: one group vs. a known value.</li>
+      <li><b>Paired t</b>: the same people in two conditions. It works on each person's difference, which should be roughly normal.</li>
+      <li><b>Independent t</b>: two different groups that are otherwise alike. Use the unequal-variances (Welch) version by default.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Before/after on the <b>same</b> customers is paired. Before/after where the "before" is only a known average is one-sample.</div>
+  </div>
+  <div class="check" data-q="choose"></div>
+  <button class="done" data-id="choose" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 09 -->
+<section class="concept" id="worked" data-lec="5" data-t="Worked paired t-test">
+  <header><span class="eyebrow">L5 · 09</span><h2>Worked example: the paired t-test</h2></header>
+  <p class="lead">21 users completed the same task on Product A and Product B, timed in seconds. Because every user tried both, each person serves as their own control: the test works on the <em>21 differences</em>, not on the two columns separately. Every number below is computed live from the lecture's data.</p>
+  <div class="lab">
+    <div class="two">
+      <div><div class="lab-h"><h3>Each user, A → B</h3></div><div class="plot" id="w-slope"></div></div>
+      <div><div class="lab-h"><h3>The 21 differences (B − A)</h3></div><div class="plot" id="w-diff"></div></div>
+    </div>
+    <p class="cap">Left: one line per user. Almost every line slopes up, so B is slower for nearly everyone. Right: the differences and their mean. The shaded band is a 95% confidence interval: the range of plausible values for the true mean difference (concept 10 explains it). Zero, meaning "no difference", is far outside it.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>The five steps with real numbers</h3></div>
+    <ol class="steps" id="w-steps"></ol>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Excel reports <span class="mono">t Stat = −5.72</span> because it computes A − B. The sign only shows direction.</li>
+      <li>Read <span class="mono">P(T&lt;=t) two-tail</span> = 1.3351E-05 = 0.0000134, since this course uses two-tailed tests.</li>
+      <li>In Excel: Data → Data Analysis → <b>t-Test: Paired Two Sample for Means</b>.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Running an independent two-sample test here would be wrong. The same 21 people used both products, so the data are <b>paired</b>.</div>
+  </div>
+  <div class="check" data-q="worked"></div>
+  <button class="done" data-id="worked" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 10 -->
+<section class="concept" id="ci" data-lec="5" data-t="Confidence intervals">
+  <header><span class="eyebrow">L5 · 10</span><h2>Confidence intervals</h2></header>
+  <p class="lead">A confidence interval is a range of plausible values for a parameter: <span class="mono">x̄ ± t* × SE</span>. A 95% CI holds exactly the null values that a two-tailed test at α = 0.05 would <em>not</em> reject. That makes it a test and an effect-size estimate in one picture.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>What "95%" actually means</h3><span class="hint">20 samples of n = 10 from a population with μ = 50</span></div>
+    <div class="row"><button class="btn pri" id="ci-go">Draw 20 new samples</button><button class="btn" id="ci-go50">Draw 1,000 more</button></div>
+    <div class="plot" id="ci-chart"></div>
+    <div class="read">
+      <div class="stat"><span>In this batch</span><b id="ci-batch">–</b></div>
+      <div class="stat hl"><span>All intervals so far</span><b id="ci-all">–</b></div>
+    </div>
+    <p class="cap">Each line is one study's 95% interval. Red ones missed the true μ. Over many studies about 95% catch it. Any single interval either contains μ or it doesn't.</p>
+  </div>
+  <div class="two">
+    <div class="lab">
+      <div class="lab-h"><h3>CI ↔ hypothesis test</h3></div>
+      <div class="plot" id="ci-test"></div>
+      <p class="cap">H₀ says the mean difference is 0. If 0 is outside the 95% CI, reject at α = 0.05. If 0 is inside, fail to reject.</p>
+    </div>
+    <div class="lab">
+      <div class="lab-h"><h3>Back to our commutes</h3></div>
+      <ol class="steps" id="ci-commute"></ol>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>95% describes the <b>procedure</b>: across repeated samples, about 95 of 100 intervals contain μ.</li>
+      <li>Two group CIs that don't overlap → significant. If they overlap, the result is ambiguous: check the CI of the difference.</li>
+      <li>For paired data (like concept 09), use the CI of the <b>differences</b>, not two separate group CIs.</li>
+      <li>CIs show the plausible size of the effect, which is often more useful than p alone.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"There's a 95% probability μ is in this interval" is wrong. The 95% is the long-run hit rate of the method.</div>
+  </div>
+  <div class="check" data-q="ci"></div>
+  <button class="done" data-id="ci" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 11 -->
+<section class="concept" id="pitfalls" data-lec="5" data-t="Pitfalls & misconceptions">
+  <header><span class="eyebrow">L5 · 11</span><h2>Pitfalls and misconceptions</h2></header>
+  <p class="lead">A p-value is only honest if you chose the comparison before looking at the data. Every extra split (by gender, by age, by year) is another test, and another chance for pure noise to come out "significant".</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Run 20 tests where nothing is going on</h3><span class="hint">like testing 20 button colors that all perform the same</span></div>
+    <div class="controls">
+      <div class="row"><button class="btn pri" id="mt-go">Run 20 tests</button><button class="btn" id="mt-go100">Run 100 rounds</button></div>
+      <div class="qgroup"><span>Threshold</span><div class="seg" id="mt-alpha"><button data-v="0.05" aria-pressed="true">α = 0.05</button><button data-v="0.0025" aria-pressed="false">Bonferroni: 0.05 ÷ 20</button></div></div>
+    </div>
+    <div class="cells" id="mt-cells"></div>
+    <div class="read">
+      <div class="stat"><span>"Significant" this round</span><b id="mt-now">–</b></div>
+      <div class="stat hl"><span>Average per round</span><b id="mt-avg">–</b></div>
+      <div class="stat"><span>Rounds with ≥ 1 false alarm</span><b id="mt-any">–</b></div>
+    </div>
+    <p class="cap">Each cell is one test's p-value. Every effect here is truly zero, so every red cell is a false positive. At α = 0.05 you get about one per round. A rough guard is Bonferroni: divide α by the number of tests.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Myth or reality? Tap a card</h3></div>
+    <div class="myths" id="myths"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Real-world pitfalls</h3><ul>
+      <li><b>p-hacking</b>: running tests until one is significant by chance.</li>
+      <li><b>Small-sample bravado</b>: sweeping conclusions from n = 12.</li>
+      <li><b>Ignoring effect size</b>: p = 0.001 for a 0.5% improvement may not be worth anything.</li>
+      <li><b>Correlation ≠ causation</b>: tests measure association. Causal claims need experiments.</li>
+    </ul></div>
+    <div class="trap"><h3>For your project</h3>Decide the comparison before testing. Say how many tests you ran. Report effect size and CI, not only p. Check whether a pooled result holds within subgroups (concept 16).</div>
+  </div>
+  <div class="check" data-q="pitfalls"></div>
+  <button class="done" data-id="pitfalls" aria-pressed="false">Mark as understood</button>
+</section>
+
+<div class="part"><span class="eyebrow">Part 2</span><h2>Visualization</h2><p>Why we plot data, how perception reads a chart, and how to choose one that answers the question honestly.</p></div>
+
+<!-- 12 -->
+<section class="concept" id="anscombe" data-lec="4" data-t="Why visualize">
+  <header><span class="eyebrow">L4 · 12</span><h2>Why visualize: Anscombe's quartet</h2></header>
+  <p class="lead">These four datasets have the same means, the same variances and the same correlation. Plotted, they are completely different: a noisy line, a curve, a perfect line with one outlier, and a vertical stack held up by a single point. <em>Summary statistics can be too reductive.</em></p>
+  <div class="lab">
+    <div class="scroll"><table class="t" id="ans-table"></table></div>
+    <div class="two" id="ans-plots"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Why visualize</h3><ul>
+      <li>Statistics can hide shape. Look at the data, not only the numbers.</li>
+      <li>You can explore data before you know which question to ask.</li>
+      <li>A chart acts as external memory: you compare by looking instead of holding numbers in your head.</li>
+      <li>Three uses: <b>exploration</b> (generate hypotheses), <b>confirmation</b> (check them), <b>communication</b> (present them).</li>
+    </ul></div>
+    <div class="trap"><h3>The bar to clear</h3>At the very least, a visualization should be more effective than a table.</div>
+  </div>
+  <div class="check" data-q="anscombe"></div>
+  <button class="done" data-id="anscombe" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 13 -->
+<section class="concept" id="channels" data-lec="4" data-t="Marks & channels">
+  <header><span class="eyebrow">L4 · 13</span><h2>Marks and channels</h2></header>
+  <p class="lead"><b>Marks</b> are the shapes that stand for data: points, lines, areas and bars. <b>Channels</b> are the visual properties that carry the values: position, length, angle, area, color, shape. Your eyes read some channels far more accurately than others, so the channel you pick decides how well people can compare.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Same five market shares, three channels</h3></div>
+    <div class="controls">
+      <div class="seg" id="ch-enc"><button data-v="pie" aria-pressed="true">Angle (pie)</button><button data-v="area" aria-pressed="false">Area (circles)</button><button data-v="bar" aria-pressed="false">Position on a common scale (bars)</button></div>
+      <button class="btn" id="ch-vals" aria-pressed="false">Show values</button>
+    </div>
+    <div class="plot" id="ch-chart"></div>
+    <p class="cap">Without the values: is B bigger than A? Which company is third? Switch channels and notice when the answer becomes obvious.</p>
+  </div>
+  <div class="lab">
+    <div class="ladder">
+      <div><h4>Magnitude channels · for ordered data (most → least effective)</h4><ol>
+        <li>Position on a common scale<i style="width:100%"></i></li>
+        <li>Position on unaligned scales<i style="width:90%"></i></li>
+        <li>Length (1D size)<i style="width:80%"></i></li>
+        <li>Tilt / angle<i style="width:66%"></i></li>
+        <li>Area (2D size)<i style="width:55%"></i></li>
+        <li>Depth (3D position)<i style="width:44%"></i></li>
+        <li>Color luminance / saturation<i style="width:34%"></i></li>
+        <li>Curvature / volume<i style="width:22%"></i></li>
+      </ol></div>
+      <div><h4>Identity channels · for categories</h4><ol>
+        <li>Spatial region<i style="width:100%"></i></li>
+        <li>Color hue<i style="width:80%"></i></li>
+        <li>Motion<i style="width:60%"></i></li>
+        <li>Shape<i style="width:45%"></i></li>
+      </ol></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Bar chart: mark = bar, channel = length. Scatter plot: mark = point, channels = horizontal and vertical position.</li>
+      <li>Match the channel to the data type: magnitude channels for ordered values, identity channels for categories.</li>
+      <li>Use 3–4 channels at most before a chart gets cluttered.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Pie charts use angle, which is hard to compare. Close slices, and especially several pies side by side, are where they fail. Bars on a shared axis are almost always better.</div>
+  </div>
+  <div class="check" data-q="channels"></div>
+  <button class="done" data-id="channels" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 14 -->
+<section class="concept" id="chooser" data-lec="4" data-t="Start from the question">
+  <header><span class="eyebrow">L4 · 14</span><h2>Start from the question</h2></header>
+  <p class="lead">Don't start with a chart type. Start with the question you're asking, then pick the mark, the channel, and finally the chart.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>What is your question?</h3></div>
+    <div class="seg" id="q-pick" style="display:flex"></div>
+    <div class="two" style="align-items:center">
+      <div class="plot" id="q-chart"></div>
+      <div class="qgrid" id="q-info"></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Exploratory vs explanatory</h3><ul>
+      <li><b>Exploratory</b>: you are still looking for the story. Many views, filters, detail.</li>
+      <li><b>Explanatory</b>: you are presenting a finding. Few variables, one message per chart, focus on what answers the question.</li>
+      <li>Presentations are usually explanatory. Dashboards default to explanatory but add filters to drill down.</li>
+    </ul></div>
+    <div class="trap"><h3>Where the classic chart chooser is outdated</h3>For share of total, use sorted or stacked bars, not a pie. For three variables, use color or size on a scatter plot, or small multiples, not 3D.</div>
+  </div>
+  <div class="check" data-q="chooser"></div>
+  <button class="done" data-id="chooser" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 15 -->
+<section class="concept" id="honest" data-lec="4" data-t="Honest charts">
+  <header><span class="eyebrow">L4 · 15</span><h2>Honest charts: the right mark and a true zero</h2></header>
+  <p class="lead">Two common mistakes distort what a reader sees. A <b>line</b> drawn across categories implies a connection or order that isn't there. A <b>bar</b> axis that doesn't start at zero breaks the length encoding, so differences look many times bigger than they are.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Records per office-supply sub-category</h3><span class="hint">values approximated from the slide</span></div>
+    <div class="seg" id="m-pick"><button data-v="line" aria-pressed="true">Line (wrong mark)</button><button data-v="bar" aria-pressed="false">Bars</button><button data-v="sorted" aria-pressed="false">Sorted horizontal bars</button></div>
+    <div class="plot" id="m-chart"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Fuel economy, mpg</h3></div>
+    <div class="ctl"><label for="ax-0">Bar axis starts at <output id="ax-0-o"></output></label><input type="range" id="ax-0" min="0" max="10" step="0.5" value="10"></div>
+    <div class="plot" id="ax-chart"></div>
+    <div class="read">
+      <div class="stat"><span>Corolla bar looks</span><b id="ax-look">–</b></div>
+      <div class="stat hl"><span>Real ratio</span><b id="ax-real">–</b></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Lines are for ordered data, usually time. Bars compare amounts across categories.</li>
+      <li>Horizontal bars make long labels readable. Sorting makes the ranking obvious.</li>
+      <li>Bars need a true zero. For a non-zero baseline, use dots or lines instead.</li>
+      <li>Watch real-world charts for uneven axis spacing, dates out of order, and pie "slices" that sum past 100%.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Starting the mpg axis at 10 makes the Corolla's bar about 60× the Cadillac's, when its mileage is only 3.3×.</div>
+  </div>
+  <div class="check" data-q="honest"></div>
+  <button class="done" data-id="honest" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 16 -->
+<section class="concept" id="simpson" data-lec="4" data-t="Simpson's paradox">
+  <header><span class="eyebrow">L4 · 16</span><h2>Simpson's paradox: the overview can mislead</h2></header>
+  <p class="lead">A comparison that holds overall can <em>reverse</em> once you split by a lurking variable. Start with an overview, but don't end with one: dig into the variables that could explain it.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Kidney stone treatments, 350 patients each</h3><span class="hint">Charig et al., BMJ 1986</span></div>
+    <div class="seg" id="sp-pick"><button data-v="pool" aria-pressed="true">All patients</button><button data-v="split" aria-pressed="false">Split by stone size</button></div>
+    <div class="plot" id="sp-chart"></div>
+    <div class="legend"><span><i style="background:var(--c1)"></i>Open surgery</span><span><i style="background:var(--c2)"></i>Percutaneous (keyhole)</span></div>
+    <p class="cap" id="sp-cap"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Open surgery wins for small stones <b>and</b> for large stones, yet loses overall.</li>
+      <li>The reason: open surgery mostly got the harder large-stone cases (263 of its 350 patients).</li>
+      <li>A significant pooled difference can reverse within subgroups. Check before you conclude.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Reading the pooled bars alone, you would pick keyhole surgery, which is worse for every type of patient.</div>
+  </div>
+  <div class="check" data-q="simpson"></div>
+  <button class="done" data-id="simpson" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 17 -->
+<section class="concept" id="rules" data-lec="4" data-t="Rules of thumb">
+  <header><span class="eyebrow">L4 · 17</span><h2>Rules of thumb, applied</h2></header>
+  <p class="lead">The same data can be a wall of numbers or a clear argument. The redesign below removes clutter, uses gray for context and one color for the point, picks a line because this is a trend over time, and annotates the event that explains it.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>IT ticket volume, one year</h3></div>
+    <div class="seg" id="tk-pick"><button data-v="before" aria-pressed="true">Before</button><button data-v="after" aria-pressed="false">After</button></div>
+    <div class="plot" id="tk-chart"></div>
+  </div>
+  <div class="lab">
+    <ul class="rules">
+      <li><b>1 · Maximize the data-ink ratio</b><span>Remove borders, shadows and backgrounds; lighten gridlines. Annotations and highlights are not clutter.</span></li>
+      <li><b>2 · Use color sparingly and meaningfully</b><span>Start in grayscale, add color only to highlight or to encode categories. 6–7 colors max, no rainbow scales.</span></li>
+      <li><b>3 · Preserve perceptual accuracy</b><span>Choose effective channels. Never truncate a bar axis. Be wary of relative changes.</span></li>
+      <li><b>4 · Provide context</b><span>Reference lines (averages, targets, prior periods), consistent scales, annotations for key events.</span></li>
+      <li><b>5 · Organize for comparison</b><span>Group related items, keep ordering consistent, align shared axes, prefer small multiples to one complex chart.</span></li>
+      <li><b>Also</b><span>Know your audience and task. No 3D unless it conveys real shape. Overview first, zoom and filter, details on demand (Shneiderman). Tell a story, honestly.</span></li>
+    </ul>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Three kinds of color scale</h3></div>
+    <div class="swatches">
+      <div class="sw"><div class="g" style="background:linear-gradient(90deg,#0072B2 0 16.6%,#D55E00 0 33.3%,#009E73 0 50%,#CC79A7 0 66.6%,#E69F00 0 83.3%,#56B4E9 0)"></div><b>Categorical</b><span>Nominal data. Distinct hues, no order implied. Six or seven at most.</span></div>
+      <div class="sw"><div class="g" style="background:linear-gradient(90deg,#EEF2FA,#0B2F6B)"></div><b>Sequential</b><span>Ordered or quantitative. One hue, light = low, dark = high.</span></div>
+      <div class="sw"><div class="g" style="background:linear-gradient(90deg,#B35806,#F7F7F7,#2166AC)"></div><b>Diverging</b><span>Quantitative with a meaningful midpoint: zero, the mean, a target.</span></div>
+    </div>
+    <p class="cap">About 1 in 12 men of European ancestry has red-green color vision deficiency. Never let red versus green alone carry the meaning.</p>
+  </div>
+  <div class="check" data-q="rules"></div>
+  <button class="done" data-id="rules" aria-pressed="false">Mark as understood</button>
+</section>
+
+<p class="foot">Built from IS 465 Lecture 4 (Visualization) and Lecture 5 (Inferential Statistics), Mark Cartwright, NJIT. Simulations use fresh random draws, so your numbers will differ slightly from the slides. Progress is saved in this browser only.</p>
+</main>
+</div>
+
+<script>
+/* ---------- math ---------- */
+const $=s=>document.querySelector(s);
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const sd=a=>{const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))};
+const lin=(d0,d1,r0,r1)=>v=>r0+(v-d0)*(r1-r0)/(d1-d0);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r=Math.random){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function erf(x){const s=Math.sign(x);x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y}
+const npdf=z=>Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+const ncdf=z=>z===Infinity?1:z===-Infinity?0:0.5*(1+erf(z/Math.SQRT2));
+function lgamma(z){const c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];if(z<0.5)return Math.log(Math.PI/Math.sin(Math.PI*z))-lgamma(1-z);z-=1;let x=c[0];for(let i=1;i<9;i++)x+=c[i]/(z+i);const t=z+7.5;return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=300;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+const tTwo=(t,df)=>ibeta(df/2,0.5,df/(df+t*t));
+const tpdf=(t,df)=>Math.exp(lgamma((df+1)/2)-lgamma(df/2))/Math.sqrt(df*Math.PI)*Math.pow(1+t*t/df,-(df+1)/2);
+function tcrit(df,a=0.05){let lo=0,hi=60;for(let i=0;i<80;i++){const m=(lo+hi)/2;tTwo(m,df)>a?lo=m:hi=m}return(lo+hi)/2}
+function zcrit(a){let lo=0,hi=10;for(let i=0;i<80;i++){const m=(lo+hi)/2;2*(1-ncdf(m))>a?lo=m:hi=m}return(lo+hi)/2}
+const SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function fmtP(p){if(p>=0.9995)return'1.000';if(p>=0.001)return p.toFixed(3);if(p<1e-300)return'< 10⁻³⁰⁰';const e=Math.floor(Math.log10(p));const m=p/10**e;return m.toFixed(2)+' × 10'+String(e).replace(/./g,c=>SUP[c]||c)}
+const pct=(p,d=1)=>(p*100).toFixed(d)+'%';
+
+/* ---------- svg helpers ---------- */
+const NS='http://www.w3.org/2000/svg';
+function S(tag,a={},p){const e=document.createElementNS(NS,tag);for(const k in a){const v=a[k];if(k==='text'){e.textContent=v;continue}if(k==='cls'){e.setAttribute('class',v);continue}if((k==='fill'||k==='stroke')&&typeof v==='string'&&v.startsWith('var(')){e.style[k]=v;continue}e.setAttribute(k,v)}if(p)p.appendChild(e);return e}
+function chart(host,h,draw){const svg=S('svg',{cls:'chart',role:'img'});host.appendChild(svg);let w=-1;const render=()=>{w=host.clientWidth;if(!w)return;const H=typeof h==='function'?h(w):h;svg.setAttribute('width',w);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${w} ${H}`);while(svg.firstChild)svg.removeChild(svg.firstChild);draw(svg,w,H)};new ResizeObserver(()=>{if(host.clientWidth!==w)render()}).observe(host);render();return render}
+function pathFn(f,x0,x1,sx,sy,n=160){let d='';for(let i=0;i<=n;i++){const x=x0+(x1-x0)*i/n;d+=(i?'L':'M')+sx(x).toFixed(1)+','+sy(f(x)).toFixed(1)}return d}
+function areaFn(f,x0,x1,sx,sy,base,n=120){if(!(x1>x0))return'';return pathFn(f,x0,x1,sx,sy,n)+`L${sx(x1).toFixed(1)},${base}L${sx(x0).toFixed(1)},${base}Z`}
+function xAxis(g,sx,ticks,y,fmt=String,x0,x1){S('line',{x1:x0??sx(ticks[0]),x2:x1??sx(ticks[ticks.length-1]),y1:y,y2:y,stroke:'var(--muted)'},g);ticks.forEach(t=>{S('line',{x1:sx(t),x2:sx(t),y1:y,y2:y+4,stroke:'var(--muted)'},g);S('text',{x:sx(t),y:y+16,'text-anchor':'middle',text:fmt(t)},g)})}
+function yGrid(g,sy,ticks,x0,x1,fmt=String){ticks.forEach(t=>{S('line',{x1:x0,x2:x1,y1:sy(t),y2:sy(t),stroke:'var(--line)','stroke-dasharray':t?'2 3':''},g);S('text',{x:x0-6,y:sy(t)+4,'text-anchor':'end',text:fmt(t)},g)})}
+function seg(el,fn){el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!el.contains(b))return;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset.v,b)})}
+function range(id,fn,fmt=v=>v){const i=document.getElementById(id),o=document.getElementById(id+'-o');const go=()=>{if(o)o.textContent=fmt(+i.value);fn(+i.value)};i.addEventListener('input',go);return{el:i,go,set(v){i.value=v;go()}}}
+const set=(id,v)=>{document.getElementById(id).innerHTML=v};
+
+/* ---------- 01 sample ---------- */
+(function(){
+  const r=mulberry32(11),pop=[];
+  for(let i=0;i<110;i++)pop.push({v:Math.min(118,2-6*Math.log(1-r())),g:0,j:r()});
+  for(let i=0;i<190;i++)pop.push({v:Math.min(118,Math.exp(Math.log(40)+0.42*gauss(r))),g:1,j:r()});
+  const mu=mean(pop.map(p=>p.v));let pick=[];
+  const render=chart($('#pop-chart'),190,(svg,w,h)=>{
+    const m={l:10,r:10,t:30,b:30},sx=lin(0,120,m.l,w-m.r),y0=m.t,y1=h-m.b;
+    pop.forEach((p,i)=>{if(!pick.includes(i))S('circle',{cx:sx(p.v),cy:y0+6+p.j*(y1-y0-12),r:3,fill:'var(--muted)','fill-opacity':.35},svg)});
+    pick.forEach(i=>{const p=pop[i];S('circle',{cx:sx(p.v),cy:y0+6+p.j*(y1-y0-12),r:5,fill:'var(--accent)',stroke:'var(--surface)','stroke-width':1.5},svg)});
+    xAxis(svg,sx,[0,20,40,60,80,100,120],y1,t=>t===120?'120 min':t,m.l,w-m.r);
+    const xb=pick.length?mean(pick.map(i=>pop[i].v)):null,right=xb!=null&&xb>mu;
+    S('line',{x1:sx(mu),x2:sx(mu),y1:y0-8,y2:y1,stroke:'var(--ink)','stroke-dasharray':'4 3','stroke-width':1.5},svg);
+    S('text',{x:sx(mu)+(right?-6:6),y:y0-14,'text-anchor':right?'end':'start',cls:'ti b',text:'μ '+mu.toFixed(1)},svg);
+    if(xb!=null){S('line',{x1:sx(xb),x2:sx(xb),y1:y0-8,y2:y1,stroke:'var(--accent)','stroke-width':2},svg);S('text',{x:sx(xb)+(right?6:-6),y:y0-14,'text-anchor':right?'start':'end',cls:'ta b',text:'x̄ '+xb.toFixed(1)},svg)}
+  });
+  function draw(k){
+    const pool=pop.map((p,i)=>i).filter(i=>k==='rand'||pop[i].g===1),n=k==='room40'?40:9;
+    const a=pool.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+    pick=a.slice(0,n);const xb=mean(pick.map(i=>pop[i].v));
+    set('pop-mu',mu.toFixed(1)+' min');set('pop-xbar',xb.toFixed(1)+' min');set('pop-err',(xb>=mu?'+':'−')+Math.abs(xb-mu).toFixed(1)+' min');render();
+  }
+  $('#pop-btns').addEventListener('click',e=>{const b=e.target.closest('button');if(b)draw(b.dataset.k)});
+  draw('rand');
+})();
+
+/* ---------- 02 normal ---------- */
+(function(){
+  let lo=90,hi=110;const pdf=x=>npdf((x-70)/10)/10;
+  const lbl=v=>v<=30?'−∞':v>=110?'+∞':v;
+  const render=chart($('#nm-chart'),240,(svg,w,h)=>{
+    const m={l:10,r:10,t:22,b:42},sx=lin(30,110,m.l,w-m.r),base=h-m.b,sy=lin(0,pdf(70)*1.1,base,m.t);
+    const a=Math.min(lo,hi),b=Math.max(lo,hi);
+    S('path',{d:areaFn(pdf,a,b,sx,sy,base),fill:'var(--accent-soft)'},svg);
+    for(let k=-3;k<=3;k++){const x=70+10*k;S('line',{x1:sx(x),x2:sx(x),y1:base,y2:sy(pdf(x)),stroke:'var(--line)'},svg);S('text',{x:sx(x),y:base+16,'text-anchor':'middle',cls:'ti',text:x},svg);S('text',{x:sx(x),y:base+31,'text-anchor':'middle',text:k?(k>0?'+':'−')+Math.abs(k)+'σ':'μ'},svg)}
+    S('path',{d:pathFn(pdf,30,110,sx,sy),fill:'none',stroke:'var(--ink)','stroke-width':2},svg);
+    S('line',{x1:m.l,x2:w-m.r,y1:base,y2:base,stroke:'var(--muted)'},svg);
+    [a,b].forEach(v=>{if(v>30&&v<110)S('line',{x1:sx(v),x2:sx(v),y1:base,y2:m.t-6,stroke:'var(--accent)','stroke-width':2},svg)});
+    const za=a<=30?-Infinity:(a-70)/10,zb=b>=110?Infinity:(b-70)/10,P=ncdf(zb)-ncdf(za);
+    const cx=sx((Math.max(a,32)+Math.min(b,108))/2);
+    S('text',{x:Math.min(Math.max(cx,40),w-40),y:m.t+4,'text-anchor':'middle',cls:'ta b lg',text:pct(P,1)},svg);
+  });
+  function upd(){const a=Math.min(lo,hi),b=Math.max(lo,hi);const za=a<=30?-Infinity:(a-70)/10,zb=b>=110?Infinity:(b-70)/10;const P=ncdf(zb)-ncdf(za);
+    set('nm-p',pct(P,2));set('nm-z',(za===-Infinity?'−∞':za.toFixed(2))+' to '+(zb===Infinity?'+∞':zb.toFixed(2)));
+    const key=`${a},${b}`,rules={'60,80':'68%','50,90':'95%','40,100':'99.7%','90,110':'2.5%','30,50':'2.5%','80,110':'16%','30,60':'16%'};set('nm-rule',rules[key]||'–');render()}
+  const L=range('nm-lo',v=>{lo=v;upd()},lbl),H=range('nm-hi',v=>{hi=v;upd()},lbl);
+  $('#nm-pre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;lo=+b.dataset.a;hi=+b.dataset.b;L.el.value=lo;H.el.value=hi;L.go();H.go()});
+  L.go();H.go();
+})();
+
+/* ---------- 03 CLT ---------- */
+(function(){
+  let n=5,means=[],last=null;
+  const one=()=>{const s=[];for(let i=0;i<n;i++)s.push(-3*Math.log(1-Math.random()));return s};
+  function add(k){for(let i=0;i<k;i++){const s=one();means.push(mean(s));last=s}upd()}
+  const rp=chart($('#clt-pop'),220,(svg,w,h)=>{
+    const m={l:10,r:10,t:28,b:28},sx=lin(0,15,m.l,w-m.r),base=h-m.b,sy=lin(0,0.36,base,m.t);
+    S('text',{x:m.l,y:14,cls:'ti sans b',text:'Population (right-skewed)'},svg);
+    for(let a=0;a<15;a+=0.5){const p=Math.exp(-a/3)-Math.exp(-(a+0.5)/3);S('rect',{x:sx(a)+.5,y:sy(p/0.5),width:Math.max(0,sx(0.5)-sx(0)-1),height:base-sy(p/0.5),fill:'var(--muted)','fill-opacity':.35},svg)}
+    S('line',{x1:sx(3),x2:sx(3),y1:m.t,y2:base,stroke:'var(--ink)','stroke-dasharray':'4 3'},svg);S('text',{x:sx(3)+5,y:m.t+10,cls:'ti',text:'μ = 3'},svg);
+    if(last){last.forEach(v=>S('circle',{cx:sx(Math.min(v,14.9)),cy:base-6,r:4,fill:'var(--accent)',stroke:'var(--surface)'},svg));const xb=mean(last);S('path',{d:`M${sx(Math.min(xb,14.9))},${base-14}l-5,-9h10z`,fill:'var(--accent)'},svg);S('text',{x:w-m.r,y:m.t+10,'text-anchor':'end',cls:'ta',text:'latest x̄ = '+xb.toFixed(2)},svg)}
+    xAxis(svg,sx,[0,5,10,15],base,String,m.l,w-m.r);
+  });
+  const rm=chart($('#clt-means'),220,(svg,w,h)=>{
+    const m={l:10,r:10,t:28,b:28},sx=lin(0,10,m.l,w-m.r),base=h-m.b,bw=0.2,N=means.length;
+    const cnt=new Array(50).fill(0);means.forEach(v=>{const i=Math.floor(v/bw);if(i>=0&&i<50)cnt[i]++});
+    const se=3/Math.sqrt(n),peak=npdf(0)/se,maxd=N?Math.max(...cnt)/(N*bw):0,sy=lin(0,Math.max(peak,maxd,0.1)*1.1,base,m.t);
+    S('text',{x:m.l,y:14,cls:'ti sans b',text:`Means of ${N.toLocaleString()} samples (n = ${n})`},svg);
+    cnt.forEach((c,i)=>{if(!c)return;const d=c/(N*bw);S('rect',{x:sx(i*bw)+.3,y:sy(d),width:Math.max(0,sx(bw)-sx(0)-.6),height:base-sy(d),fill:'var(--accent)','fill-opacity':.55},svg)});
+    S('path',{d:pathFn(x=>npdf((x-3)/se)/se,0,10,sx,sy,200),fill:'none',stroke:'var(--ink)','stroke-width':1.5,'stroke-dasharray':'5 3'},svg);
+    if(last){S('path',{d:`M${sx(Math.min(mean(last),9.9))},${base-2}l-5,-9h10z`,fill:'var(--tail)'},svg)}
+    xAxis(svg,sx,[0,2,4,6,8,10],base,String,m.l,w-m.r);
+  });
+  function upd(){set('clt-cnt',means.length.toLocaleString());if(means.length>1){set('clt-m',mean(means).toFixed(3));set('clt-sd',sd(means).toFixed(3))}else{set('clt-m',means.length?means[0].toFixed(3):'–');set('clt-sd','–')}set('clt-se',(3/Math.sqrt(n)).toFixed(3));rp();rm()}
+  seg($('#clt-n'),v=>{n=+v;means=[];last=null;add(2000)});
+  $('#clt-1').onclick=()=>add(1);$('#clt-1000').onclick=()=>add(1000);$('#clt-r').onclick=()=>{means=[];last=null;upd()};
+  add(2000);
+})();
+
+/* ---------- 04 SE ---------- */
+(function(){
+  let n=30,prev=null;
+  const render=chart($('#se-chart'),220,(svg,w,h)=>{
+    const m={l:36,r:14,t:16,b:30},sx=lin(0,500,m.l,w-m.r),base=h-m.b,sy=lin(0,5,base,m.t);
+    yGrid(svg,sy,[0,1,2,3,4,5],m.l,w-m.r);
+    S('path',{d:areaFn(x=>Math.min(5,10/Math.sqrt(x)),4,500,sx,sy,base,240),fill:'var(--accent-soft)'},svg);
+    S('path',{d:pathFn(x=>Math.min(5,10/Math.sqrt(x)),4,500,sx,sy,240),fill:'none',stroke:'var(--ink)','stroke-width':2},svg);
+    xAxis(svg,sx,[0,100,200,300,400,500],base,t=>t===500?'n = 500':t,m.l,w-m.r);
+    if(prev&&prev!==n){S('circle',{cx:sx(prev),cy:sy(10/Math.sqrt(prev)),r:5,fill:'var(--surface)',stroke:'var(--muted)','stroke-width':2},svg)}
+    const se=10/Math.sqrt(n),x=sx(n),y=sy(Math.min(5,se));
+    S('line',{x1:x,x2:x,y1:y,y2:base,stroke:'var(--accent)','stroke-dasharray':'3 3'},svg);
+    S('circle',{cx:x,cy:y,r:6,fill:'var(--accent)',stroke:'var(--surface)','stroke-width':2},svg);
+    const left=x>w*0.7;S('text',{x:x+(left?-10:10),y:y-10,'text-anchor':left?'end':'start',cls:'ta b',text:`n=${n}  SE=${se.toFixed(2)}`},svg);
+  });
+  const R=range('se-n',v=>{n=v;set('se-v',(10/Math.sqrt(n)).toFixed(2));render()});
+  function mult(k){const p=n,nn=Math.min(500,n*k);if(nn===p)return;prev=p;R.set(nn);set('se-chg',`n ${p}→${nn}: SE ÷ ${(Math.sqrt(nn/p)).toFixed(2)}`)}
+  $('#se-x4').onclick=()=>mult(4);$('#se-x2').onclick=()=>mult(2);
+  R.el.addEventListener('input',()=>{prev=null;set('se-chg','–')});
+  R.go();set('se-chg','–');
+})();
+
+/* ---------- 05 coin ---------- */
+(function(){
+  const lf=[0];for(let i=1;i<=100;i++)lf[i]=lf[i-1]+Math.log(i);
+  const pmf=i=>Math.exp(lf[100]-lf[i]-lf[100-i]-100*Math.log(2));
+  let k=60;
+  const render=chart($('#coin-chart'),220,(svg,w,h)=>{
+    const m={l:38,r:10,t:16,b:30},sx=lin(19.5,80.5,m.l,w-m.r),base=h-m.b,sy=lin(0,0.085,base,m.t),d=Math.abs(k-50);
+    yGrid(svg,sy,[0,0.02,0.04,0.06,0.08],m.l,w-m.r,t=>t?t.toFixed(2):'0');
+    for(let i=20;i<=80;i++){const ext=Math.abs(i-50)>=d;S('rect',{x:sx(i-0.42),y:sy(pmf(i)),width:Math.max(0,sx(0.84)-sx(0)),height:base-sy(pmf(i)),fill:ext?'var(--tail)':'var(--muted)','fill-opacity':ext?.9:.3},svg)}
+    xAxis(svg,sx,[20,30,40,50,60,70,80],base,String,m.l,w-m.r);
+    const kx=Math.min(80.5,Math.max(19.5,k));S('line',{x1:sx(kx),x2:sx(kx),y1:m.t,y2:base,stroke:'var(--ink)','stroke-width':1.5},svg);
+    const off=k<20||k>80;S('text',{x:sx(kx)+(k>=50?-6:6),y:m.t+10,'text-anchor':k>=50?'end':'start',cls:'ti b',text:(off?'your count '+k+' (off chart)':'your count: '+k)},svg);
+  });
+  range('coin-k',v=>{k=v;const d=Math.abs(k-50);let p=0;for(let i=0;i<=100;i++)if(Math.abs(i-50)>=d)p+=pmf(i);p=Math.min(1,p);
+    set('coin-p',fmtP(p));set('coin-d',p<=0.05?'<span class="pill rej">Reject H₀: not fair</span>':'<span class="pill keep">Fail to reject H₀</span>');render()}).go();
+})();
+
+/* ---------- 06 t ---------- */
+(function(){
+  let d=0.6,s=1.4,n=15;
+  const render=chart($('#t-chart'),240,(svg,w,h)=>{
+    const df=n-1,se=s/Math.sqrt(n),t=d/se,tc=tcrit(df),f=x=>tpdf(x,df);
+    const m={l:10,r:10,t:22,b:30},sx=lin(-5,5,m.l,w-m.r),base=h-m.b,sy=lin(0,0.43,base,m.t),at=Math.min(Math.abs(t),5);
+    S('path',{d:areaFn(f,-5,-tc,sx,sy,base),fill:'var(--tail-soft)'},svg);S('path',{d:areaFn(f,tc,5,sx,sy,base),fill:'var(--tail-soft)'},svg);
+    if(at<5){S('path',{d:areaFn(f,-5,-at,sx,sy,base),fill:'var(--tail)'},svg);S('path',{d:areaFn(f,at,5,sx,sy,base),fill:'var(--tail)'},svg)}
+    S('path',{d:pathFn(x=>npdf(x),-5,5,sx,sy),fill:'none',stroke:'var(--muted)','stroke-dasharray':'4 3'},svg);
+    S('path',{d:pathFn(f,-5,5,sx,sy,240),fill:'none',stroke:'var(--ink)','stroke-width':2},svg);
+    xAxis(svg,sx,[-4,-3,-2,-1,0,1,2,3,4],base,t=>t>0?'+'+t:String(t).replace('-','−'),m.l,w-m.r);
+    [-tc,tc].forEach(v=>{if(Math.abs(v)<5)S('text',{x:sx(v),y:sy(f(v))-8,'text-anchor':'middle',cls:'tt',text:(v<0?'−':'+')+tc.toFixed(2)},svg)});
+    const tx=sx(Math.min(t,5));S('line',{x1:tx,x2:tx,y1:m.t-8,y2:base,stroke:'var(--accent)','stroke-width':2.5},svg);
+    const left=tx>w*0.65;S('text',{x:tx+(left?-6:6),y:m.t,'text-anchor':left?'end':'start',cls:'ta b',text:(t>5?'t = '+t.toFixed(2)+' →':'t = '+t.toFixed(2))},svg);
+    S('text',{x:m.l,y:m.t,cls:'ti',text:'df = '+df},svg);
+  });
+  function upd(){const df=n-1,se=s/Math.sqrt(n),t=d/se,p=tTwo(t,df),tc=tcrit(df);set('t-se',se.toFixed(3));set('t-t',t.toFixed(2));set('t-c','±'+tc.toFixed(2)+' ('+df+')');set('t-p',fmtP(p));
+    set('t-dec',p<0.05?'<span class="pill rej">Reject H₀</span>':'<span class="pill keep">Fail to reject</span>');render()}
+  range('t-d',v=>{d=v;upd()},v=>v.toFixed(2)).go();range('t-s',v=>{s=v;upd()},v=>v.toFixed(2)).go();range('t-n',v=>{n=v;upd()}).go();
+})();
+
+/* ---------- 07 errors ---------- */
+(function(){
+  let a=0.05,dl=2.2;
+  const render=chart($('#e-chart'),230,(svg,w,h)=>{
+    const z=zcrit(a),m={l:10,r:10,t:26,b:30},sx=lin(-4,8.5,m.l,w-m.r),base=h-m.b,sy=lin(0,0.45,base,m.t),f0=x=>npdf(x),f1=x=>npdf(x-dl);
+    S('path',{d:areaFn(f1,-z,z,sx,sy,base),fill:'var(--amber)','fill-opacity':.45},svg);
+    S('path',{d:areaFn(f0,-4,-z,sx,sy,base),fill:'var(--tail)'},svg);S('path',{d:areaFn(f0,z,8.5,sx,sy,base),fill:'var(--tail)'},svg);
+    S('path',{d:pathFn(f0,-4,8.5,sx,sy,240),fill:'none',stroke:'var(--ink)','stroke-width':2},svg);
+    S('path',{d:pathFn(f1,-4,8.5,sx,sy,240),fill:'none',stroke:'var(--amber)','stroke-width':2},svg);
+    [-z,z].forEach(v=>S('line',{x1:sx(v),x2:sx(v),y1:m.t-10,y2:base,stroke:'var(--muted)','stroke-dasharray':'3 3'},svg));
+    S('text',{x:sx(z)+4,y:m.t-12,cls:'ti',text:'cutoff ±'+z.toFixed(2)},svg);
+    S('text',{x:sx(0)-6,y:sy(0.399)-6,'text-anchor':'end',cls:'ti b sans',text:'World where H₀ is true'},svg);
+    S('text',{x:sx(dl)+6,y:sy(0.399)-6,'text-anchor':'start',cls:'tg b sans',text:'World with a real effect'},svg);
+    xAxis(svg,sx,[-4,-2,0,2,4,6,8],base,String,m.l,w-m.r);
+  });
+  function upd(){const z=zcrit(a),b=ncdf(z-dl)-ncdf(-z-dl);set('e-av',pct(a,0));set('e-bv',pct(b,1));set('e-pv',pct(1-b,1));render()}
+  range('e-a',v=>{a=v;upd()},v=>v.toFixed(2)).go();range('e-d',v=>{dl=v;upd()},v=>v.toFixed(1)).go();
+})();
+
+/* ---------- 08 test picker ---------- */
+(function(){
+  let type='cont',g='2',same='y';
+  const T={
+    cont:{1:['One-sample t-test','One group compared with a known value, e.g. the old 5-minute checkout average.',1],
+      2:{y:['Paired t-test','The same people in two conditions. The test runs on each person\'s difference.',1],n:['Independent two-sample t-test (Welch)','Two different groups. Use the unequal-variances (Welch) version by default.',1]},
+      3:['One-way ANOVA','Comparing the means of three or more groups.',0]},
+    ord:{1:['Wilcoxon signed-rank (one-sample)','Ordinal data or a small skewed sample compared with a known value.',0],
+      2:{y:['Wilcoxon signed-rank test','The paired test for ordinal data, or small samples with outliers in the differences.',0],n:['Mann-Whitney U test','The two-group test for ordinal data, or small and skewed samples.',0]},
+      3:['Kruskal-Wallis test','The non-parametric version of one-way ANOVA.',0]},
+    cat:['Chi-squared test','Are two categorical variables related? Compares observed counts with what independence predicts.',0],
+    prop:['Two-proportion z-test','Comparing proportions (e.g. conversion rates) between two groups.',0],
+    rel:['Correlation / regression','Measuring a linear relationship between two continuous variables.',0]};
+  function upd(){const multi=type==='cont'||type==='ord';$('#ch-g-wrap').hidden=!multi;$('#ch-s-wrap').hidden=!(multi&&g==='2');
+    let r=T[type];if(multi){r=r[g];if(g==='2')r=r[same]}
+    set('ch-name',r[0]);set('ch-why',r[1]);set('ch-tag',r[2]?'USE · COVERED IN THIS COURSE':'USE · RECOGNIZE ONLY')}
+  seg($('#ch-type'),v=>{type=v;upd()});seg($('#ch-groups'),v=>{g=v;upd()});seg($('#ch-same'),v=>{same=v;upd()});upd();
+  const sc=[
+    ['The UX designer times the same customers checking out before and after the redesign.','Paired t-test','the same people are measured in two conditions.'],
+    ['Average checkout time before the redesign was 5 minutes. You time 40 customers on the new design.','One-sample t-test','one group compared with a known value.'],
+    ['15 users test Product A and a different 18 users test Product B.','Independent two-sample t-test (Welch)','two different groups, kept alike otherwise.'],
+    ['15 beginners and 20 experts all test Product A. Do their task times differ?','Independent two-sample t-test (Welch)','two different groups in the same condition.'],
+    ['Task times across four different designs, each tested by different users.','One-way ANOVA','three or more group means.'],
+    ['Is preferred device (phone / laptop / tablet) related to major (IS / CS / Business)?','Chi-squared test','two categorical variables.']];
+  $('#scen').innerHTML=sc.map(s=>`<details><summary>${s[0]}</summary><p><b>${s[1]}</b>: ${s[2]}</p></details>`).join('');
+})();
+
+/* ---------- 09 worked example ---------- */
+(function(){
+  const A=[178,145,148,222,141,149,133,117,292,127,151,127,211,106,121,146,135,111,116,187,120],
+        B=[184,195,210,299,148,184,229,200,549,235,210,218,196,162,176,269,336,167,203,247,174];
+  const D=B.map((b,i)=>b-A[i]),n=D.length,dm=mean(D),ds=sd(D),se=ds/Math.sqrt(n),t=dm/se,p=tTwo(t,n-1),tc=tcrit(n-1),lo=dm-tc*se,hi=dm+tc*se;
+  chart($('#w-slope'),260,(svg,w,h)=>{
+    const m={l:40,r:44,t:14,b:26},sy=lin(80,560,h-m.b,m.t),xa=m.l+20,xb=w-m.r-20;
+    yGrid(svg,sy,[100,200,300,400,500],m.l,w-m.r,t=>t+'s');
+    A.forEach((a,i)=>{const up=B[i]>a;S('line',{x1:xa,x2:xb,y1:sy(a),y2:sy(B[i]),stroke:up?'var(--accent)':'var(--tail)','stroke-opacity':up?.45:.9,'stroke-width':up?1.3:2},svg);S('circle',{cx:xa,cy:sy(a),r:2.5,fill:'var(--ink)'},svg);S('circle',{cx:xb,cy:sy(B[i]),r:2.5,fill:'var(--ink)'},svg)});
+    S('text',{x:xa,y:h-8,'text-anchor':'middle',cls:'ti b',text:'A  x̄ '+mean(A).toFixed(1)},svg);S('text',{x:xb,y:h-8,'text-anchor':'middle',cls:'ti b',text:'B  x̄ '+mean(B).toFixed(1)},svg);
+  });
+  chart($('#w-diff'),260,(svg,w,h)=>{
+    const m={l:12,r:12,t:30,b:30},sx=lin(-50,300,m.l,w-m.r),base=h-m.b,yc=(m.t+base)/2;
+    S('rect',{x:sx(lo),y:m.t,width:sx(hi)-sx(lo),height:base-m.t,fill:'var(--accent-soft)'},svg);
+    S('line',{x1:sx(0),x2:sx(0),y1:m.t-14,y2:base,stroke:'var(--tail)','stroke-dasharray':'4 3','stroke-width':1.5},svg);S('text',{x:sx(0)-4,y:m.t-18,'text-anchor':'end',cls:'tt',text:'0 = H₀'},svg);
+    const sorted=D.map((v,i)=>[v,i]).sort((a,b)=>a[0]-b[0]);const used={};
+    sorted.forEach(([v])=>{const bin=Math.round(v/14);used[bin]=(used[bin]||0)+1;const k=used[bin]-1;const y=yc+(k%2?1:-1)*Math.ceil(k/2)*11;S('circle',{cx:sx(v),cy:y,r:4.5,fill:'var(--ink)','fill-opacity':.75,stroke:'var(--surface)'},svg)});
+    S('line',{x1:sx(dm),x2:sx(dm),y1:m.t-14,y2:base,stroke:'var(--accent)','stroke-width':2.5},svg);S('text',{x:sx(dm)+5,y:m.t-18,cls:'ta b',text:'mean '+dm.toFixed(1)+'s'},svg);
+    S('text',{x:sx(hi)+4,y:base-6,cls:'ta',text:'95% CI'},svg);
+    xAxis(svg,sx,[-50,0,50,100,150,200,250,300],base,t=>String(t).replace('-','−'),m.l,w-m.r);
+  });
+  const st=[
+    ['Formulate hypotheses',`H₀: μ<sub>A</sub> = μ<sub>B</sub> (no difference in mean time on task). H₁: μ<sub>A</sub> ≠ μ<sub>B</sub> (two-tailed).`],
+    ['Choose α',`α = <span class="v mono">0.05</span>, so confidence level = 95%.`],
+    ['Choose the test, compute t',`Paired t-test, because the same 21 users tried both products. Mean difference = <span class="v mono">${dm.toFixed(2)}s</span>, s = <span class="v mono">${ds.toFixed(2)}</span>, SE = s/√21 = <span class="v mono">${se.toFixed(2)}</span>, t = ${dm.toFixed(2)} / ${se.toFixed(2)} = <span class="v mono">${t.toFixed(2)}</span> with df = ${n-1}.`],
+    ['Find the p-value',`Two-tailed p = <span class="v mono">${fmtP(p)}</span> (Excel: 1.3351E-05). Critical t* = ±${tc.toFixed(3)}, and |t| is far beyond it.`],
+    ['Decide',`p &lt; α, so <b>reject H₀</b>. Users took about <span class="v mono">${dm.toFixed(0)}s</span> longer on B (95% confidence interval <span class="v mono">${lo.toFixed(1)} to ${hi.toFixed(1)}s</span>), so Product A is faster.`]];
+  $('#w-steps').innerHTML=st.map((s,i)=>`<li><span class="k">${i+1}</span><div><b>${s[0]}</b><p>${s[1]}</p></div></li>`).join('');
+})();
+
+/* ---------- 10 CI ---------- */
+(function(){
+  let ivs=[],tot=0,hit=0;const tc=tcrit(9);
+  function one(){const s=[];for(let i=0;i<10;i++)s.push(50+10*gauss());const m=mean(s),e=tc*sd(s)/Math.sqrt(10);return[m-e,m,m+e]}
+  const render=chart($('#ci-chart'),w=>w<500?360:320,(svg,w,h)=>{
+    const m={l:26,r:12,t:10,b:28},sx=lin(36,64,m.l,w-m.r),base=h-m.b,rowH=(base-m.t)/20;
+    xAxis(svg,sx,[36,40,44,48,52,56,60,64],base,String,m.l,w-m.r);
+    S('line',{x1:sx(50),x2:sx(50),y1:m.t,y2:base,stroke:'var(--ink)','stroke-dasharray':'4 3','stroke-width':1.5},svg);
+    ivs.forEach((iv,i)=>{const y=base-rowH*(i+0.5),miss=iv[0]>50||iv[2]<50,c=miss?'var(--tail)':'var(--ink)';
+      S('line',{x1:sx(Math.max(36,iv[0])),x2:sx(Math.min(64,iv[2])),y1:y,y2:y,stroke:c,'stroke-width':miss?3:1.8},svg);S('circle',{cx:sx(iv[1]),cy:y,r:3,fill:c},svg);
+      S('text',{x:m.l-6,y:y+4,'text-anchor':'end',text:i+1},svg)});
+    S('text',{x:sx(50)+5,y:m.t+10,cls:'ti b',text:'true μ = 50'},svg);
+  });
+  function batch(){ivs=[];for(let i=0;i<20;i++){const iv=one();ivs.push(iv);tot++;if(iv[0]<=50&&iv[2]>=50)hit++}}
+  function upd(){const bh=ivs.filter(iv=>iv[0]<=50&&iv[2]>=50).length;set('ci-batch',bh+' of 20 caught μ');set('ci-all',`${hit.toLocaleString()} / ${tot.toLocaleString()} = ${pct(hit/tot)}`);render()}
+  $('#ci-go').onclick=()=>{batch();upd()};
+  $('#ci-go50').onclick=()=>{for(let i=0;i<1000;i++){const iv=one();tot++;if(iv[0]<=50&&iv[2]>=50)hit++}upd()};
+  batch();upd();
+  chart($('#ci-test'),150,(svg,w,h)=>{
+    const m={l:12,r:12,t:12,b:28},sx=lin(-20,50,m.l,w-m.r),base=h-m.b;
+    S('line',{x1:sx(0),x2:sx(0),y1:m.t,y2:base,stroke:'var(--tail)','stroke-dasharray':'4 3','stroke-width':1.5},svg);
+    [[12,40,'CI 12 to 40 s','Reject H₀',1],[-5,30,'CI −5 to 30 s','Fail to reject',0]].forEach((r,i)=>{const y=m.t+22+i*44;
+      S('line',{x1:sx(r[0]),x2:sx(r[1]),y1:y,y2:y,stroke:r[4]?'var(--accent)':'var(--muted)','stroke-width':5,'stroke-linecap':'round'},svg);
+      S('text',{x:sx(r[1])+8,y:y-4,cls:'ti',text:r[2]},svg);S('text',{x:sx(r[1])+8,y:y+11,cls:r[4]?'tt b':'b',text:r[3]},svg)});
+    xAxis(svg,sx,[-20,-10,0,10,20,30,40,50],base,t=>String(t).replace('-','−'),m.l,w-m.r);
+  });
+  const c=[37,45,1,15,30,60,40,60,90],cm=mean(c),cs=sd(c),cse=cs/3,ct=tcrit(8);
+  $('#ci-commute').innerHTML=[
+    ['Data, n = 9','37, 45, 1, 15, 30, 60, 40, 60, 90 min'],
+    ['Mean and SD',`x̄ = <span class="v mono">${cm.toFixed(0)}</span>, s = <span class="v mono">${cs.toFixed(1)}</span>`],
+    ['Standard error',`SE = ${cs.toFixed(1)} / √9 = <span class="v mono">${cse.toFixed(1)}</span>`],
+    ['95% CI',`${cm.toFixed(0)} ± ${ct.toFixed(2)} × ${cse.toFixed(1)} = <span class="v mono">${(cm-ct*cse).toFixed(1)} to ${(cm+ct*cse).toFixed(1)} min</span>. Wide, because n is only 9.`]
+  ].map((s,i)=>`<li><span class="k">${i+1}</span><div><b>${s[0]}</b><p>${s[1]}</p></div></li>`).join('');
+})();
+
+/* ---------- 11 multiple testing ---------- */
+(function(){
+  let a=0.05,ps=[],rounds=0,fp=0,any=0;
+  const cells=$('#mt-cells');
+  function round(){const r=[];for(let i=0;i<20;i++)r.push(Math.random());return r}
+  function score(r){return r.filter(p=>p<a).length}
+  function show(){cells.innerHTML=ps.map(p=>`<div class="${p<a?'hit':''}">${p<0.001?'<.001':p.toFixed(3)}</div>`).join('');
+    set('mt-now',score(ps)+' of 20');set('mt-avg',rounds?(fp/rounds).toFixed(2):'–');set('mt-any',rounds?`${pct(any/rounds,0)} of ${rounds}`:'–')}
+  function run(k){for(let i=0;i<k;i++){ps=round();const s=score(ps);rounds++;fp+=s;if(s)any++}show()}
+  $('#mt-go').onclick=()=>run(1);$('#mt-go100').onclick=()=>run(100);
+  seg($('#mt-alpha'),v=>{a=+v;rounds=0;fp=0;any=0;run(1)});
+  run(1);
+  const my=[['p-value = probability H₀ is true','It is the probability of data this extreme or more, assuming H₀ is true.'],
+    ['Significant = important','Statistical significance is not practical significance. Check the effect size.'],
+    ['Not significant = no effect','It may mean the sample was too small (underpowered).'],
+    ['"95% confident" = 95% chance μ is in this interval','It describes the procedure\'s long-run hit rate.']];
+  $('#myths').innerHTML=my.map(m=>`<button class="myth" aria-pressed="false"><span class="m">${m[0]}</span><small>Tap for the reality</small><span class="r">${m[1]}</span></button>`).join('');
+  $('#myths').addEventListener('click',e=>{const b=e.target.closest('.myth');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.querySelector('small').textContent=on?'Reality':'Tap for the reality'});
+})();
+
+/* ---------- 12 Anscombe ---------- */
+(function(){
+  const X=[10,8,13,9,11,14,6,4,12,7,5];
+  const sets=[['I',X,[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68]],['II',X,[9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74]],
+    ['III',X,[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73]],['IV',[8,8,8,8,8,8,8,19,8,8,8],[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89]]];
+  const pv=a=>{const m=mean(a);return a.reduce((s,x)=>s+(x-m)**2,0)/a.length};
+  const r=(x,y)=>{const mx=mean(x),my=mean(y);let sxy=0,sxx=0,syy=0;x.forEach((v,i)=>{sxy+=(v-mx)*(y[i]-my);sxx+=(v-mx)**2;syy+=(y[i]-my)**2});return sxy/Math.sqrt(sxx*syy)};
+  $('#ans-table').innerHTML='<tr><th>Set</th><th>Mean x</th><th>Mean y</th><th>Var x</th><th>Var y</th><th>Correlation</th></tr>'+sets.map(s=>`<tr><td><b>${s[0]}</b></td><td class="n">${mean(s[1]).toFixed(2)}</td><td class="n">${mean(s[2]).toFixed(2)}</td><td class="n">${pv(s[1]).toFixed(2)}</td><td class="n">${pv(s[2]).toFixed(2)}</td><td class="n">${r(s[1],s[2]).toFixed(3)}</td></tr>`).join('');
+  const box=$('#ans-plots');
+  sets.forEach(s=>{const d=document.createElement('div');d.className='plot';box.appendChild(d);
+    chart(d,190,(svg,w,h)=>{const m={l:26,r:8,t:20,b:26},sx=lin(2,20,m.l,w-m.r),sy=lin(2,14,h-m.b,m.t);
+      S('text',{x:m.l,y:12,cls:'ti b sans',text:'Set '+s[0]},svg);
+      yGrid(svg,sy,[4,8,12],m.l,w-m.r);
+      S('line',{x1:sx(2),x2:sx(20),y1:sy(3+0.5*2),y2:sy(3+0.5*20),stroke:'var(--muted)','stroke-width':1.2},svg);
+      s[1].forEach((x,i)=>S('circle',{cx:sx(x),cy:sy(s[2][i]),r:4,fill:'var(--accent)'},svg));
+      xAxis(svg,sx,[4,8,12,16,20],h-m.b,String,m.l,w-m.r)})});
+})();
+
+/* ---------- 13 channels ---------- */
+(function(){
+  const V=[['A',17],['B',18],['C',20],['D',22],['E',23]];let enc='pie',vals=false;
+  const render=chart($('#ch-chart'),240,(svg,w,h)=>{
+    if(enc==='pie'){const cx=w/2,cy=h/2,R=Math.min(h/2-26,140);let a0=-Math.PI/2;
+      V.forEach(([k,v])=>{const a1=a0+v/100*2*Math.PI,lg=a1-a0>Math.PI?1:0;
+        S('path',{d:`M${cx},${cy}L${cx+R*Math.cos(a0)},${cy+R*Math.sin(a0)}A${R},${R} 0 ${lg} 1 ${cx+R*Math.cos(a1)},${cy+R*Math.sin(a1)}Z`,fill:'var(--accent-soft)',stroke:'var(--surface)','stroke-width':2.5},svg);
+        const am=(a0+a1)/2;S('text',{x:cx+(R+14)*Math.cos(am),y:cy+(R+14)*Math.sin(am)+4,'text-anchor':'middle',cls:'ti b lg',text:k},svg);
+        if(vals)S('text',{x:cx+R*0.6*Math.cos(am),y:cy+R*0.6*Math.sin(am)+4,'text-anchor':'middle',cls:'ta b',text:v+'%'},svg);a0=a1});
+      S('path',{d:`M${cx},${cy}m${-R},0a${R},${R} 0 1 0 ${2*R},0a${R},${R} 0 1 0 ${-2*R},0`,fill:'none',stroke:'var(--accent)','stroke-width':1.2},svg);
+      // slice outlines
+      a0=-Math.PI/2;V.forEach(([,v])=>{S('line',{x1:cx,y1:cy,x2:cx+R*Math.cos(a0),y2:cy+R*Math.sin(a0),stroke:'var(--accent)','stroke-width':1.2},svg);a0+=v/100*2*Math.PI});
+    }else if(enc==='area'){const slot=(w-20)/5,maxR=Math.min(slot/2-6,(h-50)/2);
+      V.forEach(([k,v],i)=>{const r=maxR*Math.sqrt(v/23),cx=10+slot*(i+0.5),cy=(h-30)/2+6;S('circle',{cx,cy,r,fill:'var(--accent-soft)',stroke:'var(--accent)'},svg);
+        S('text',{x:cx,y:h-10,'text-anchor':'middle',cls:'ti b lg',text:k},svg);if(vals)S('text',{x:cx,y:cy+4,'text-anchor':'middle',cls:'ta b',text:v+'%'},svg)});
+    }else{const m={l:36,r:10,t:16,b:30},base=h-m.b,sy=lin(0,25,base,m.t),slot=(w-m.l-m.r)/5;
+      yGrid(svg,sy,[0,5,10,15,20,25],m.l,w-m.r,t=>t+'%');
+      V.forEach(([k,v],i)=>{const x=m.l+slot*i+slot*0.18;S('rect',{x,y:sy(v),width:slot*0.64,height:base-sy(v),fill:'var(--accent)'},svg);
+        S('text',{x:x+slot*0.32,y:base+18,'text-anchor':'middle',cls:'ti b lg',text:k},svg);if(vals)S('text',{x:x+slot*0.32,y:sy(v)-6,'text-anchor':'middle',cls:'ti b',text:v+'%'},svg)})}
+  });
+  seg($('#ch-enc'),v=>{enc=v;render()});
+  $('#ch-vals').onclick=e=>{vals=!vals;e.target.setAttribute('aria-pressed',vals);e.target.textContent=vals?'Hide values':'Show values';render()};
+})();
+
+/* ---------- 14 question → chart ---------- */
+(function(){
+  const r=mulberry32(5);
+  const sc=[];for(let i=0;i<40;i++){const x=r()*10;sc.push([x,x*0.8+2+gauss(r)*1.4])}
+  const ln=[];let v=40;for(let i=0;i<24;i++){v+=gauss(r)*3+1.1;ln.push(v)}
+  const Q=[
+    {k:'dist',q:'How is one variable distributed?',chart:'Histogram',mark:'Bars',ch:'Length, over bins of the value',data:'One quantitative variable',note:'A boxplot (Lecture 3) is the compact alternative.'},
+    {k:'cmp',q:'How do groups compare on an amount?',chart:'Sorted bar chart',mark:'Bars',ch:'Length on a common axis',data:'Categorical + quantitative',note:'Sort the bars; go horizontal when labels are long.'},
+    {k:'rel',q:'How are two variables related?',chart:'Scatter plot',mark:'Points',ch:'Horizontal and vertical position',data:'Two quantitative variables',note:'Add color or size for a third variable, never 3D.'},
+    {k:'time',q:'How does something change over time?',chart:'Line chart',mark:'Line',ch:'Position',data:'Time + quantitative',note:'The line implies order, which time has.'},
+    {k:'part',q:'How do parts make up a whole?',chart:'Stacked or side-by-side bars',mark:'Bars',ch:'Length, stacked or grouped',data:'Categorical + quantitative',note:'Side-by-side bars compare the parts more precisely. Avoid pies.'},
+    {k:'grp',q:'Does the pattern differ across groups?',chart:'Small multiples',mark:'Same marks per panel',ch:'Spatial region (one panel per group)',data:'Any of the above + a category',note:'Share axes across panels so they compare.'},
+    {k:'heat',q:'When during the week does something happen?',chart:'Heat map',mark:'Area (grid cells)',ch:'Color luminance, on a day × hour grid',data:'Two categories + a magnitude',note:'Great for patterns at scale; poor for reading exact values.'}];
+  let cur='dist';
+  $('#q-pick').innerHTML=Q.map(q=>`<button data-v="${q.k}" aria-pressed="${q.k===cur}">${q.q}</button>`).join('');
+  const render=chart($('#q-chart'),220,(svg,w,h)=>{
+    const m={l:12,r:12,t:12,b:22},x0=m.l,x1=w-m.r,y0=m.t,y1=h-m.b,W=x1-x0,H=y1-y0;
+    S('line',{x1:x0,x2:x1,y1:y1,y2:y1,stroke:'var(--muted)'},svg);
+    if(cur==='dist'){const c=[2,5,9,14,16,13,10,8,6,4,3,2,1,1],bw=W/c.length;c.forEach((v,i)=>S('rect',{x:x0+i*bw+1,y:y1-v/16*H,width:bw-2,height:v/16*H,fill:'var(--accent)'},svg));S('text',{x:x1,y:h-6,'text-anchor':'end',text:'commute (min) →'},svg)}
+    if(cur==='cmp'){const d=[['Paper',1225],['Binders',915],['Telephones',883],['Furnishings',787],['Peripherals',758]],lw=86,bh=H/d.length;d.forEach(([k,v],i)=>{S('text',{x:x0+lw-6,y:y0+i*bh+bh/2+4,'text-anchor':'end',cls:'ti sans',text:k},svg);S('rect',{x:x0+lw,y:y0+i*bh+3,width:(W-lw)*v/1250,height:bh-6,fill:'var(--accent)'},svg)})}
+    if(cur==='rel'){const sx=lin(0,10,x0,x1),sy=lin(0,13,y1,y0);sc.forEach(p=>S('circle',{cx:sx(p[0]),cy:sy(p[1]),r:3.5,fill:'var(--accent)','fill-opacity':.8},svg))}
+    if(cur==='time'){const sx=lin(0,23,x0,x1),sy=lin(30,Math.max(...ln)+5,y1,y0);S('path',{d:ln.map((v,i)=>(i?'L':'M')+sx(i)+','+sy(v)).join(''),fill:'none',stroke:'var(--accent)','stroke-width':2.5},svg);S('text',{x:x1,y:h-6,'text-anchor':'end',text:'month →'},svg)}
+    if(cur==='part'){const yrs=[[17,18,20,22,23],[20,20,19,21,20],[23,22,20,18,17]],cols=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)'],bw=W/3;yrs.forEach((yr,j)=>{let acc=0;yr.forEach((v,i)=>{S('rect',{x:x0+j*bw+bw*0.2,y:y1-(acc+v)/100*H,width:bw*0.6,height:v/100*H-1,fill:cols[i]},svg);acc+=v});S('text',{x:x0+j*bw+bw/2,y:h-6,'text-anchor':'middle',text:2015+j},svg)})}
+    if(cur==='grp'){const pw=W/3;['Honda','Toyota','BMW'].forEach((nm,j)=>{const px=x0+j*pw;S('rect',{x:px+3,y:y0,width:pw-6,height:H,fill:'none',stroke:'var(--line)'},svg);S('text',{x:px+pw/2,y:h-6,'text-anchor':'middle',cls:'sans',text:nm},svg);const rr=mulberry32(j+9);for(let i=0;i<18;i++){const t=rr();const yv=j===0?(t<.5?.05:.9):j===1?t:.6+.4*t;S('circle',{cx:px+8+t*(pw-16),cy:y1-6-(yv*0.8+rr()*0.15)*(H-12),r:2.6,fill:'var(--accent)'},svg)}})}
+    if(cur==='heat'){const days=['M','T','W','T','F','S','S'],lw=16,cw=(W-lw)/24,chh=H/7;days.forEach((dname,di)=>{S('text',{x:x0+lw-4,y:y0+di*chh+chh/2+4,'text-anchor':'end',text:dname},svg);for(let hr=0;hr<24;hr++){const night=hr>=22||hr<3,wk=di>=4;let v=0.08+(night?0.45:0)+(night&&wk?0.4:0)+(hr>=17&&hr<22?0.15:0);v=Math.min(1,v);S('rect',{x:x0+lw+hr*cw,y:y0+di*chh,width:cw-1,height:chh-1,fill:'var(--accent)','fill-opacity':v},svg)}});S('text',{x:x1,y:h-6,'text-anchor':'end',text:'hour of day →'},svg)}
+  });
+  function info(){const q=Q.find(x=>x.k===cur);$('#q-info').innerHTML=`<div class="result"><span class="mono" style="font-size:12px;color:var(--accent)">CHART</span><b>${q.chart}</b></div>
+    <div class="read"><div class="stat"><span>Data</span><b style="font:500 14px var(--f-body)">${q.data}</b></div><div class="stat"><span>Mark</span><b style="font:500 14px var(--f-body)">${q.mark}</b></div><div class="stat"><span>Channel</span><b style="font:500 14px var(--f-body)">${q.ch}</b></div></div><p class="cap">${q.note}</p>`;render()}
+  seg($('#q-pick'),v=>{cur=v;info()});info();
+})();
+
+/* ---------- 15 honest ---------- */
+(function(){
+  const D=[['Appliances','App',435],['Binders','Bind',915],['Bookcases','Book',189],['Chairs','Chair',385],['Peripherals','Peri',758],['Copiers & Fax','Copy',87],['Envelopes','Env',247],['Labels','Lab',288],['Furnishings','Furn',787],['Machines','Mach',337],['Paper','Paper',1225],['Pens & Art','Pens',633],['Rubber Bands','Rub',179],['Scissors','Sci',146],['Storage','Stor',547],['Tables','Tab',361],['Telephones','Tel',883]];
+  let mode='line';
+  const render=chart($('#m-chart'),w=>mode==='sorted'?380:280,(svg,w,h)=>{
+    if(mode==='sorted'){const m={l:92,r:40,t:6,b:24},sx=lin(0,1300,m.l,w-m.r),bh=(h-m.t-m.b)/D.length;const s=D.slice().sort((a,b)=>b[2]-a[2]);
+      s.forEach((d,i)=>{const y=m.t+i*bh;S('text',{x:m.l-6,y:y+bh/2+4,'text-anchor':'end',cls:'ti sans',text:d[0]},svg);S('rect',{x:m.l,y:y+2,width:sx(d[2])-m.l,height:bh-4,fill:'var(--accent)'},svg);S('text',{x:sx(d[2])+4,y:y+bh/2+4,text:d[2]},svg)});
+      xAxis(svg,sx,[0,400,800,1200],h-m.b,String,m.l,w-m.r);return}
+    const m={l:40,r:10,t:10,b:44},base=h-m.b,sy=lin(0,1300,base,m.t),slot=(w-m.l-m.r)/D.length;
+    yGrid(svg,sy,[0,400,800,1200],m.l,w-m.r);
+    if(mode==='line')S('path',{d:D.map((d,i)=>(i?'L':'M')+(m.l+slot*(i+.5))+','+sy(d[2])).join(''),fill:'none',stroke:'var(--accent)','stroke-width':2.5},svg);
+    else D.forEach((d,i)=>S('rect',{x:m.l+slot*i+slot*.15,y:sy(d[2]),width:slot*.7,height:base-sy(d[2]),fill:'var(--accent)'},svg));
+    D.forEach((d,i)=>{const x=m.l+slot*(i+.5);S('text',{x,y:base+12,'text-anchor':'end',transform:`rotate(-50 ${x} ${base+12})`,cls:'sans',text:d[1]},svg)});
+    if(mode==='line')S('text',{x:w-m.r,y:m.t+12,'text-anchor':'end',cls:'tt b sans',text:'The line suggests Copiers "lead to" Envelopes. They don\'t.'},svg);
+  });
+  seg($('#m-pick'),v=>{mode=v;render()});
+  const C=[['Toyota Corolla',33.9],['Fiat 128',32.4],['Merc 280',19.2],['Camaro Z28',13.3],['Cadillac Fleetwood',10.4]];let z=10;
+  const ra=chart($('#ax-chart'),220,(svg,w,h)=>{const m={l:126,r:44,t:6,b:26},sx=lin(z,36,m.l,w-m.r),bh=(h-m.t-m.b)/C.length;
+    C.forEach((c,i)=>{const y=m.t+i*bh;S('text',{x:m.l-6,y:y+bh/2+4,'text-anchor':'end',cls:'ti sans',text:c[0]},svg);S('rect',{x:m.l,y:y+5,width:Math.max(0,sx(c[1])-m.l),height:bh-10,fill:'var(--accent)'},svg);S('text',{x:sx(c[1])+4,y:y+bh/2+4,text:c[1]},svg)});
+    const tk=[];for(let t=Math.ceil(z/5)*5;t<=35;t+=5)tk.push(t);if(tk[0]!==z)tk.unshift(z);
+    xAxis(svg,sx,tk,h-m.b,t=>t===z&&z>0?String(t):String(t),m.l,w-m.r);
+    if(z>0)S('text',{x:m.l,y:h-m.b+16,'text-anchor':'middle',cls:'tt b',text:z},svg)});
+  range('ax-0',v=>{z=v;set('ax-look',((33.9-z)/(10.4-z)).toFixed(1)+'× the Cadillac');set('ax-real',(33.9/10.4).toFixed(1)+'×');ra()}).go();
+})();
+
+/* ---------- 16 Simpson ---------- */
+(function(){
+  const G={pool:[['All patients',[273,350],[289,350]]],split:[['Small stones',[81,87],[234,270]],['Large stones',[192,263],[55,80]]]};let mode='pool';
+  const cap={pool:'Pooled: keyhole surgery looks better, 83% vs 78%.',split:'Split by stone size: open surgery is better in both groups. It looked worse overall because 263 of its 350 patients had the harder large stones.'};
+  const render=chart($('#sp-chart'),250,(svg,w,h)=>{const g=G[mode],m={l:40,r:10,t:22,b:30},base=h-m.b,sy=lin(0,100,base,m.t),slot=(w-m.l-m.r)/g.length;
+    yGrid(svg,sy,[0,20,40,60,80,100],m.l,w-m.r,t=>t+'%');
+    g.forEach(([lab,o,k],i)=>{const bw=Math.min(90,slot*0.32);[[o,'var(--c1)'],[k,'var(--c2)']].forEach(([v,c],j)=>{const p=v[0]/v[1]*100,x=m.l+slot*i+slot/2+(j?4:-4-bw);
+      S('rect',{x,y:sy(p),width:bw,height:base-sy(p),fill:c},svg);S('text',{x:x+bw/2,y:sy(p)-14,'text-anchor':'middle',cls:'ti b lg',text:Math.round(p)+'%'},svg);S('text',{x:x+bw/2,y:sy(p)-3,'text-anchor':'middle',text:v[0]+'/'+v[1]},svg)});
+      S('text',{x:m.l+slot*i+slot/2,y:base+18,'text-anchor':'middle',cls:'ti sans b',text:lab},svg)})});
+  function upd(){set('sp-cap',cap[mode]);render()}
+  seg($('#sp-pick'),v=>{mode=v;upd()});upd();
+})();
+
+/* ---------- 17 tickets ---------- */
+(function(){
+  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],R=[160,184,241,149,180,161,132,202,160,139,149,177],P=[160,184,237,148,181,150,123,156,126,104,124,140];let mode='before';
+  const render=chart($('#tk-chart'),300,(svg,w,h)=>{
+    if(mode==='before'){const m={l:44,r:8,t:28,b:48},base=h-m.b,sy=lin(0,300,base,m.t),slot=(w-m.l-m.r)/12;
+      S('text',{x:w/2,y:14,'text-anchor':'middle',cls:'ti sans lg',text:'Ticket Trend'},svg);
+      [0,50,100,150,200,250,300].forEach(t=>{S('line',{x1:m.l,x2:w-m.r,y1:sy(t),y2:sy(t),stroke:'var(--muted)','stroke-opacity':.5},svg);S('text',{x:m.l-4,y:sy(t)+4,'text-anchor':'end',text:t.toFixed(2)},svg)});
+      M.forEach((mo,i)=>{const bw=slot*0.38;[[R[i],'var(--c1)'],[P[i],'var(--tail)']].forEach(([v,c],j)=>{const x=m.l+slot*i+slot/2+(j?0:-bw);S('rect',{x,y:sy(v),width:bw,height:base-sy(v),fill:c},svg);if(w>560)S('text',{x:x+bw/2,y:sy(v)-3,'text-anchor':'middle',style:'font-size:9px',text:v},svg)});
+        const x=m.l+slot*(i+.5);S('text',{x,y:base+12,'text-anchor':'end',transform:`rotate(-40 ${x} ${base+12})`,cls:'sans',text:mo},svg)});
+      S('rect',{x:m.l,y:h-12,width:10,height:10,fill:'var(--c1)'},svg);S('text',{x:m.l+14,y:h-3,cls:'sans',text:'Ticket Volume Received'},svg);S('rect',{x:m.l+170,y:h-12,width:10,height:10,fill:'var(--tail)'},svg);S('text',{x:m.l+184,y:h-3,cls:'sans',text:'Ticket Volume Processed'},svg);
+      return}
+    const narrow=w<520,m={l:34,r:narrow?72:88,t:62,b:26},base=h-m.b,sy=lin(0,300,base,m.t),sx=lin(0,11,m.l,w-m.r);
+    S('text',{x:m.l-30,y:18,cls:'ti sans b lg',text:'Please approve the hire of 2 FTEs'},svg);
+    S('text',{x:m.l-30,y:36,cls:'sans',text:'to backfill those who quit in the past year'},svg);
+    [0,100,200,300].forEach(t=>S('text',{x:m.l-6,y:sy(t)+4,'text-anchor':'end',text:t},svg));
+    S('line',{x1:m.l,x2:w-m.r,y1:base,y2:base,stroke:'var(--muted)'},svg);
+    S('line',{x1:sx(4),x2:sx(4),y1:m.t-6,y2:base,stroke:'var(--muted)'},svg);
+    S('text',{x:sx(4)+6,y:m.t-2,cls:'ti sans b',text:'2 employees quit in May.'},svg);
+    S('text',{x:sx(4)+6,y:m.t+12,cls:'sans',text:narrow?'Backlog grows from Aug.':'We kept up for two months, then fell behind in Aug.'},svg);
+    const pl=(a,c,wd)=>S('path',{d:a.map((v,i)=>(i?'L':'M')+sx(i)+','+sy(v)).join(''),fill:'none',stroke:c,'stroke-width':wd,'stroke-linejoin':'round'},svg);
+    pl(R,'var(--muted)',2.5);pl(P,'var(--accent)',3);
+    for(let i=7;i<12;i++){S('circle',{cx:sx(i),cy:sy(R[i]),r:3.5,fill:'var(--muted)'},svg);S('circle',{cx:sx(i),cy:sy(P[i]),r:3.5,fill:'var(--accent)'},svg);if(!narrow){S('text',{x:sx(i),y:sy(R[i])-8,'text-anchor':'middle',text:R[i]},svg);S('text',{x:sx(i),y:sy(P[i])+16,'text-anchor':'middle',cls:'ta',text:P[i]},svg)}}
+    S('text',{x:sx(11)+8,y:sy(R[11])+4,cls:'b sans',text:'Received'},svg);S('text',{x:sx(11)+8,y:sy(P[11])+4,cls:'ta b sans',text:'Processed'},svg);
+    M.forEach((mo,i)=>{if(!narrow||i%2===0)S('text',{x:sx(i),y:base+16,'text-anchor':'middle',cls:'sans',text:mo},svg)});
+  });
+  seg($('#tk-pick'),v=>{mode=v;render()});
+})();
+
+/* ---------- checks ---------- */
+const Q={
+  sample:['Nine students in one IS class average a 42-minute commute. What can that number tell you about all NJIT students?',['It is the NJIT average, since any sample works','It describes students like the ones in this class, because the class is not a random sample of NJIT','Nothing, because a sample can never tell you about a population'],1,'A sample speaks for the population it represents. One upper-level section over- or under-represents some students (year, major, living on campus), so its mean is a statistic about students like them.'],
+  normal:['Exam scores are roughly normal, mean 70, SD 10. About what share scored above 90?',['About 2.5%','About 5%','About 16%','About 0.15%'],0,'90 is +2σ. 5% lies outside ±2σ, split across two tails, so about 2.5% is above.'],
+  clt:['NYC taxi fares are right-skewed (mean $13.09, median $9.50). What does a histogram of many sample means (n = 100) look like?',['Right-skewed like the fares','Roughly normal, centered near $13.09','Roughly normal, centered near $9.50'],1,'The CLT makes the means roughly normal, centered on the population mean, not the median.'],
+  se:['With 100 rides the SE of the mean fare is $1.16. With 400 rides it is about…',['$0.29','$0.58','$1.16','$4.64'],1,'4× the data doubles √n, so the SE halves.'],
+  framework:['Two checkout designs, α = 0.05, p = 0.12. What do you conclude?',['Reject H₀: the designs differ','The designs are proven to be the same','Fail to reject H₀: no significant evidence of a difference'],2,'p > α means fail to reject. That is not proof of no difference.'],
+  tstat:['Same mean difference, but the data become much noisier (larger s). What happens?',['t gets larger, easier to reject','t gets smaller, harder to reject','Nothing changes, only the mean matters'],1,'More noise means a larger SE in the denominator, so t shrinks and p grows.'],
+  errors:['You lower α from 0.05 to 0.01. What happens?',['Fewer false positives, more false negatives','More false positives, fewer false negatives','Both error rates fall'],0,'A stricter cutoff rejects less often: fewer Type I errors, more Type II errors (lower power).'],
+  choose:['Before the redesign, average checkout was 5 minutes. You time 40 customers on the new design. Which test?',['Paired t-test','Independent (Welch) t-test','One-sample t-test'],2,'One group compared with a known value.'],
+  worked:['Why is the product A/B example a paired t-test and not an independent one?',['Because the means are different','Because the same 21 users tested both products','Because n is larger than 20'],1,'Same people in two conditions → paired, which works on each person\'s difference.'],
+  ci:['A 95% CI for the mean difference (B − A) is 12 to 40 s. What does a two-tailed test at α = 0.05 conclude?',['Reject H₀: 0 is outside the interval','Fail to reject: the interval is wide','Can\'t tell without the p-value'],0,'The 95% CI contains every null value the test would not reject. 0 isn\'t in it.'],
+  pitfalls:['A company tests 20 button colors at α = 0.05. One comes out significant, p = 0.04. What should they do?',['Switch to that color now','Treat it as a likely false positive and retest with a correction such as α ÷ 20','Raise α so more colors become significant'],1,'With 20 null tests you expect about one false positive. Bonferroni gives 0.0025, which 0.04 doesn\'t meet.'],
+  anscombe:['What does Anscombe\'s quartet demonstrate?',['Correlation implies causation','Identical summary statistics can hide very different data','Scatter plots are misleading'],1,'Same means, variances and correlation; completely different shapes. Plot the data.'],
+  channels:['Which encoding is most accurate for comparing two values?',['Two slices of a pie (angle)','Two circles (area)','Two bars on a common axis (position)','Two shades of a color'],2,'Position on a common scale tops the effectiveness ranking.'],
+  chooser:['When during the week do noise complaints happen? Data: counts for every hour × every day. Which chart?',['Pie chart','Heat map','Scatter plot','3D area chart'],1,'Two categorical dimensions (day, hour) with one magnitude per cell: a grid heat map.'],
+  honest:['Why must a bar chart\'s axis start at zero?',['Software requires it','Bars encode value by length, so a cut axis distorts ratios','It makes the chart look cleaner'],1,'Length is the channel. A truncated axis turned 3.3× into 60× in the mpg example.'],
+  simpson:['Open surgery wins within small stones and within large stones, yet loses overall. Why?',['A data entry error','It was mostly given the harder large-stone cases','The sample is too small'],1,'A lurking variable (stone size) is unevenly split between treatments: Simpson\'s paradox.'],
+  rules:['You color regions by sales change vs. target; some are above, some below. Which color scale?',['Categorical','Sequential','Diverging'],2,'Quantitative with a meaningful midpoint (the target) → diverging.']};
+document.querySelectorAll('.check').forEach(el=>{const [q,o,a,why]=Q[el.dataset.q];
+  el.innerHTML=`<p class="q"><small>Check yourself</small>${q}</p><div class="opts">${o.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div><p class="fb" hidden></p>`;
+  el.querySelector('.opts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i;el.querySelectorAll('.opts button').forEach(x=>x.classList.remove('right','wrong'));b.classList.add(i===a?'right':'wrong');if(i!==a)el.querySelectorAll('.opts button')[a].classList.add('right');
+    const fb=el.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===a?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--tail)">Not quite.</b> ')+why})});
+
+/* ---------- nav + progress ---------- */
+(function(){
+  const secs=[...document.querySelectorAll('section.concept')];let done={};
+  try{done=JSON.parse(localStorage.getItem('is465-lab')||'{}')}catch(e){}
+  const save=()=>{try{localStorage.setItem('is465-lab',JSON.stringify(done))}catch(e){}};
+  secs.forEach((s,i)=>{const li=document.createElement('li');li.innerHTML=`<a href="#${s.id}" data-id="${s.id}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="t">${s.dataset.t}</span><span class="ck">✓</span></a>`;$('#toc-'+s.dataset.lec).appendChild(li)});
+  function paint(){let k=0;secs.forEach(s=>{const on=!!done[s.id];if(on)k++;const b=s.querySelector('.done');b.setAttribute('aria-pressed',on);b.textContent=on?'Understood ✓':'Mark as understood';document.querySelector(`.toc a[data-id="${s.id}"]`).classList.toggle('done',on)});set('prog-n',k);$('#prog-bar').style.width=(k/secs.length*100)+'%'}
+  document.querySelectorAll('.done').forEach(b=>b.onclick=()=>{const id=b.dataset.id;done[id]=!done[id];save();paint()});
+  paint();
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.toc a').forEach(a=>a.classList.toggle('on',a.dataset.id===e.target.id));const a=document.querySelector(`.toc a[data-id="${e.target.id}"]`);if(a&&window.innerWidth<=880)a.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})}})},{rootMargin:'-30% 0px -60% 0px'});
+  secs.forEach(s=>io.observe(s));
+})();
+</script>
+
+</body>
+</html>
