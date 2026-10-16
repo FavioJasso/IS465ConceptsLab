@@ -132,7 +132,9 @@ svg.chart .b{font-weight:600} svg.chart .lg{font-size:13px} svg.chart .sans{font
 .trap{background:var(--amber-soft);border-radius:10px;padding:14px 16px;font-size:15px;align-self:start}
 .trap h3{color:var(--amber)}
 
-.check{border:1px dashed var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px}
+.check{border:1px dashed var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:18px}
+.cq{display:grid;gap:10px}
+.cq+.cq{border-top:1px solid var(--line);padding-top:16px}
 .check .q{font-weight:600}
 .check .q small{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
 .opts{display:grid;gap:6px}
@@ -1251,27 +1253,61 @@ const set=(id,v)=>{document.getElementById(id).innerHTML=v};
 
 /* ---------- checks ---------- */
 const Q={
-  sample:['Nine students in one IS class average a 42-minute commute. What can that number tell you about all NJIT students?',['It is the NJIT average, since any sample works','It describes students like the ones in this class, because the class is not a random sample of NJIT','Nothing, because a sample can never tell you about a population'],1,'A sample speaks for the population it represents. One upper-level section over- or under-represents some students (year, major, living on campus), so its mean is a statistic about students like them.'],
-  normal:['Exam scores are roughly normal, mean 70, SD 10. About what share scored above 90?',['About 2.5%','About 5%','About 16%','About 0.15%'],0,'90 is +2σ. 5% lies outside ±2σ, split across two tails, so about 2.5% is above.'],
-  clt:['NYC taxi fares are right-skewed (mean $13.09, median $9.50). What does a histogram of many sample means (n = 100) look like?',['Right-skewed like the fares','Roughly normal, centered near $13.09','Roughly normal, centered near $9.50'],1,'The CLT makes the means roughly normal, centered on the population mean, not the median.'],
-  se:['With 100 rides the SE of the mean fare is $1.16. With 400 rides it is about…',['$0.29','$0.58','$1.16','$4.64'],1,'4× the data doubles √n, so the SE halves.'],
-  framework:['Two checkout designs, α = 0.05, p = 0.12. What do you conclude?',['Reject H₀: the designs differ','The designs are proven to be the same','Fail to reject H₀: no significant evidence of a difference'],2,'p > α means fail to reject. That is not proof of no difference.'],
-  tstat:['Same mean difference, but the data become much noisier (larger s). What happens?',['t gets larger, easier to reject','t gets smaller, harder to reject','Nothing changes, only the mean matters'],1,'More noise means a larger SE in the denominator, so t shrinks and p grows.'],
-  errors:['You lower α from 0.05 to 0.01. What happens?',['Fewer false positives, more false negatives','More false positives, fewer false negatives','Both error rates fall'],0,'A stricter cutoff rejects less often: fewer Type I errors, more Type II errors (lower power).'],
-  choose:['Before the redesign, average checkout was 5 minutes. You time 40 customers on the new design. Which test?',['Paired t-test','Independent (Welch) t-test','One-sample t-test'],2,'One group compared with a known value.'],
-  worked:['Why is the product A/B example a paired t-test and not an independent one?',['Because the means are different','Because the same 21 users tested both products','Because n is larger than 20'],1,'Same people in two conditions → paired, which works on each person\'s difference.'],
-  ci:['A 95% CI for the mean difference (B − A) is 12 to 40 s. What does a two-tailed test at α = 0.05 conclude?',['Reject H₀: 0 is outside the interval','Fail to reject: the interval is wide','Can\'t tell without the p-value'],0,'The 95% CI contains every null value the test would not reject. 0 isn\'t in it.'],
-  pitfalls:['A company tests 20 button colors at α = 0.05. One comes out significant, p = 0.04. What should they do?',['Switch to that color now','Treat it as a likely false positive and retest with a correction such as α ÷ 20','Raise α so more colors become significant'],1,'With 20 null tests you expect about one false positive. Bonferroni gives 0.0025, which 0.04 doesn\'t meet.'],
-  anscombe:['What does Anscombe\'s quartet demonstrate?',['Correlation implies causation','Identical summary statistics can hide very different data','Scatter plots are misleading'],1,'Same means, variances and correlation; completely different shapes. Plot the data.'],
-  channels:['Which encoding is most accurate for comparing two values?',['Two slices of a pie (angle)','Two circles (area)','Two bars on a common axis (position)','Two shades of a color'],2,'Position on a common scale tops the effectiveness ranking.'],
-  chooser:['When during the week do noise complaints happen? Data: counts for every hour × every day. Which chart?',['Pie chart','Heat map','Scatter plot','3D area chart'],1,'Two categorical dimensions (day, hour) with one magnitude per cell: a grid heat map.'],
-  honest:['Why must a bar chart\'s axis start at zero?',['Software requires it','Bars encode value by length, so a cut axis distorts ratios','It makes the chart look cleaner'],1,'Length is the channel. A truncated axis turned 3.3× into 60× in the mpg example.'],
-  simpson:['Open surgery wins within small stones and within large stones, yet loses overall. Why?',['A data entry error','It was mostly given the harder large-stone cases','The sample is too small'],1,'A lurking variable (stone size) is unevenly split between treatments: Simpson\'s paradox.'],
-  rules:['You color regions by sales change vs. target; some are above, some below. Which color scale?',['Categorical','Sequential','Diverging'],2,'Quantitative with a meaningful midpoint (the target) → diverging.']};
-document.querySelectorAll('.check').forEach(el=>{const [q,o,a,why]=Q[el.dataset.q];
-  el.innerHTML=`<p class="q"><small>Check yourself</small>${q}</p><div class="opts">${o.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div><p class="fb" hidden></p>`;
-  el.querySelector('.opts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i;el.querySelectorAll('.opts button').forEach(x=>x.classList.remove('right','wrong'));b.classList.add(i===a?'right':'wrong');if(i!==a)el.querySelectorAll('.opts button')[a].classList.add('right');
-    const fb=el.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===a?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--tail)">Not quite.</b> ')+why})});
+  sample:[
+    ['A news site polls its own readers and finds 70% support a policy. What is the main problem with using 70% for all voters?',['The sample is too small to tell anything','Readers of one site are not a random sample of all voters','A percentage cannot be a statistic'],1,'The site\'s readers are the population this sample represents. Voters who don\'t read that site may think very differently.'],
+    ['Which of these is a parameter?',['The mean commute of the 9 students you surveyed','The true mean commute of every NJIT student','The median of your survey responses'],1,'A parameter describes the whole population and is usually unknown. Anything computed from your sample is a statistic.']],
+  normal:[
+    ['Adult heights are roughly normal with mean 170 cm and SD 8 cm. About what share are between 162 and 178 cm?',['About 34%','About 50%','About 68%','About 95%'],2,'162 and 178 are exactly 1 SD below and above the mean, and about 68% of a normal falls within ±1 SD.'],
+    ['A test score has z = −2. What does that mean?',['It is 2 points below the mean','It is 2 standard deviations below the mean','It has a 2% chance of happening'],1,'z counts standard deviations from the mean: z = (x − μ) / σ. The sign says which side.']],
+  clt:[
+    ['Household incomes are strongly right-skewed. You take many random samples of 50 households and plot each sample\'s mean income. What does that histogram look like?',['Right-skewed, like incomes','Roughly normal, centered on the population mean income','Flat across the range of incomes'],1,'The CLT makes sample means roughly normal even when the raw data are skewed, centered on μ.'],
+    ['You switch from samples of n = 5 to samples of n = 50. What happens to the histogram of sample means?',['It gets wider','It gets narrower around μ','Its center moves toward the median'],1,'Larger samples give means that cluster more tightly around the true mean. The center stays at μ.']],
+  se:[
+    ['A survey of 25 people has a sample standard deviation s = 20. What is the SE of the mean?',['0.8','4','20','100'],1,'SE = s / √n = 20 / √25 = 20 / 5 = 4.'],
+    ['You want to cut a study\'s SE to one third of its current value. How much more data do you need?',['3 times as much','6 times as much','9 times as much','30 times as much'],2,'SE shrinks with √n. To divide it by 3 you need √n three times bigger, so n must be 9 times bigger.']],
+  framework:[
+    ['Which is a correctly written null hypothesis?',['H₀: μ_new ≠ μ_old','H₀: μ_new = μ_old','H₀: μ_new < μ_old'],1,'H₀ is the "no difference" assumption, so it always uses the equals sign.'],
+    ['You flip a coin 100 times and get 54 heads. The two-tailed p-value is about 0.48. At α = 0.05 you…',['Reject H₀: the coin is unfair','Fail to reject H₀: no evidence the coin is unfair','Accept H₀: the coin is proven fair'],1,'p > α, so you fail to reject. That is not proof the coin is fair; 54 heads is simply not surprising for a fair coin.']],
+  tstat:[
+    ['The mean difference and s stay the same, but you increase n from 10 to 40. What happens to t?',['t is cut in half','t roughly doubles','t stays the same'],1,'SE = s/√n halves when n is 4× bigger, and t = difference ÷ SE, so t doubles.'],
+    ['You get t = 1.5 with df = 30. The critical value is t* ≈ ±2.04. What do you conclude at α = 0.05?',['Reject H₀','Fail to reject H₀: t lands between the cutoffs','You cannot decide without the raw data'],1,'|t| = 1.5 is inside ±2.04, so it is not in the rejection region (p ≈ 0.14).']],
+  errors:[
+    ['A new feature truly changes nothing, but your test gives p = 0.03 and you conclude it helps. What happened?',['A Type I error (false positive)','A Type II error (false negative)','A correct decision'],0,'You rejected an H₀ that was actually true: a false positive. Its rate is α.'],
+    ['How can you raise a test\'s power without increasing the false positive rate?',['Raise α to 0.10','Collect a larger sample','Pick a one-tailed test after seeing which way the data lean'],1,'More data shrinks the SE, separating the two worlds, so β drops while α stays fixed. Raising α trades in more false positives.']],
+  choose:[
+    ['30 students take a quiz before and after a tutoring session. Which test compares their scores?',['One-sample t-test','Paired t-test','Independent (Welch) t-test'],1,'The same students are measured twice, so the data are paired.'],
+    ['You compare checkout times of 40 iPhone users with 35 different Android users. Which test?',['Paired t-test','One-sample t-test','Independent (Welch) t-test'],2,'Two separate groups of different people: an independent two-sample test, Welch version by default.']],
+  worked:[
+    ['In the A/B example, Excel reports t Stat = −5.72. Why is it negative?',['Product B was faster','Excel computes A − B, and A\'s times were smaller','The test failed'],1,'A averaged 151.6 s and B 228.1 s. A − B is negative; the sign only shows direction.'],
+    ['How many degrees of freedom does the paired test use with 21 users?',['20','21','40','42'],0,'A paired test works on the 21 differences, so df = n − 1 = 20.']],
+  ci:[
+    ['A study reports a 95% CI for the mean difference of −3 to 8 seconds. A two-tailed test at α = 0.05 would…',['Reject H₀, because the interval is mostly positive','Fail to reject H₀, because 0 is inside the interval','Reject H₀, because the interval is narrow'],1,'0 ("no difference") is a plausible value inside the interval, so the test would not reject it.'],
+    ['Everything else equal, what happens to a 95% CI if you collect 4 times as much data?',['It gets twice as wide','It gets half as wide','It stays the same width','It gets a quarter as wide'],1,'The CI is x̄ ± t* × SE. With 4× the data the SE halves, so the interval is about half as wide.']],
+  pitfalls:[
+    ['A team splits survey data by gender, age, year and major, runs 12 tests, and reports only the one with p = 0.03. What is wrong?',['Nothing, p < 0.05','It is multiple testing: with 12 tries a false positive is likely, so they must report all 12 and use a stricter cutoff such as 0.05 ÷ 12','They should have used α = 0.10'],1,'Every split is another test. Bonferroni gives about 0.0042, which 0.03 does not meet.'],
+    ['An A/B test on 2 million users finds p = 0.0001 for a 0.2% increase in clicks. What should you check before acting?',['Nothing, it is highly significant','Whether a 0.2% lift is worth it in practice (the effect size)','Whether the sample was too small'],1,'Huge samples make tiny effects significant. Statistical significance is not practical importance.']],
+  anscombe:[
+    ['Two datasets have the same mean, variance and correlation. What do you know about their shape?',['They look about the same when plotted','Nothing for sure; you have to plot them','They must both be linear'],1,'Anscombe\'s quartet shows identical summaries hiding a line, a curve, an outlier and a single leverage point.'],
+    ['In Anscombe\'s set IV, what creates the 0.816 correlation?',['A clean linear trend','A single extreme point at x = 19','A curved relationship'],1,'Ten points sit at x = 8. One point far to the right drags the fitted line and the correlation.']],
+  channels:[
+    ['In a scatter plot where color shows car brand and dot size shows price, which channels are used?',['Length and angle','Position (x and y), color hue, and area','Shape and motion'],1,'Dots are point marks placed by x and y position; hue encodes the category and area encodes a quantity.'],
+    ['You need to show a categorical variable, like region, on top of an existing chart. Which channel fits?',['Color saturation','Color hue','Area'],1,'Categories need identity channels. Hue tells groups apart without implying an order; saturation and area imply "more" or "less".']],
+  chooser:[
+    ['You want to show how monthly revenue changed over two years. Which chart?',['Pie chart','Line chart','Scatter plot'],1,'Change over time: a line, with position as the channel.'],
+    ['Is there a relationship between study hours and exam score for 200 students?',['Scatter plot','Stacked bar chart','Histogram'],0,'Two quantitative variables: points placed by x and y position.']],
+  honest:[
+    ['Which of these is a good fit for a line chart?',['Sales by product category','Website visits per day for a month','Number of students in each major'],1,'Days have a natural order and connection, so a line makes sense. Categories without order belong in bars.'],
+    ['A bar chart\'s axis starts at 95. Company A\'s bar looks 5× as tall as B\'s. Their real values are 100 and 96. What is the true ratio?',['5×','About 1.04×','About 2×'],1,'The visible bars are 100 − 95 = 5 and 96 − 95 = 1, so they look 5×. The real ratio is 100 / 96 ≈ 1.04.']],
+  simpson:[
+    ['Overall, men are admitted to a university at a higher rate, but within every department women are admitted at an equal or higher rate. What best explains this?',['The overall numbers must be wrong','Women applied more often to competitive departments with low admission rates','Departments are too small to analyze'],1,'Department is the lurking variable. It is unevenly split between the groups, so the pooled rates reverse.'],
+    ['You see a pooled difference between two groups. What should you do before concluding?',['Report it, since the totals are large','Break it down by variables that could explain it, and check the subgroups','Switch to a pie chart'],1,'Start with an overview, but don\'t end with one. Check whether the pattern holds within subgroups.']],
+  rules:[
+    ['Your bar chart gives each of its 12 bars a different bright color, even though color encodes nothing. Which rule does this break?',['Provide context','Use color sparingly and meaningfully','Organize for comparison'],1,'Color should highlight or encode something. Twelve arbitrary colors add noise and imply categories that don\'t exist.'],
+    ['You show temperature from cold to hot with a rainbow color scale. What is the problem?',['Nothing, rainbows are colorful','Rainbow hues don\'t read as an ordered scale; use a sequential or diverging scale','It uses too few colors'],1,'Quantities need luminance or saturation that clearly runs low to high. A rainbow has no perceptual order.']]};
+document.querySelectorAll('.check').forEach(el=>{const qs=Q[el.dataset.q];
+  el.innerHTML=qs.map(([q,o],k)=>`<div class="cq"><p class="q"><small>Check ${k+1} of ${qs.length}</small>${q}</p><div class="opts">${o.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div><p class="fb" hidden></p></div>`).join('');
+  el.querySelectorAll('.cq').forEach((cq,k)=>{const [,,a,why]=qs[k];cq.querySelector('.opts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,bs=cq.querySelectorAll('.opts button');bs.forEach(x=>x.classList.remove('right','wrong'));b.classList.add(i===a?'right':'wrong');if(i!==a)bs[a].classList.add('right');
+    const fb=cq.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===a?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--tail)">Not quite.</b> ')+why})})});
 
 /* ---------- nav + progress ---------- */
 (function(){
