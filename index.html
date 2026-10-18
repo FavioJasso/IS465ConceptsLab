@@ -217,11 +217,24 @@ table.t td.n{font-family:var(--f-mono);text-align:right;font-variant-numeric:tab
   .notes,.two,.ladder,.myths,.rules{grid-template-columns:minmax(0,1fr)}
   .swatches{grid-template-columns:minmax(0,1fr)}
 }
+/* course tabs (shared with the DS 110 page) */
+.courses{max-width:1140px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.courses a{display:grid;gap:1px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--muted);text-decoration:none;font:600 14px/1.25 var(--f-body)}
+.courses a span{font:400 12px/1.25 var(--f-body)}
+.courses a:hover{border-color:var(--accent);color:var(--ink)}
+.courses a[aria-current="page"]{background:var(--surface);color:var(--ink);border-color:var(--ink)}
+.courses a[aria-current="page"] span{color:var(--accent)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 html{scroll-behavior:smooth}
 </style>
 </head>
 <body>
+
+<nav class="courses" aria-label="Courses">
+  <a href="index.html" aria-current="page">IS 465<span>Statistics &amp; visualization</span></a>
+  <a href="ds110.html">DS 110<span>Intro to AI midterm</span></a>
+</nav>
 
 <div class="layout">
 <nav class="toc" aria-label="Concepts">

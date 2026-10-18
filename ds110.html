@@ -1,0 +1,1659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive study lab for the NJIT DS 110 (Introduction to AI) midterm: Python, regression, and AI concepts.">
+<title>DS 110 Concept Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,650&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: graph-paper ground, a sticky course map on the left, one reading column of concepts; every interactive lab sits on a white "worksheet" card */
+:root{
+  --paper:#F1F3F0; --surface:#FFFFFF; --ink:#17202A; --muted:#5A6570; --line:#D3D9DD; --grid:#E3E7E2;
+  --accent:#2450C8; --accent-soft:#DBE4FA; --tail:#C4342A; --tail-soft:#F7D9D5;
+  --amber:#9A6510; --amber-soft:#F5E5C4; --good:#2B7448; --good-soft:#D9EEE1;
+  --c1:#0072B2; --c2:#D98A00; --c3:#009E73; --c4:#CC79A7; --c5:#56B4E9;
+  --f-display:"Literata", Georgia, "Times New Roman", serif;
+  --f-body:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10151A; --surface:#171E25; --ink:#E3E8ED; --muted:#94A1AD; --line:#2D3843; --grid:#19212A;
+  --accent:#8AABFF; --accent-soft:#233259; --tail:#FF7D70; --tail-soft:#4B2522;
+  --amber:#E6B65E; --amber-soft:#43361C; --good:#6FCB96; --good-soft:#1C3A29;
+  --c1:#56A8E8; --c2:#F0B54A; --c3:#3CC59A; --c4:#E59BC6; --c5:#8DD2F5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#10151A; --surface:#171E25; --ink:#E3E8ED; --muted:#94A1AD; --line:#2D3843; --grid:#19212A;
+  --accent:#8AABFF; --accent-soft:#233259; --tail:#FF7D70; --tail-soft:#4B2522;
+  --amber:#E6B65E; --amber-soft:#43361C; --good:#6FCB96; --good-soft:#1C3A29;
+  --c1:#56A8E8; --c2:#F0B54A; --c3:#3CC59A; --c4:#E59BC6; --c5:#8DD2F5; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background-color:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;max-width:1140px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 96px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+.mono,code{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* course map */
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:18px;max-height:calc(100vh - 48px);overflow:auto;padding-bottom:12px}
+.toc .prog{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--good);transition:width .3s}
+.toc h4{margin:0 0 6px;font:600 11px/1 var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:1px}
+.toc a{display:grid;grid-template-columns:24px 1fr 14px;gap:6px;align-items:baseline;padding:4px 8px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px;line-height:1.35}
+.toc a:hover{background:var(--surface)}
+.toc a.on{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.toc a .n{font:12px var(--f-mono);color:var(--muted)}
+.toc a .ck{color:var(--good);font-size:12px;visibility:hidden}
+.toc a.done .ck{visibility:visible}
+
+main{display:grid;gap:88px;min-width:0}
+.hero{display:grid;gap:14px;max-width:46rem}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(34px,5vw,50px);font-weight:650;letter-spacing:-.01em}
+.hero p{font-size:18px;color:var(--muted);max-width:40rem}
+.howto{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:14px;color:var(--muted)}
+.howto span{display:flex;gap:8px;align-items:center}
+.howto b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font:600 11px var(--f-mono);color:var(--ink)}
+
+.gloss summary{cursor:pointer;list-style:none}
+.gloss summary::-webkit-details-marker{display:none}
+.gloss summary .lab-h h3::after{content:" ▾";color:var(--muted)}
+.gloss:not([open]) summary .lab-h h3::after{content:" ▸"}
+.gloss dl{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 24px}
+.gloss dl>div{display:grid;grid-template-columns:78px minmax(0,1fr) 26px;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.gloss dt{font:600 15px var(--f-mono)}
+.gloss dt i{display:block;font:400 11px var(--f-body);color:var(--muted)}
+.gloss dd{margin:0}
+.gloss a{font:12px var(--f-mono);color:var(--accent);text-decoration:none;text-align:right}
+.part{display:grid;gap:8px;border-top:2px solid var(--ink);padding-top:14px}
+.part h2{font-size:28px}
+.part p{color:var(--muted);max-width:42rem}
+
+section.concept{display:grid;gap:22px;scroll-margin-top:24px}
+.concept > header{display:grid;gap:8px}
+.concept h2{font-size:clamp(26px,3.4vw,32px);font-weight:650}
+.lead{font-size:17px;max-width:42rem}
+.lead em{font-style:normal;background:var(--accent-soft);padding:0 3px;border-radius:3px}
+
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:16px;min-width:0}
+.lab-h{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.lab-h h3{font:600 13px/1.3 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lab-h .hint{font-size:13px;color:var(--muted)}
+.cap{font-size:14px;color:var(--muted);max-width:44rem}
+.controls{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:end}
+.ctl{display:grid;gap:4px;flex:1 1 170px;min-width:0}
+.ctl label{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.ctl output{font:600 13px var(--f-mono);color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:3px;background:var(--paper);border:1px solid var(--line);border-radius:9px}
+.seg button{border:0;background:transparent;padding:6px 11px;border-radius:6px;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12),inset 0 0 0 1px var(--line)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:8px;font-size:14px;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.plot{min-width:0;width:100%}
+svg.chart{display:block;overflow:visible}
+svg.chart text{font:11px var(--f-mono);fill:var(--muted)}
+svg.chart .ti{fill:var(--ink)} svg.chart .ta{fill:var(--accent)} svg.chart .tt{fill:var(--tail)} svg.chart .tg{fill:var(--amber)}
+svg.chart .b{font-weight:600} svg.chart .lg{font-size:13px} svg.chart .sans{font-family:var(--f-body)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px}
+.stat{border-top:2px solid var(--line);padding-top:6px;display:grid;gap:2px;min-width:0}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font:600 18px/1.25 var(--f-mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat.hl{border-color:var(--accent)}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:13px;font-weight:600}
+.pill.rej{background:var(--tail-soft);color:var(--tail)}
+.pill.keep{background:var(--good-soft);color:var(--good)}
+.pill.neu{background:var(--accent-soft);color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+.notes{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px}
+.keys h3,.trap h3{font:600 12px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.keys ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.keys li{padding-left:20px;position:relative;font-size:15px}
+.keys li::before{content:"";position:absolute;left:3px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--accent)}
+.trap{background:var(--amber-soft);border-radius:10px;padding:14px 16px;font-size:15px;align-self:start}
+.trap h3{color:var(--amber)}
+
+.check{border:1px dashed var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:18px}
+.cq{display:grid;gap:10px}
+.cq+.cq{border-top:1px solid var(--line);padding-top:16px}
+.check .q{font-weight:600}
+.check .q small{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.opts{display:grid;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--surface);padding:8px 12px;border-radius:8px;font-size:15px}
+.opts button:hover{border-color:var(--accent)}
+.opts button.right{border-color:var(--good);background:var(--good-soft)}
+.opts button.wrong{border-color:var(--tail);background:var(--tail-soft)}
+.fb{font-size:15px}
+.done{justify-self:start;border:1px solid var(--line);background:transparent;padding:6px 12px;border-radius:99px;font-size:13px;color:var(--muted)}
+.done[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:600}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:0}
+.steps .k{font:600 15px var(--f-mono);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.steps li>div>b{display:block}
+.steps p{font-size:15px;color:var(--muted)}
+.steps p .v{color:var(--ink)}
+
+table.t{border-collapse:collapse;font-size:14px;width:100%}
+table.t th,table.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.t th{font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+table.t td.n{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto;min-width:0}
+.err td{font-size:14px}
+.cell-bad{background:var(--tail-soft)} .cell-ok{background:var(--good-soft)} .cell-amb{background:var(--amber-soft)}
+
+.result{display:grid;gap:6px;padding:14px 16px;border-radius:10px;background:var(--accent-soft)}
+.result b{font-family:var(--f-display);font-size:22px;font-weight:650}
+.qgrid{display:grid;gap:10px}
+.qgroup{display:grid;gap:6px}
+.qgroup > span{font-size:13px;color:var(--muted)}
+.scen{display:grid;gap:8px}
+.scen details{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
+.scen summary{cursor:pointer;font-size:15px}
+.scen details p{margin-top:8px;font-size:15px;color:var(--muted)}
+.scen details p b{color:var(--ink)}
+
+.cells{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
+.cells div{border:1px solid var(--line);border-radius:6px;padding:6px 2px;text-align:center;font:11px var(--f-mono);color:var(--muted);background:var(--surface)}
+.cells div.hit{background:var(--tail);color:var(--surface);border-color:var(--tail);font-weight:600}
+@media (max-width:520px){.cells{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+.myths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.myth{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px 14px;text-align:left;display:grid;gap:6px;font-size:15px}
+.myth .m{text-decoration:line-through;text-decoration-color:var(--tail);color:var(--muted)}
+.myth .r{display:none}
+.myth[aria-pressed="true"] .r{display:block}
+.myth small{font-size:12px;color:var(--accent)}
+
+.ladder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.ladder ol{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.ladder li{display:grid;grid-template-columns:minmax(0,1fr) 80px;gap:10px;align-items:center;font-size:14px}
+.ladder li i{height:8px;border-radius:4px;background:var(--accent)}
+.ladder h4{margin:0 0 8px;font-size:13px;color:var(--muted);font-weight:600}
+
+.swatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sw{display:grid;gap:6px;font-size:14px}
+.sw .g{height:30px;border-radius:6px}
+.sw b{font-weight:600}
+.sw span{color:var(--muted);font-size:13px}
+
+.rules{counter-reset:r;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 22px;margin:0;padding:0;list-style:none}
+.rules li{display:grid;gap:2px;font-size:15px;padding-top:10px;border-top:1px solid var(--line)}
+.rules li b{font-weight:600}
+.rules li span{color:var(--muted)}
+.foot{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:880px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:0 72px}
+  .toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;max-height:none;overflow:visible;background:var(--paper);
+    margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);gap:8px}
+  .toc h4,.toc .grp-label{display:none}
+  .toc .lists{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .toc ol{display:flex;gap:4px}
+  .toc a{display:flex;white-space:nowrap;gap:6px;padding:5px 10px;background:var(--surface);border:1px solid var(--line);font-size:13px}
+  .toc a .t{display:none}
+  .toc a.on .t{display:inline}
+  .hero{padding-top:16px}
+  .notes,.two,.ladder,.myths,.rules{grid-template-columns:minmax(0,1fr)}
+  .swatches{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+
+/* ---------- DS 110 additions ---------- */
+:root{--term:#1C252E;--term-ink:#E8EDF2;--term-dim:#8D9AA6;--term-err:#FF8F82;--term-ok:#7ED6A2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--term:#0A0E12}}
+:root[data-theme="dark"]{--term:#0A0E12}
+
+/* course tabs (shared with the IS 465 page) */
+.courses{max-width:1140px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.courses a{display:grid;gap:1px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--muted);text-decoration:none;font:600 14px/1.25 var(--f-body)}
+.courses a span{font:400 12px/1.25 var(--f-body)}
+.courses a:hover{border-color:var(--accent);color:var(--ink)}
+.courses a[aria-current="page"]{background:var(--surface);color:var(--ink);border-color:var(--ink)}
+.courses a[aria-current="page"] span{color:var(--accent)}
+
+/* code + console */
+.code{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 0;overflow-x:auto;font:14px/1.6 var(--f-mono);counter-reset:ln;min-width:0}
+.code .ln{display:block;white-space:pre;padding:0 14px 0 8px;border-left:3px solid transparent;min-height:1.6em;transition:background .15s}
+.code.num .ln::before{counter-increment:ln;content:counter(ln);display:inline-block;width:20px;margin-right:12px;text-align:right;color:var(--muted);opacity:.7;font-size:11px}
+.code .ln.cur{background:var(--accent-soft);border-left-color:var(--accent)}
+.code .ln.ok{background:var(--good-soft);border-left-color:var(--good)}
+.code .ln.bad{background:var(--tail-soft);border-left-color:var(--tail)}
+.code .ln.skip{opacity:.35}
+.code.sm{font-size:13px;padding:6px 0;margin-top:6px}
+.kw{color:var(--accent);font-weight:600}.st{color:var(--good)}.nu{color:var(--amber)}.cm{color:var(--muted);font-style:italic}.bi{color:var(--c4)}
+.term{background:var(--term);color:var(--term-ink);font:14px/1.55 var(--f-mono);border-radius:8px;padding:12px 14px;white-space:pre-wrap;overflow-wrap:anywhere;min-height:70px;max-height:280px;overflow:auto}
+.term .p,.term .d{color:var(--term-dim)}.term .d{font-style:italic}.term .e{color:var(--term-err)}.term .g{color:var(--term-ok)}
+.term input{background:transparent;border:0;color:inherit;font:inherit;padding:0;margin:0;outline:none;width:16ch;max-width:60%;caret-color:var(--term-ok)}
+.term-h{font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:-8px}
+
+.inp{font:15px var(--f-mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 9px;min-width:0}
+.inp:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
+.btn.sm{padding:4px 10px;font-size:13px;font-family:var(--f-mono)}
+.btn:disabled{opacity:.45;cursor:default;border-color:var(--line)}
+.btn.ghost{background:transparent}
+.split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+.stack{display:grid;gap:12px;min-width:0}
+.note{font-size:15px;padding:10px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line)}
+.note b.mono{font-size:14px}
+.kbd{font:12px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface)}
+.lead code,.keys code,.trap code,.cap code,.note code,.qq code,.model code,.q code,.fb code,.it code{font-size:.9em;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+
+.result span b,.note b{font:inherit;font-weight:600}
+
+/* 01 objects */
+.objs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.obj{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:8px;background:var(--surface);transition:box-shadow .3s,border-color .3s}
+.obj.hot{box-shadow:0 0 0 3px var(--accent-soft);border-color:var(--accent)}
+.obj-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;color:var(--muted)}
+.obj-h b{font:600 16px var(--f-mono);color:var(--ink)}
+.obj dl{margin:0;display:grid;gap:2px}
+.obj dl div{display:flex;justify-content:space-between;gap:8px;font-size:14px;border-top:1px solid var(--line);padding-top:3px}
+.obj dt{color:var(--muted);font-family:var(--f-mono)}.obj dd{margin:0}
+
+/* 02 namespaces */
+.frames{display:grid;gap:10px;align-content:start;min-width:0}
+.frame{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;gap:4px;background:var(--surface);min-height:64px;align-content:start}
+.frame h4{margin:0 0 2px;font:600 11px/1.2 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.frame.loc{border-color:var(--c2)}.frame.loc h4{color:var(--amber)}
+.frame.gone{opacity:.5;border-style:dashed}
+.var{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;font:14px var(--f-mono);padding:3px 6px;border-radius:5px}
+.var.new{background:var(--accent-soft)}
+.empty{font-size:13px;color:var(--muted);font-style:italic}
+.stepper{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepper .mono{font-size:13px;color:var(--muted);margin-left:auto}
+
+/* 03 try/except */
+.flowread{display:flex;flex-wrap:wrap;gap:6px}
+
+/* 04 chips + tests */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-width:46px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);text-align:center;font:600 15px var(--f-mono);background:var(--surface);transition:all .2s}
+.chip.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.chip.odd{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.chip.even{color:var(--muted);opacity:.55}
+.tests{display:grid;gap:4px;font:13px/1.45 var(--f-mono)}
+.tests div{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;padding:5px 8px;border-radius:6px;background:var(--paper);overflow-wrap:anywhere}
+.tests .y{background:var(--good-soft)}.tests .y b{color:var(--good)}
+.tests .n{background:var(--tail-soft)}.tests .n b{color:var(--tail)}
+.editor{font:14px/1.55 var(--f-mono);min-height:190px;tab-size:4;white-space:pre;overflow-wrap:normal;overflow-x:auto}
+
+/* 06 slicing */
+.slexpr{display:flex;flex-wrap:wrap;align-items:center;gap:3px;font:600 20px var(--f-mono)}
+.slexpr .inp{width:3.6ch;text-align:center;font:600 18px var(--f-mono);padding:4px 2px}
+.slexpr .inp.s{width:auto;flex:1 1 12ch;max-width:20ch;text-align:left;padding:4px 8px}
+.chars{display:flex;flex-wrap:wrap;gap:6px 3px;padding-top:6px}
+.ch{display:grid;grid-template-rows:auto 40px auto;gap:3px;width:36px;text-align:center;position:relative}
+.ch i{font:11px var(--f-mono);color:var(--muted);font-style:normal}
+.ch b{display:grid;place-items:center;border:1px solid var(--line);border-radius:6px;background:var(--surface);font:600 18px var(--f-mono);position:relative;transition:all .2s}
+.ch.sp b{color:var(--muted);font-weight:400;font-size:13px}
+.ch.pick b{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.ch.stop b{border:2px dashed var(--tail)}
+.ch.stop i:last-child{color:var(--tail);font-weight:600}
+.ch sup{position:absolute;top:-7px;right:-5px;font:600 10px/1 var(--f-mono);background:var(--ink);color:var(--surface);border-radius:99px;padding:2px 4px;z-index:1}
+.idxlab{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
+/* 11 order game */
+.order{display:grid;gap:6px}
+.order button{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);padding:9px 12px;border-radius:8px;font-size:15px}
+.order button .k{font:600 13px var(--f-mono);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--paper);color:var(--muted)}
+.order button.ok{border-color:var(--good);background:var(--good-soft);cursor:default}
+.order button.ok .k{background:var(--good);color:var(--surface)}
+.order button.no{animation:shake .35s;border-color:var(--tail)}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* 12 sort game + rules */
+.sort{display:grid;gap:6px}
+.sort .it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:15px}
+.sort .it.ok{border-color:var(--good);background:var(--good-soft)}
+.sort .it.no{border-color:var(--tail);background:var(--tail-soft)}
+.sort .it small{grid-column:1/-1;color:var(--ink);font-size:13px}
+.sort .it .seg button{font-size:13px;padding:5px 9px}
+.rulelist{display:grid;gap:4px;font:13px var(--f-mono)}
+.rulelist div{padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface)}
+.rulelist div.fire{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);font-weight:600}
+
+/* 13 Turing judge */
+.judge{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.party{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:8px;background:var(--surface);align-content:start}
+.party h4{margin:0;font:600 12px var(--f-mono);letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.party.machine{border-color:var(--tail);box-shadow:inset 0 0 0 1px var(--tail)}
+.party.human{border-color:var(--good)}
+.bub{padding:7px 11px;border-radius:12px;font-size:15px;max-width:92%}
+.bub.j{background:var(--paper);border:1px solid var(--line);justify-self:end;border-bottom-right-radius:4px}
+.bub.a{background:var(--accent-soft);justify-self:start;border-bottom-left-radius:4px}
+
+/* 14 neuron */
+.nn{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+
+/* drill */
+.drill-a{display:flex;gap:8px;align-items:stretch}
+.drill-a textarea{flex:1;min-height:44px}
+.tally{display:flex;flex-wrap:wrap;gap:8px}
+
+/* exam review */
+.exam{display:grid;gap:14px}
+.ex{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px;min-width:0}
+.ex[data-r="got"]{border-left-color:var(--good)}.ex[data-r="part"]{border-left-color:var(--amber)}.ex[data-r="miss"]{border-left-color:var(--tail)}
+.ex-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ex-h b{font:600 13px var(--f-mono);color:var(--accent)}
+.ex-h a{font-size:13px;color:var(--muted)}
+.ex .qq{font-weight:600;font-size:16px}
+.ex .model{background:var(--good-soft);border-radius:10px;padding:12px 14px;font-size:15px;display:grid;gap:8px}
+.ex .model h4{margin:0;font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--good)}
+.ex .model ul,.ex .model ol{margin:0;padding-left:20px;display:grid;gap:4px}
+.rate{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+
+/* cheat sheet + print */
+.cheat{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px 22px}
+.cheat>div{font-size:14px;border-top:1px solid var(--line);padding-top:8px;min-width:0}
+.cheat>div>b{display:block;font:600 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.cheat code{font-size:12.5px}
+.cheat ul{margin:0;padding-left:16px}
+#print-area{display:none}
+@media print{
+  @page{size:letter;margin:.35in}
+  body.printing{background:#fff!important;color:#000}
+  body.printing>*:not(#print-area){display:none!important}
+  body.printing #print-area{display:block;font:8.6px/1.32 Arial,Helvetica,sans-serif}
+  #print-area h1{font:700 12px Arial;margin:0 0 4px}
+  #print-area .cheat{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 12px}
+  #print-area .cheat>div{font-size:8.6px;padding-top:3px;border-color:#999;break-inside:avoid}
+  #print-area .cheat>div>b{font-size:8.6px;color:#000;margin-bottom:1px}
+  #print-area code{font-size:8px;background:none;border:0;padding:0}
+  #print-area .cheat ul{padding-left:11px}
+}
+
+@media (max-width:880px){
+  .split,.judge,.nn{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:520px){
+  .ch{width:30px;grid-template-rows:auto 36px auto}
+  .ch b{font-size:16px}
+  .drill-a{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav class="courses" aria-label="Courses">
+  <a href="index.html">IS 465<span>Statistics &amp; visualization</span></a>
+  <a href="ds110.html" aria-current="page">DS 110<span>Intro to AI midterm</span></a>
+</nav>
+
+<div class="layout">
+<nav class="toc" aria-label="Concepts">
+  <div class="prog"><span><b id="prog-n">0</b> of <span id="prog-t">13</span> understood</span><div class="bar"><i id="prog-bar"></i></div></div>
+  <div class="lists">
+    <div><h4>Part 1 · Python</h4><ol id="toc-py"></ol></div>
+    <div><h4>Part 2 · Regression</h4><ol id="toc-reg"></ol></div>
+    <div><h4>Part 3 · AI concepts</h4><ol id="toc-ai"></ol></div>
+    <div><h4>Practice</h4><ol id="toc-prac"></ol></div>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <span class="eyebrow">DS 110 · Midterm review</span>
+  <h1>Concept Lab</h1>
+  <p>Thirteen concepts behind the 16 midterm questions, in the order they build on each other. Each one gives you the idea, something you can run or change to see why it works, the mistake people usually make, and two check questions. Then drill code questions until they're automatic, and answer the whole exam from memory.</p>
+  <div class="howto"><span><b>1</b>Read the idea</span><span><b>2</b>Run it, change it</span><span><b>3</b>Answer the checks</span><span><b>4</b>Mark it understood</span><span><b>5</b>Finish with the exam review</span></div>
+</header>
+
+<details class="lab gloss">
+  <summary><span class="lab-h"><h3>Which concept answers which exam question</h3><span class="hint">jump straight to what you need</span></span></summary>
+  <dl>
+    <div><dt>Q1</dt><dd>Purpose of a class</dd><a href="#classes">01</a></div>
+    <div><dt>Q2</dt><dd>Global vs local namespace</dd><a href="#scope">02</a></div>
+    <div><dt>Q3</dt><dd>try / except</dd><a href="#tryexcept">03</a></div>
+    <div><dt>Q4</dt><dd>Write count_odds</dd><a href="#countodds">04</a></div>
+    <div><dt>Q5</dt><dd>Output: f(3) and a</dd><a href="#scope">02</a></div>
+    <div><dt>Q6</dt><dd>while True / break</dd><a href="#loops">05</a></div>
+    <div><dt>Q7</dt><dd>s[1:5]</dd><a href="#slicing">06</a></div>
+    <div><dt>Q8</dt><dd>s.replace()</dd><a href="#methods">07</a></div>
+    <div><dt>Q9</dt><dd>s[::2]</dd><a href="#slicing">06</a></div>
+    <div><dt>Q10</dt><dd>s[1:5:2]</dd><a href="#slicing">06</a></div>
+    <div><dt>Q11</dt><dd>Deterministic vs probabilistic</dd><a href="#models">08</a></div>
+    <div><dt>Q12</dt><dd>Least squares</dd><a href="#lsq">09</a></div>
+    <div><dt>Q13</dt><dd>Four steps of regression</dd><a href="#steps4">10</a></div>
+    <div><dt>Q14</dt><dd>Symbolic vs connectionist</dd><a href="#approaches">11</a></div>
+    <div><dt>Q15</dt><dd>Turing Test</dd><a href="#turing">12</a></div>
+    <div><dt>Q16</dt><dd>Weights and biases</dd><a href="#neuron">13</a></div>
+  </dl>
+</details>
+
+<div class="part"><span class="eyebrow">Part 1</span><h2>Python</h2><p>How Python organizes code and names, how it handles errors, and the string and loop rules that the "what is the output" questions test.</p></div>
+
+<!-- 01 -->
+<section class="concept" id="classes" data-lec="py" data-t="Classes & objects">
+  <header><span class="eyebrow">01 · Exam Q1</span><h2>Classes and objects</h2></header>
+  <p class="lead">A class is a <em>blueprint for making objects</em>. It bundles the data each object holds (<b>attributes</b>) with the functions that work on that data (<b>methods</b>). Every object you build from it is an <b>instance</b> with its own values. <code>__init__</code> runs automatically when you create one, and <code>self</code> means "the particular object this method was called on".</p>
+  <div class="lab">
+    <div class="lab-h"><h3>One blueprint, many objects</h3><span class="hint">create a few dogs, then call their methods</span></div>
+    <div class="split">
+      <div class="stack">
+        <pre class="code num" id="cls-code"></pre>
+        <div class="row">
+          <input class="inp" id="cls-name" value="Fido" maxlength="14" aria-label="Dog name" style="width:9ch">
+          <input class="inp" id="cls-age" type="number" value="5" min="0" max="30" aria-label="Dog age" style="width:6ch">
+          <button class="btn pri" id="cls-make">Create object</button>
+          <button class="btn ghost" id="cls-reset">Reset</button>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="objs" id="cls-objs"></div>
+        <p class="note" id="cls-self">Click a method on any object.</p>
+      </div>
+    </div>
+    <div class="term-h">Python console</div>
+    <div class="term" id="cls-term" aria-live="polite"></div>
+    <p class="cap">Calling <code>birthday()</code> on one dog changes only that dog's age. Python passes the object before the dot in as <code>self</code>, so the method always works on that one object.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Class</b> = blueprint (<code>Dog</code>). <b>Object / instance</b> = a thing built from it (<code>Dog("Rex", 3)</code>).</li>
+      <li><b>Attributes</b> are data stored on the object (<code>d.name</code>). <b>Methods</b> are functions defined in the class (<code>d.speak()</code>).</li>
+      <li><code>__init__</code> sets each new object's starting attributes. <code>self</code> is the object the method is working on.</li>
+      <li>Why bother: you write the logic once and reuse it for as many objects as you need, each keeping its own data.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"A class groups code together" is too vague to earn full credit. Say what it groups and why: <b>data and the functions that act on it</b>, as a template for creating objects.</div>
+  </div>
+  <div class="check" data-q="classes"></div>
+  <button class="done" data-id="classes" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 02 -->
+<section class="concept" id="scope" data-lec="py" data-t="Global vs local scope">
+  <header><span class="eyebrow">02 · Exam Q2, Q5</span><h2>Namespaces: global vs local</h2></header>
+  <p class="lead">A <b>namespace</b> is a lookup table from names to values. The <b>global</b> namespace holds names created at the top level of your file and lasts for the whole program. Every function call gets its own fresh <b>local</b> namespace for its parameters and the variables it assigns, and it's <em>thrown away when the function returns</em>. To find a name, Python checks <b>L</b>ocal, then <b>E</b>nclosing, <b>G</b>lobal, and <b>B</b>uilt-in, in that order (LEGB).</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Step through exam question 5</h3><span class="hint">watch which namespace each a lives in</span></div>
+    <div class="seg" id="sc-mode"><button data-v="exam" aria-pressed="true">As on the exam</button><button data-v="glob" aria-pressed="false">With <code>global a</code> added</button></div>
+    <div class="split">
+      <pre class="code num" id="sc-code"></pre>
+      <div class="frames">
+        <div class="frame" id="sc-g"></div>
+        <div class="frame loc" id="sc-l"></div>
+      </div>
+    </div>
+    <p class="note" id="sc-note" aria-live="polite"></p>
+    <div class="stepper"><button class="btn" id="sc-back">◀ Back</button><button class="btn pri" id="sc-next">Next step ▶</button><button class="btn ghost" id="sc-reset">Restart</button><span class="mono" id="sc-k"></span></div>
+    <div class="term-h">Output</div>
+    <div class="term" id="sc-out"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Global</b>: created at the top level, visible anywhere in the file, lasts the whole run.</li>
+      <li><b>Local</b>: created inside a function call (parameters and assignments), visible only inside it, discarded when it returns.</li>
+      <li>Assigning to a name inside a function makes a <b>new local</b> variable, even if a global with the same name exists. Use <code>global a</code> to change the global one instead.</li>
+      <li>Reading a name the function never assigned falls back to the global one (LEGB).</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Question 5 prints <b>two lines</b>: <code>18</code> and then <code>0</code>. Writing only 18 forgets the second print. Writing 6 for <code>print(a)</code> assumes the function changed the global, which it can't without <code>global a</code>.</div>
+  </div>
+  <div class="check" data-q="scope"></div>
+  <button class="done" data-id="scope" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 03 -->
+<section class="concept" id="tryexcept" data-lec="py" data-t="try / except">
+  <header><span class="eyebrow">03 · Exam Q3</span><h2>Handling errors with try / except</h2></header>
+  <p class="lead">Some errors only show up while the program runs: bad input, a missing file, dividing by zero. These are <b>exceptions</b>, and an unhandled one crashes the program. <code>try/except</code> lets you <em>catch an exception and respond to it instead of crashing</em>. Code that might fail goes in <code>try</code>. If it raises an error, Python jumps straight to the matching <code>except</code> block. The optional <code>else</code> runs only if nothing failed, and <code>finally</code> runs every time.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Which blocks run?</h3><span class="hint">green ran · red raised the error · faded was skipped</span></div>
+    <div class="row">
+      <label class="mono" for="te-in" style="font-size:14px">text =</label>
+      <input class="inp" id="te-in" value="abc" maxlength="12" style="width:10ch">
+      <span class="hint" style="font-size:13px;color:var(--muted)">or try:</span>
+      <span class="row" id="te-pre"><button class="btn sm" data-v="4">"4"</button><button class="btn sm" data-v="abc">"abc"</button><button class="btn sm" data-v="0">"0"</button><button class="btn sm" data-v="3.5">"3.5"</button><button class="btn sm" data-v="-8">"-8"</button></span>
+    </div>
+    <div class="seg" id="te-mode"><button data-v="try" aria-pressed="true">With try / except</button><button data-v="bare" aria-pressed="false">Without it</button></div>
+    <div class="split">
+      <pre class="code num" id="te-code"></pre>
+      <div class="stack">
+        <div class="read">
+          <div class="stat hl"><span>Exception raised</span><b id="te-exc">–</b></div>
+          <div class="stat"><span>Program</span><b id="te-prog">–</b></div>
+        </div>
+        <div class="term-h">Output</div>
+        <div class="term" id="te-out"></div>
+      </div>
+    </div>
+    <p class="cap">Switch to "Without it" and enter <code>abc</code>: the program crashes on line 1 and <code>Done</code> never prints. With try/except the same bad input is handled and the program finishes normally.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><code>try</code>: code that might raise an exception.</li>
+      <li><code>except SomeError</code>: runs only if that error happens in <code>try</code>. The rest of the try block after the error is skipped.</li>
+      <li><code>else</code>: runs only if no exception happened. <code>finally</code>: always runs (cleanup, like closing a file).</li>
+      <li>Purpose in one sentence: <em>handle runtime errors gracefully so the program doesn't crash</em>.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3><code>except</code> doesn't "try" anything. It is skipped completely unless an error happens inside <code>try</code>, and then only the first matching <code>except</code> runs.</div>
+  </div>
+  <div class="check" data-q="tryexcept"></div>
+  <button class="done" data-id="tryexcept" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 04 -->
+<section class="concept" id="countodds" data-lec="py" data-t="Write count_odds">
+  <header><span class="eyebrow">04 · Exam Q4</span><h2>Writing a function: count the odd numbers</h2></header>
+  <p class="lead">"Write a function" questions get easier once you know the <b>counter pattern</b>: start a <em>counter at 0</em>, <em>loop</em> over the list, <em>test</em> each item, <em>add 1</em> when it passes, and <em>return</em> the counter after the loop ends. A number is odd when <code>n % 2 != 0</code>: <code>%</code> gives the remainder, and odd numbers leave 1 when divided by 2.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Watch the loop run</h3><span class="hint">edit the list, then step</span></div>
+    <div class="row"><label class="mono" for="co-list" style="font-size:14px">nums =</label><input class="inp" id="co-list" value="[3, 8, 5, 12, 7, -1]" style="flex:1;min-width:0;max-width:340px"></div>
+    <div class="split">
+      <pre class="code num" id="co-code"></pre>
+      <div class="stack">
+        <div class="chips" id="co-chips"></div>
+        <div class="read">
+          <div class="stat"><span>n</span><b id="co-n">–</b></div>
+          <div class="stat"><span>n % 2</span><b id="co-m">–</b></div>
+          <div class="stat hl"><span>count</span><b id="co-c">–</b></div>
+        </div>
+      </div>
+    </div>
+    <p class="note" id="co-note" aria-live="polite"></p>
+    <div class="stepper"><button class="btn pri" id="co-step">Step ▶</button><button class="btn" id="co-play">Play</button><button class="btn ghost" id="co-reset">Restart</button></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Write it yourself</h3><span class="hint">real Python runs in your browser</span></div>
+    <div class="seg" id="ed-pick"><button data-v="count" aria-pressed="true">count_odds (exam Q4)</button><button data-v="sum" aria-pressed="false">sum_odds</button><button data-v="only" aria-pressed="false">only_odds</button></div>
+    <p class="note" id="ed-task"></p>
+    <textarea class="inp editor" id="ed-src" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your Python code"></textarea>
+    <div class="row"><button class="btn pri" id="ed-run">Run tests</button><button class="btn" id="ed-sol">Show a solution</button><button class="btn ghost" id="ed-clear">Start over</button><span id="ed-status" style="font-size:13px;color:var(--muted)"></span></div>
+    <div class="tests" id="ed-tests" aria-live="polite"></div>
+    <pre class="code" id="ed-solution" hidden></pre>
+    <p class="cap">The first run downloads Python (about 10 MB) and takes a few seconds; after that it's instant. <span class="kbd">Tab</span> inserts four spaces. Your code is saved in this browser.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><code>count = 0</code> goes <b>before</b> the loop; <code>return count</code> goes <b>after</b> it, lined up with <code>for</code>.</li>
+      <li><code>n % 2</code> is 0 for even numbers and 1 for odd ones. In Python that holds for negatives too: <code>-3 % 2</code> is <code>1</code>.</li>
+      <li>Always check the empty list: your function should return 0.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Indenting <code>return count</code> inside the loop makes the function stop after the first number. And <code>n / 2</code> divides; only <code>%</code> gives the remainder.</div>
+  </div>
+  <div class="check" data-q="countodds"></div>
+  <button class="done" data-id="countodds" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 05 -->
+<section class="concept" id="loops" data-lec="py" data-t="while True & break">
+  <header><span class="eyebrow">05 · Exam Q6</span><h2>Loops that stop themselves: while True and break</h2></header>
+  <p class="lead"><code>while True:</code> starts a loop that would run forever, so something inside it has to stop it. That's <code>break</code>: it <em>exits the loop immediately</em>. This pattern keeps asking for input until the user signals they're done. <code>input()</code> always returns a string, and pressing Enter on an empty line returns the empty string <code>""</code>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Run the exam's loop</h3><span class="hint">type a city and press Enter; press Enter on a blank line to stop</span></div>
+    <div class="seg" id="lp-mode"><button data-v="in" aria-pressed="true">print inside the loop</button><button data-v="out" aria-pressed="false">print after the loop</button></div>
+    <div class="split">
+      <pre class="code num" id="lp-code"></pre>
+      <div class="stack">
+        <div class="term" id="lp-term" style="min-height:150px"></div>
+        <div class="read">
+          <div class="stat"><span>Times through the loop</span><b id="lp-k">0</b></div>
+          <div class="stat hl"><span>Lines printed with "City:"</span><b id="lp-c">0</b></div>
+        </div>
+        <div class="row"><button class="btn ghost" id="lp-reset">Restart</button></div>
+      </div>
+    </div>
+    <p class="cap">On the exam handout the indentation of the last line is hard to read. Indented under <code>while</code> it echoes every city. Moved out of the loop, it runs once, after <code>break</code>, and prints <code>City: </code> with nothing after it, because the last thing typed was blank.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><code>while True</code> + <code>break</code> = "repeat until a stop condition", checked in the middle of the loop.</li>
+      <li><code>break</code> exits only the innermost loop; the code after the loop runs next.</li>
+      <li>The check <code>if city == ""</code> comes before the print, so the blank entry is never echoed.</li>
+      <li>Indentation decides what's inside the loop.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"What is the purpose" wants the whole loop's job, not one line's output. Say it: <b>keeps asking for city names and prints each one as "City: name", until the user enters a blank line</b>.</div>
+  </div>
+  <div class="check" data-q="loops"></div>
+  <button class="done" data-id="loops" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 06 -->
+<section class="concept" id="slicing" data-lec="py" data-t="Indexing & slicing">
+  <header><span class="eyebrow">06 · Exam Q7, Q9, Q10</span><h2>Indexing and slicing strings</h2></header>
+  <p class="lead">Every character has an <b>index</b>, starting at <b>0</b>. Negative indexes count from the end, so <code>-1</code> is the last character. A slice <code>s[start:end:step]</code> takes characters from start <em>up to but not including end</em>, jumping by step. Leave start or end blank to go all the way to that edge; leave step blank and it's 1. A negative step walks backward.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Slice explorer</h3><span class="hint">type any numbers, or leave a box blank</span></div>
+    <div class="slexpr">
+      <span>s&nbsp;=</span><input class="inp s" id="sl-s" value="Hello, World!" maxlength="16" aria-label="String">
+    </div>
+    <div class="slexpr">
+      <span>s[</span><input class="inp" id="sl-a" value="1" aria-label="start"><span>:</span><input class="inp" id="sl-b" value="5" aria-label="end"><span>:</span><input class="inp" id="sl-c" value="" aria-label="step"><span>]</span>
+    </div>
+    <div class="row" id="sl-pre">
+      <button class="btn sm" data-s="Hello, World!" data-a="1" data-b="5" data-c="">Q7 · s[1:5]</button>
+      <button class="btn sm" data-s="123456789" data-a="" data-b="" data-c="2">Q9 · s[::2]</button>
+      <button class="btn sm" data-s="123456789" data-a="1" data-b="5" data-c="2">Q10 · s[1:5:2]</button>
+      <button class="btn sm" data-s="Hello, World!" data-a="7" data-b="" data-c="">s[7:]</button>
+      <button class="btn sm" data-s="Hello, World!" data-a="-6" data-b="-1" data-c="">s[-6:-1]</button>
+      <button class="btn sm" data-s="123456789" data-a="" data-b="" data-c="-1">s[::-1]</button>
+    </div>
+    <div class="idxlab"><span>positive index ↓</span></div>
+    <div class="chars" id="sl-chars"></div>
+    <div class="idxlab"><span>negative index ↑</span></div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)" id="sl-expr">RESULT</span><b class="mono" id="sl-res">–</b><span id="sl-why"></span></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Indexes start at 0: <code>s[0]</code> is the first character, <code>s[-1]</code> the last.</li>
+      <li>The end index is excluded, so <code>s[1:5]</code> has 5 − 1 = 4 characters.</li>
+      <li><code>s[::2]</code> takes every other character starting at index 0. <code>s[::-1]</code> reverses the string.</li>
+      <li>Spaces and punctuation count. In <code>"Hello, World!"</code> the comma is index 5 and the space is index 6.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Including the character at the end index. <code>"Hello, World!"[1:5]</code> is <code>ello</code>, not <code>ello,</code>. And <code>s[::2]</code> returns characters, not a count: <code>13579</code>, not 3.</div>
+  </div>
+  <div class="check" data-q="slicing"></div>
+  <button class="done" data-id="slicing" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 07 -->
+<section class="concept" id="methods" data-lec="py" data-t="String methods">
+  <header><span class="eyebrow">07 · Exam Q8</span><h2>String methods return new strings</h2></header>
+  <p class="lead">Strings come with built-in <b>methods</b> you call with a dot. <code>s.replace(old, new)</code> gives back a copy of <code>s</code> with every <code>old</code> swapped for <code>new</code>. Strings are <em>immutable</em>: a method never changes <code>s</code> itself, it hands you a new string. Everything you didn't replace stays exactly as it was, punctuation included.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Method explorer</h3><span class="hint">watch s stay the same</span></div>
+    <div class="row"><label class="mono" for="sm-s" style="font-size:14px">s =</label><input class="inp" id="sm-s" value="Hello, World!" maxlength="40" style="flex:1;min-width:0;max-width:320px"></div>
+    <div class="seg" id="sm-m"><button data-v="replace" aria-pressed="true">replace</button><button data-v="upper" aria-pressed="false">upper</button><button data-v="lower" aria-pressed="false">lower</button><button data-v="count" aria-pressed="false">count</button><button data-v="find" aria-pressed="false">find</button><button data-v="split" aria-pressed="false">split</button><button data-v="strip" aria-pressed="false">strip</button></div>
+    <div class="row" id="sm-args">
+      <label id="sm-l1" class="mono" for="sm-a1" style="font-size:13px;color:var(--muted)">old</label><input class="inp" id="sm-a1" value="World" maxlength="20" style="width:12ch">
+      <label id="sm-l2" class="mono" for="sm-a2" style="font-size:13px;color:var(--muted)">new</label><input class="inp" id="sm-a2" value="Universe" maxlength="20" style="width:12ch">
+    </div>
+    <div class="term" id="sm-out"></div>
+    <p class="cap" id="sm-cap"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Methods are called with a dot: <code>s.upper()</code>, <code>s.replace("a", "b")</code>.</li>
+      <li>They return a new value; <code>s</code> only changes if you reassign it: <code>s = s.replace(...)</code>.</li>
+      <li><code>replace</code> swaps every match and is case-sensitive: <code>"world"</code> won't match <code>"World"</code>.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Dropping characters you didn't touch. <code>"Hello, World!".replace("World", "Universe")</code> keeps the exclamation mark: <code>Hello, Universe!</code></div>
+  </div>
+  <div class="check" data-q="methods"></div>
+  <button class="done" data-id="methods" aria-pressed="false">Mark as understood</button>
+</section>
+
+<div class="part"><span class="eyebrow">Part 2</span><h2>Regression</h2><p>Fitting a line to data: why the model includes error, how least squares picks the line, and the process around it.</p></div>
+
+<!-- 08 -->
+<section class="concept" id="models" data-lec="reg" data-t="Deterministic vs probabilistic">
+  <header><span class="eyebrow">08 · Exam Q11</span><h2>Deterministic vs probabilistic models</h2></header>
+  <p class="lead">A <b>deterministic</b> model says y is <em>exactly</em> determined by x: <span class="mono">y = β₀ + β₁x</span>. Plug in x and you get one answer, every time, with no error. A <b>probabilistic</b> model adds a random error term: <span class="mono">y = β₀ + β₁x + ε</span>. Real data never land exactly on a line, because things you didn't measure push each point up or down. Regression uses probabilistic models, and <b>ε</b> ("epsilon") is that unexplained part.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Turn up the randomness</h3><span class="hint">24 simulated students</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="md-s">Size of the random error ε (its SD) <output id="md-s-o"></output></label><input type="range" id="md-s" min="0" max="15" step="0.5" value="0"></div>
+      <div class="row"><button class="btn" id="md-new">New random errors</button><div class="seg" id="md-res"><button data-v="1" aria-pressed="true">Show ε</button><button data-v="0" aria-pressed="false">Hide ε</button></div></div>
+    </div>
+    <div class="plot" id="md-chart"></div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)" id="md-tag">MODEL</span><b class="mono" id="md-eq">–</b><span id="md-why"></span></div>
+    <div class="read">
+      <div class="stat"><span>Points exactly on the line</span><b id="md-on">–</b></div>
+      <div class="stat"><span>Average miss |ε|</span><b id="md-miss">–</b></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Deterministic</b>: no error term, a perfect prediction. Fits exact laws, like converting °C to °F.</li>
+      <li><b>Probabilistic</b>: <span class="mono">y = β₀ + β₁x + ε</span>. ε is random variation plus everything x doesn't explain.</li>
+      <li>ε averages out to 0, so the line predicts the <b>average</b> y for each x.</li>
+      <li>Regression uses probabilistic models because real data always scatter around the line.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"Probabilistic" doesn't mean the model is a guess or the relationship is weak. It means the model admits that individual points scatter around the line.</div>
+  </div>
+  <div class="check" data-q="models"></div>
+  <button class="done" data-id="models" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 09 -->
+<section class="concept" id="lsq" data-lec="reg" data-t="Least squares">
+  <header><span class="eyebrow">09 · Exam Q12</span><h2>The least squares method</h2></header>
+  <p class="lead">Many lines could pass through a cloud of points. <b>Least squares</b> picks the one with the smallest <em>sum of squared residuals</em> (SSE). A <b>residual</b> is one point's vertical miss: observed y minus predicted ŷ. Squaring stops positive and negative misses from canceling out and punishes big misses more. Two formulas then give the best slope and intercept directly.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Beat the formula</h3><span class="hint">make the squares as small as you can</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="ls-b1">Slope b₁ <output id="ls-b1-o"></output></label><input type="range" id="ls-b1" min="-1" max="3" step="0.02" value="0.4"></div>
+      <div class="ctl"><label for="ls-b0">Intercept b₀ <output id="ls-b0-o"></output></label><input type="range" id="ls-b0" min="-6" max="16" step="0.1" value="8"></div>
+    </div>
+    <div class="plot" id="ls-chart"></div>
+    <div class="legend"><span><i style="background:var(--tail-soft);border:1px solid var(--tail)"></i>Each square's area is one squared residual</span><span><i style="background:var(--accent)"></i>Your line</span><span><i style="background:transparent;border:2px solid var(--amber)"></i>(x̄, ȳ)</span></div>
+    <div class="read">
+      <div class="stat hl"><span>Your SSE</span><b id="ls-you">–</b></div>
+      <div class="stat"><span>Least squares SSE</span><b id="ls-best">–</b></div>
+      <div class="stat"><span>Sum of plain residuals</span><b id="ls-raw">–</b></div>
+      <div class="stat"><span>Status</span><b id="ls-stat">–</b></div>
+    </div>
+    <div class="row"><button class="btn pri" id="ls-snap">Snap to least squares</button><button class="btn" id="ls-new">New data</button><div class="seg" id="ls-sq"><button data-v="1" aria-pressed="true">Squares on</button><button data-v="0" aria-pressed="false">Off</button></div></div>
+    <p class="cap">Watch "Sum of plain residuals" after you snap: it's 0. It's also 0 for <b>any</b> line through (x̄, ȳ), even a terrible one, which is why least squares squares the residuals first.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Do it by hand</h3><span class="hint">edit any y and every number updates</span></div>
+    <div class="scroll"><table class="t" id="lh-table"></table></div>
+    <ol class="steps" id="lh-steps"></ol>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Residual = y − ŷ. SSE = Σ(y − ŷ)². Least squares makes SSE as small as possible.</li>
+      <li><span class="mono">b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</span> and <span class="mono">b₀ = ȳ − b₁x̄</span>.</li>
+      <li>The least squares line always passes through (x̄, ȳ).</li>
+      <li>b₁: change in predicted y for each 1-unit increase in x. b₀: predicted y when x = 0.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Minimizing the plain sum of residuals doesn't work: positive and negative misses cancel, and every line through (x̄, ȳ) scores exactly 0. That's the reason for squaring.</div>
+  </div>
+  <div class="check" data-q="lsq"></div>
+  <button class="done" data-id="lsq" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 10 -->
+<section class="concept" id="steps4" data-lec="reg" data-t="Four steps of modeling">
+  <header><span class="eyebrow">10 · Exam Q13</span><h2>The four steps of regression modeling</h2></header>
+  <p class="lead">Regression is a process, not one formula. You <b>specify</b> a model, <b>estimate</b> its numbers from data, <b>evaluate</b> whether it's any good, and only then <b>use</b> it to predict. Skipping step 3 is how people end up confidently predicting with a model that doesn't fit.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Put the steps in order</h3><span class="hint">tap them first to last</span></div>
+    <div class="order" id="or-list"></div>
+    <div class="row"><span id="or-msg" style="font-size:14px;color:var(--muted)" aria-live="polite"></span><button class="btn ghost" id="or-reset" style="margin-left:auto">Shuffle again</button></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>One example, all four steps</h3><span class="hint">12 students: hours studied vs exam score</span></div>
+    <div class="seg" id="w4-pick"><button data-v="1" aria-pressed="true">1 · Specify</button><button data-v="2" aria-pressed="false">2 · Estimate</button><button data-v="3" aria-pressed="false">3 · Evaluate</button><button data-v="4" aria-pressed="false">4 · Use</button></div>
+    <div class="plot" id="w4-chart"></div>
+    <div class="ctl" id="w4-ctl" hidden><label for="w4-x">Hours studied <output id="w4-x-o"></output></label><input type="range" id="w4-x" min="0" max="16" step="0.5" value="5"></div>
+    <div class="read" id="w4-read"></div>
+    <p class="note" id="w4-note"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>1 Specify</b>: pick the variables and the form, e.g. <span class="mono">y = β₀ + β₁x + ε</span>.</li>
+      <li><b>2 Estimate</b>: use sample data, usually least squares, to get b₀ and b₁.</li>
+      <li><b>3 Evaluate</b>: check the fit: residuals, R², whether the slope is significantly different from 0.</li>
+      <li><b>4 Use</b>: predict y for new x values, inside the range of the data.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Courses word these steps differently, and some textbooks list five (adding "describe the error ε" after estimating). Match your lecture slides' wording on the exam; the logic is the same.</div>
+  </div>
+  <div class="check" data-q="steps4"></div>
+  <button class="done" data-id="steps4" aria-pressed="false">Mark as understood</button>
+</section>
+
+<div class="part"><span class="eyebrow">Part 3</span><h2>AI concepts</h2><p>Two ways to build intelligence, how we might test for it, and the smallest building block of a neural network.</p></div>
+
+<!-- 11 -->
+<section class="concept" id="approaches" data-lec="ai" data-t="Symbolic vs connectionist">
+  <header><span class="eyebrow">11 · Exam Q14</span><h2>Symbolic vs connectionist AI</h2></header>
+  <p class="lead">There are two classic ways to build intelligence. <b>Symbolic</b> AI (sometimes called GOFAI, "good old-fashioned AI") has people write explicit <em>rules and logic</em> over symbols: IF fever AND rash THEN measles. <b>Connectionist</b> AI builds networks of simple connected units, artificial neurons, that <em>learn patterns from examples</em> by adjusting the strength (weight) of each connection. One is programmed; the other is trained.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Sort them</h3><span class="hint"><b id="sg-score">0</b> of <span id="sg-tot">12</span> right</span></div>
+    <div class="sort" id="sg-list"></div>
+    <div class="row"><button class="btn ghost" id="sg-reset">Reset</button></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Side by side</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th></th><th>Symbolic</th><th>Connectionist</th></tr>
+      <tr><th>Knowledge comes from</th><td>People writing rules</td><td>Learning from lots of examples</td></tr>
+      <tr><th>Stored as</th><td>Readable symbols, rules, logic</td><td>Numbers (weights) spread across a network</td></tr>
+      <tr><th>Inspired by</th><td>Logic and human reasoning</td><td>Neurons in the brain</td></tr>
+      <tr><th>Strengths</th><td>Transparent, explainable, precise reasoning, little data needed</td><td>Handles messy input (images, speech, text), improves with data</td></tr>
+      <tr><th>Weaknesses</th><td>Brittle: fails on cases no rule covers; rules are slow to write</td><td>Needs lots of data and computing power; hard to explain ("black box")</td></tr>
+      <tr><th>Examples</th><td>Expert systems (MYCIN), rule-based chess engines, logic programs</td><td>Deep neural networks: image recognition, speech, large language models</td></tr>
+    </table></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>A symbolic spam filter</h3><span class="hint">type a message or pick one</span></div>
+    <input class="inp" id="rf-in" value="You are a WINNER! Click here to claim" maxlength="80" style="width:100%">
+    <div class="row" id="rf-pre">
+      <button class="btn sm" data-v="You are a WINNER! Click here to claim">winner</button>
+      <button class="btn sm" data-v="Are you free for lunch tomorrow?">lunch</button>
+      <button class="btn sm" data-v="C1ick h3re to cla1m your c@sh prize">c@sh</button>
+      <button class="btn sm" data-v="Meeting moved to 3pm">meeting</button>
+    </div>
+    <div class="two">
+      <div class="rulelist" id="rf-rules"></div>
+      <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)">VERDICT</span><b id="rf-v">–</b><span id="rf-why"></span></div>
+    </div>
+    <p class="cap">Every decision comes with its reason, which is symbolic AI's strength. But "free for lunch" gets flagged and "c@sh" slips through: nobody wrote a rule for those cases. A connectionist filter would learn from thousands of labeled emails instead, catching variations no one listed but unable to point to one rule as its reason.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Symbolic</b>: explicit, human-written rules; transparent; brittle; struggles with perception and ambiguity.</li>
+      <li><b>Connectionist</b>: learns from data as weights; robust to noisy input; needs lots of data and compute; hard to interpret.</li>
+      <li>Most modern AI is connectionist (deep learning). Neuro-symbolic research tries to combine both.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Saying connectionist AI "has no rules". It follows exact math; the difference is that its behavior is <b>learned into weights</b> instead of written as readable IF-THEN rules.</div>
+  </div>
+  <div class="check" data-q="approaches"></div>
+  <button class="done" data-id="approaches" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 12 -->
+<section class="concept" id="turing" data-lec="ai" data-t="The Turing Test">
+  <header><span class="eyebrow">12 · Exam Q15</span><h2>The Turing Test and its limits</h2></header>
+  <p class="lead">In 1950 Alan Turing replaced "Can machines think?" with a test he could actually run, the <b>imitation game</b>. A human judge chats by typed text with two hidden partners, one human and one machine. If the judge <em>can't reliably tell which is the machine</em>, the machine passes. It judges intelligence purely by behavior in conversation, which is both its appeal and its weakness.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>You're the judge</h3><span class="hint">round <b id="tj-r">1</b> of <span id="tj-n">4</span> · score <b id="tj-s">0</b></span></div>
+    <div class="judge" id="tj-parties"></div>
+    <div class="row" id="tj-pick"><button class="btn" data-v="0">A is the machine</button><button class="btn" data-v="1">B is the machine</button></div>
+    <p class="note" id="tj-why" hidden></p>
+    <div class="row"><button class="btn pri" id="tj-next" hidden>Next round</button></div>
+    <p class="cap">These conversations are written to illustrate the test's weak spots; each reveal names the limitation it shows.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Tap each myth to see the limitation</h3></div>
+    <div class="myths" id="tt-myths">
+      <button class="myth" aria-pressed="false"><small>Myth</small><span class="m">Passing proves the machine understands.</span><span class="r"><b>Behavior ≠ understanding.</b> Searle's Chinese Room: someone following a rulebook can return perfect Chinese replies without understanding a word.</span></button>
+      <button class="myth" aria-pressed="false"><small>Myth</small><span class="m">The result is objective.</span><span class="r"><b>It depends on the judge.</b> Results swing with who judges, how long the chat lasts, and what topics are allowed.</span></button>
+      <button class="myth" aria-pressed="false"><small>Myth</small><span class="m">Tricks don't count.</span><span class="r"><b>It can be gamed.</b> ELIZA (1966) deflected questions back at users; "Eugene Goostman" (2014) posed as a 13-year-old to excuse its mistakes.</span></button>
+      <button class="myth" aria-pressed="false"><small>Myth</small><span class="m">Failing means it isn't intelligent.</span><span class="r"><b>It measures human-likeness.</b> A machine that is too fast, too accurate, or honest about being a machine fails.</span></button>
+      <button class="myth" aria-pressed="false"><small>Myth</small><span class="m">It covers all of intelligence.</span><span class="r"><b>It's narrow.</b> Text conversation only: no vision, movement, planning, or learning over time.</span></button>
+      <button class="myth" aria-pressed="false"><small>Myth</small><span class="m">Today's chatbots settled the question.</span><span class="r"><b>Fluency isn't the finish line.</b> Large language models can hold convincing conversations, which reopened the debate about what the test really shows.</span></button>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Setup: a judge, a hidden human and a hidden machine, typed text only. The judge decides which is which.</li>
+      <li>Pass = the judge can't reliably tell them apart (does no better than guessing).</li>
+      <li>Text only, so appearance and voice can't give the machine away.</li>
+      <li>Limits: behavior isn't understanding, the judge matters, tricks work, and it only tests conversation.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Question 15 has two parts. Explain how the test works <b>and</b> give at least two specific limitations; answering only one half loses half the credit.</div>
+  </div>
+  <div class="check" data-q="turing"></div>
+  <button class="done" data-id="turing" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 13 -->
+<section class="concept" id="neuron" data-lec="ai" data-t="Weights & biases">
+  <header><span class="eyebrow">13 · Exam Q16</span><h2>Weights and biases in a single neuron</h2></header>
+  <p class="lead">An artificial neuron multiplies each input by a <b>weight</b>, adds the results, adds a <b>bias</b>, and passes the total through an activation function: <span class="mono">output = f(w₁x₁ + w₂x₂ + b)</span>. <em>Weights set how much each input matters</em>, and their sign says whether it pushes the output up or down. <em>The bias shifts the threshold</em>, making the neuron easier or harder to fire. Training means adjusting these numbers until the outputs are right.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Tune a neuron, then train it</h3><span class="hint">goal: get all four points right</span></div>
+    <div class="qgrid">
+      <div class="qgroup"><span>Challenge</span><div class="seg" id="nn-goal"><button data-v="and" aria-pressed="true">AND</button><button data-v="or" aria-pressed="false">OR</button><button data-v="nand" aria-pressed="false">NAND</button><button data-v="xor" aria-pressed="false">XOR</button></div></div>
+      <div class="qgroup"><span>Activation</span><div class="seg" id="nn-act"><button data-v="step" aria-pressed="true">Step (0 or 1)</button><button data-v="sig" aria-pressed="false">Sigmoid (0 to 1)</button></div></div>
+    </div>
+    <div class="controls">
+      <div class="ctl"><label for="nn-w1">Weight w₁ <output id="nn-w1-o"></output></label><input type="range" id="nn-w1" min="-3" max="3" step="0.1" value="0.5"></div>
+      <div class="ctl"><label for="nn-w2">Weight w₂ <output id="nn-w2-o"></output></label><input type="range" id="nn-w2" min="-3" max="3" step="0.1" value="0.5"></div>
+      <div class="ctl"><label for="nn-b">Bias b <output id="nn-b-o"></output></label><input type="range" id="nn-b" min="-3" max="3" step="0.1" value="0"></div>
+    </div>
+    <div class="nn">
+      <div class="stack">
+        <div class="plot" id="nn-diag"></div>
+        <div class="qgroup"><span>Feed it an input</span><div class="seg" id="nn-in"><button data-v="0,0" aria-pressed="false">(0, 0)</button><button data-v="0,1" aria-pressed="false">(0, 1)</button><button data-v="1,0" aria-pressed="false">(1, 0)</button><button data-v="1,1" aria-pressed="true">(1, 1)</button></div></div>
+      </div>
+      <div class="plot" id="nn-plane"></div>
+    </div>
+    <div class="read">
+      <div class="stat"><span>Weighted sum z</span><b id="nn-z">–</b></div>
+      <div class="stat"><span>Output f(z)</span><b id="nn-o">–</b></div>
+      <div class="stat hl"><span>Points correct</span><b id="nn-k">–</b></div>
+    </div>
+    <div class="row"><button class="btn pri" id="nn-train">Train it (perceptron rule)</button><button class="btn ghost" id="nn-zero">Reset weights to 0</button><span id="nn-msg" style="font-size:14px;color:var(--muted)" aria-live="polite"></span></div>
+    <p class="cap">Right: every input point, with the shaded side where the neuron fires. The weights tilt the dividing line; the bias slides it. Training nudges each weight by (target − output) × input until every point lands on the right side. Try XOR: no single straight line separates it, which is why real networks stack neurons in layers.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Weights</b>: one per input. Size = how much that input matters; sign = pushes the output up (+) or down (−).</li>
+      <li><b>Bias</b>: one per neuron, added after the weighted sum. It shifts the threshold so the neuron can fire, or stay off, even when inputs are 0.</li>
+      <li>Like regression: weights act like slopes, the bias like the intercept.</li>
+      <li>Both are <b>learned</b> during training (perceptron rule, gradient descent).</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>The bias doesn't belong to any input and doesn't multiply anything. It's added once, after the weighted sum.</div>
+  </div>
+  <div class="check" data-q="neuron"></div>
+  <button class="done" data-id="neuron" aria-pressed="false">Mark as understood</button>
+</section>
+
+<div class="part"><span class="eyebrow">Practice</span><h2>Make it stick</h2><p>Reading feels like learning; retrieving is what makes it last. Drill the code questions until they're automatic, then answer the whole exam from memory.</p></div>
+
+<!-- drill -->
+<section class="concept" id="drill" data-lec="prac" data-t="Predict the output">
+  <header><span class="eyebrow">Drill</span><h2>Predict the output</h2></header>
+  <p class="lead">Endless new versions of the exam's code questions. Type exactly what Python would print, one line per printed line, then press <span class="kbd">Enter</span>. <span class="kbd">Shift</span> + <span class="kbd">Enter</span> starts a new line.</p>
+  <div class="lab drill">
+    <div class="row" style="justify-content:space-between">
+      <div class="seg" id="dr-topic"><button data-v="all" aria-pressed="true">Everything</button><button data-v="slice" aria-pressed="false">Slicing</button><button data-v="str" aria-pressed="false">Strings</button><button data-v="scope" aria-pressed="false">Scope</button><button data-v="flow" aria-pressed="false">Loops &amp; errors</button></div>
+      <div class="tally"><span class="pill neu">Streak <b id="dr-st">0</b></span><span class="pill keep">Best <b id="dr-best">0</b></span><span class="pill neu"><b id="dr-acc">0 / 0</b> correct</span></div>
+    </div>
+    <pre class="code num" id="dr-code"></pre>
+    <div class="drill-a"><textarea class="inp" id="dr-in" rows="2" placeholder="What does it print?" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your answer"></textarea><button class="btn pri" id="dr-go">Check</button></div>
+    <div class="fb" id="dr-fb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="dr-next">Next question</button><button class="btn ghost" id="dr-skip">Skip</button></div>
+  </div>
+</section>
+
+<!-- exam -->
+<section class="concept" id="exam" data-lec="prac" data-t="Full exam review">
+  <header><span class="eyebrow">Exam review</span><h2>Answer every question from memory</h2></header>
+  <p class="lead">Write each answer before you look. Then reveal the model answer, compare honestly, and rate yourself. Your answers and ratings are saved, so come back tomorrow and work on whatever isn't "Got it" yet.</p>
+  <div class="lab">
+    <div class="row" style="justify-content:space-between">
+      <div class="seg" id="ex-filter"><button data-v="all" aria-pressed="true">All 16</button><button data-v="todo" aria-pressed="false">Not "Got it" yet</button><button data-v="miss" aria-pressed="false">Missed</button></div>
+      <div class="tally" id="ex-tally"></div>
+    </div>
+    <div class="row"><button class="btn ghost" id="ex-reset">Clear my answers and ratings</button></div>
+  </div>
+  <div class="exam" id="ex-list"></div>
+  <div class="lab" id="cheat-lab">
+    <div class="lab-h"><h3>One-page cheat sheet</h3><span class="hint">the exam allows one single-sided letter page</span></div>
+    <div class="cheat" id="cheat"></div>
+    <div class="row"><button class="btn pri" id="cheat-print">Print the cheat sheet</button></div>
+    <p class="cap">Prints on one letter page. Writing your own by hand is even better study, so use this as a checklist.</p>
+  </div>
+</section>
+
+<p class="foot">Built from the DS 110 Introduction to AI midterm questions (NJIT). Simulations use fresh random draws. The code editor runs real Python (Pyodide) in your browser. Progress, answers and drafts are saved in this browser only.</p>
+</main>
+</div>
+
+<div id="print-area"></div>
+<script>
+/* ---------- math ---------- */
+const $=s=>document.querySelector(s);
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const sd=a=>{const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))};
+const lin=(d0,d1,r0,r1)=>v=>r0+(v-d0)*(r1-r0)/(d1-d0);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r=Math.random){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function erf(x){const s=Math.sign(x);x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y}
+const npdf=z=>Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+const ncdf=z=>z===Infinity?1:z===-Infinity?0:0.5*(1+erf(z/Math.SQRT2));
+function lgamma(z){const c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];if(z<0.5)return Math.log(Math.PI/Math.sin(Math.PI*z))-lgamma(1-z);z-=1;let x=c[0];for(let i=1;i<9;i++)x+=c[i]/(z+i);const t=z+7.5;return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=300;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+const tTwo=(t,df)=>ibeta(df/2,0.5,df/(df+t*t));
+const tpdf=(t,df)=>Math.exp(lgamma((df+1)/2)-lgamma(df/2))/Math.sqrt(df*Math.PI)*Math.pow(1+t*t/df,-(df+1)/2);
+function tcrit(df,a=0.05){let lo=0,hi=60;for(let i=0;i<80;i++){const m=(lo+hi)/2;tTwo(m,df)>a?lo=m:hi=m}return(lo+hi)/2}
+function zcrit(a){let lo=0,hi=10;for(let i=0;i<80;i++){const m=(lo+hi)/2;2*(1-ncdf(m))>a?lo=m:hi=m}return(lo+hi)/2}
+const SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function fmtP(p){if(p>=0.9995)return'1.000';if(p>=0.001)return p.toFixed(3);if(p<1e-300)return'< 10⁻³⁰⁰';const e=Math.floor(Math.log10(p));const m=p/10**e;return m.toFixed(2)+' × 10'+String(e).replace(/./g,c=>SUP[c]||c)}
+const pct=(p,d=1)=>(p*100).toFixed(d)+'%';
+
+/* ---------- svg helpers ---------- */
+const NS='http://www.w3.org/2000/svg';
+function S(tag,a={},p){const e=document.createElementNS(NS,tag);for(const k in a){const v=a[k];if(k==='text'){e.textContent=v;continue}if(k==='cls'){e.setAttribute('class',v);continue}if((k==='fill'||k==='stroke')&&typeof v==='string'&&v.startsWith('var(')){e.style[k]=v;continue}e.setAttribute(k,v)}if(p)p.appendChild(e);return e}
+function chart(host,h,draw){const svg=S('svg',{cls:'chart',role:'img'});host.appendChild(svg);let w=-1;const render=()=>{w=host.clientWidth;if(!w)return;const H=typeof h==='function'?h(w):h;svg.setAttribute('width',w);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${w} ${H}`);while(svg.firstChild)svg.removeChild(svg.firstChild);draw(svg,w,H)};new ResizeObserver(()=>{if(host.clientWidth!==w)render()}).observe(host);render();return render}
+function pathFn(f,x0,x1,sx,sy,n=160){let d='';for(let i=0;i<=n;i++){const x=x0+(x1-x0)*i/n;d+=(i?'L':'M')+sx(x).toFixed(1)+','+sy(f(x)).toFixed(1)}return d}
+function areaFn(f,x0,x1,sx,sy,base,n=120){if(!(x1>x0))return'';return pathFn(f,x0,x1,sx,sy,n)+`L${sx(x1).toFixed(1)},${base}L${sx(x0).toFixed(1)},${base}Z`}
+function xAxis(g,sx,ticks,y,fmt=String,x0,x1){S('line',{x1:x0??sx(ticks[0]),x2:x1??sx(ticks[ticks.length-1]),y1:y,y2:y,stroke:'var(--muted)'},g);ticks.forEach(t=>{S('line',{x1:sx(t),x2:sx(t),y1:y,y2:y+4,stroke:'var(--muted)'},g);S('text',{x:sx(t),y:y+16,'text-anchor':'middle',text:fmt(t)},g)})}
+function yGrid(g,sy,ticks,x0,x1,fmt=String){ticks.forEach(t=>{S('line',{x1:x0,x2:x1,y1:sy(t),y2:sy(t),stroke:'var(--line)','stroke-dasharray':t?'2 3':''},g);S('text',{x:x0-6,y:sy(t)+4,'text-anchor':'end',text:fmt(t)},g)})}
+function seg(el,fn){el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!el.contains(b))return;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset.v,b)})}
+function range(id,fn,fmt=v=>v){const i=document.getElementById(id),o=document.getElementById(id+'-o');const go=()=>{if(o)o.textContent=fmt(+i.value);fn(+i.value)};i.addEventListener('input',go);return{el:i,go,set(v){i.value=v;go()}}}
+const set=(id,v)=>{document.getElementById(id).innerHTML=v};
+
+/* ---------- python-flavored helpers ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const KW=new Set('def return if elif else while for in not and or True False None try except finally class global break continue import from as pass lambda is'.split(' '));
+const BI=new Set('print input int str len range float list sum type isinstance'.split(' '));
+function hl(line){let o='',m;const re=/(#.*$)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)|(\s+)|(.)/g;
+  while((m=re.exec(line))){if(m[1])o+=`<span class="cm">${esc(m[1])}</span>`;else if(m[2])o+=`<span class="st">${esc(m[2])}</span>`;else if(m[3])o+=`<span class="nu">${m[3]}</span>`;else if(m[4])o+=KW.has(m[4])?`<span class="kw">${m[4]}</span>`:BI.has(m[4])?`<span class="bi">${m[4]}</span>`:m[4];else o+=esc(m[5]||m[6])}return o}
+const codeLines=src=>(Array.isArray(src)?src:src.split('\n')).map((l,i)=>`<span class="ln" data-l="${i}">${hl(l)||' '}</span>`).join('');
+const codeBlock=(src,cls='sm')=>`<pre class="code ${cls}">${codeLines(src)}</pre>`;
+function markLines(pre,fn){pre.querySelectorAll('.ln').forEach((l,i)=>{l.className='ln';const c=fn(i);if(c)l.classList.add(c)})}
+function pyRepr(s){const q=s.includes("'")&&!s.includes('"')?'"':"'";let o='';for(const c of s){if(c==='\\')o+='\\\\';else if(c===q)o+='\\'+q;else if(c==='\n')o+='\\n';else if(c==='\t')o+='\\t';else o+=c}return q+o+q}
+const pyLit=s=>'"'+s.replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"';
+const pyMod=(a,b)=>((a%b)+b)%b;
+function pyFloat(v){if(!isFinite(v))return v>0?'inf':v<0?'-inf':'nan';const a=Math.abs(v);if(a!==0&&(a<1e-4||a>=1e16)){const[m,e]=v.toExponential().split('e');const n=+e;return m+'e'+(n<0?'-':'+')+String(Math.abs(n)).padStart(2,'0')}if(Number.isInteger(v))return v.toFixed(1);return String(v)}
+function pyInt(t){if(!/^\s*[+-]?\d+(?:_\d+)*\s*$/.test(t))return null;return parseInt(t.replace(/_/g,''),10)}
+/* CPython's slice index rules */
+function pySlice(n,a,b,c){if(c==null)c=1;if(c===0)throw'ValueError: slice step cannot be zero';
+  const lo=c>0?0:-1,hi=c>0?n:n-1;
+  const fix=(v,d)=>{if(v==null)return d;if(v<0){v+=n;if(v<lo)v=lo}else if(v>hi)v=hi;return v};
+  const s=fix(a,c>0?lo:hi),e=fix(b,c>0?hi:lo),out=[];
+  if(c>0)for(let i=s;i<e;i+=c)out.push(i);else for(let i=s;i>e;i+=c)out.push(i);return out}
+function pyReplace(s,o,n){if(o==='')return n+[...s].join(n)+n;return s.split(o).join(n)}
+function pyCount(s,o){if(o==='')return [...s].length+1;return s.split(o).length-1}
+const pySplitWS=s=>{const t=s.trim();return t?t.split(/\s+/):[]};
+const pyList=a=>'['+a.map(x=>typeof x==='string'?pyRepr(x):String(x)).join(', ')+']';
+function term(el){return{clear(){el.innerHTML=''},line(h,c){el.insertAdjacentHTML('beforeend',`<div${c?` class="${c}"`:''}>${h}</div>`);el.scrollTop=el.scrollHeight},cmd(c){this.line(`<span class="p">&gt;&gt;&gt; </span>${esc(c)}`)}}}
+
+/* ---------- 01 classes ---------- */
+(function(){
+  const SRC=['class Dog:','    def __init__(self, name, age):','        self.name = name','        self.age = age','','    def speak(self):','        return self.name + " says woof"','','    def birthday(self):','        self.age += 1'];
+  const code=$('#cls-code');code.innerHTML=codeLines(SRC);
+  const T=term($('#cls-term'));let objs=[];
+  const mark=(a,b)=>markLines(code,i=>i>=a&&i<=b?'cur':'');
+  function paint(hot){
+    $('#cls-objs').innerHTML=objs.length?objs.map((o,i)=>`<div class="obj${i===hot?' hot':''}" data-i="${i}"><div class="obj-h"><b>${o.v}</b><span>a Dog object</span></div><dl><div><dt>name</dt><dd class="mono">${esc(pyRepr(o.name))}</dd></div><div><dt>age</dt><dd class="mono">${o.age}</dd></div></dl><div class="row"><button class="btn sm" data-a="speak">${o.v}.speak()</button><button class="btn sm" data-a="birthday">${o.v}.birthday()</button></div></div>`).join(''):'<p class="cap">No objects yet. The class on its own is only a blueprint: nothing exists until you create an object from it.</p>';
+    $('#cls-make').disabled=objs.length>=4;
+  }
+  function make(name,age){const v='d'+(objs.length+1);objs.push({v,name,age});T.cmd(`${v} = Dog(${pyLit(name)}, ${age})`);mark(1,3);
+    set('cls-self',`<code>Dog(...)</code> created a new object and ran <code>__init__</code> with <code>self</code> = <b class="mono">${v}</b>, storing its own name and age.`);paint(objs.length-1)}
+  $('#cls-make').onclick=()=>{const name=($('#cls-name').value.trim()||'Rex').slice(0,14),age=Math.max(0,Math.min(30,parseInt($('#cls-age').value,10)||0));make(name,age);
+    const nx=['Bella','Max','Luna','Rex'];$('#cls-name').value=nx[objs.length%4];$('#cls-age').value=1+objs.length*2};
+  $('#cls-objs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.closest('.obj').dataset.i,o=objs[i];
+    if(b.dataset.a==='speak'){T.cmd(`${o.v}.speak()`);T.line(esc(pyRepr(o.name+' says woof')));mark(5,6);
+      set('cls-self',`<code>speak</code> ran with <code>self</code> = <b class="mono">${o.v}</b>, so <code>self.name</code> was ${esc(pyRepr(o.name))}.`);paint(i)}
+    else{o.age++;T.cmd(`${o.v}.birthday()`);mark(8,9);
+      set('cls-self',`<code>birthday</code> ran with <code>self</code> = <b class="mono">${o.v}</b>. Only ${o.v}.age changed (now ${o.age}); the other objects kept theirs.`);paint(i)}});
+  $('#cls-reset').onclick=()=>{objs=[];T.clear();mark(-1,-1);set('cls-self','Click a method on any object.');$('#cls-name').value='Fido';$('#cls-age').value=5;make('Rex',3)};
+  make('Rex',3);
+})();
+
+/* ---------- 02 scope tracer ---------- */
+(function(){
+  const F='<function f>';
+  const V={
+    exam:{src:['def f(b):','    a = 6','    return a * b','','a = 0','print(f(3))','print(a)'],steps:[
+      {l:0,g:{f:F},L:null,o:[],n:'Python reads the <code>def</code> and stores the function under the name <code>f</code> in the global namespace. The body does not run yet.'},
+      {l:4,g:{f:F,a:'0'},L:null,o:[],n:'<code>a = 0</code> at the top level creates a <b>global</b> <code>a</code>.'},
+      {l:5,g:{f:F,a:'0'},L:{b:'3'},o:[],n:'<code>f(3)</code> is called. Python creates a brand-new <b>local</b> namespace for this call and puts the parameter <code>b = 3</code> in it.'},
+      {l:1,g:{f:F,a:'0'},L:{b:'3',a:'6'},o:[],n:'<code>a = 6</code> inside the function creates a <b>new local</b> <code>a</code>. The global <code>a</code> is untouched. There are now two different variables named <code>a</code>.'},
+      {l:2,g:{f:F,a:'0'},L:{b:'3',a:'6'},o:[],n:'<code>a * b</code> looks up <code>a</code> in the local namespace first (LEGB), so it finds 6, not 0. 6 × 3 = 18 is returned.'},
+      {l:5,g:{f:F,a:'0'},L:'gone',o:['18'],n:'The call is over, so its local namespace is thrown away. <code>print</code> shows the returned value: <b>18</b>.'},
+      {l:6,g:{f:F,a:'0'},L:null,o:['18','0'],n:'<code>print(a)</code> runs at the top level, so it reads the <b>global</b> <code>a</code>, which is still <b>0</b>. Final output: 18, then 0.'}]},
+    glob:{src:['def f(b):','    global a','    a = 6','    return a * b','','a = 0','print(f(3))','print(a)'],steps:[
+      {l:0,g:{f:F},L:null,o:[],n:'Same start: <code>f</code> is stored in the global namespace.'},
+      {l:5,g:{f:F,a:'0'},L:null,o:[],n:'<code>a = 0</code> creates the global <code>a</code>.'},
+      {l:6,g:{f:F,a:'0'},L:{b:'3'},o:[],n:'<code>f(3)</code> is called and gets its local namespace with <code>b = 3</code>.'},
+      {l:1,g:{f:F,a:'0'},L:{b:'3'},o:[],n:'<code>global a</code> tells Python: inside this function, <code>a</code> means the global one. No local <code>a</code> will be created.'},
+      {l:2,g:{f:F,a:'6'},L:{b:'3'},o:[],n:'This time <code>a = 6</code> changes the <b>global</b> <code>a</code>.'},
+      {l:3,g:{f:F,a:'6'},L:{b:'3'},o:[],n:'<code>a * b</code> = 6 × 3 = 18 is returned.'},
+      {l:6,g:{f:F,a:'6'},L:'gone',o:['18'],n:'The local namespace is discarded and 18 is printed.'},
+      {l:7,g:{f:F,a:'6'},L:null,o:['18','6'],n:'Now <code>print(a)</code> shows <b>6</b>, because the function changed the global. Compare with the exam version, which prints 0.'}]}};
+  let mode='exam',k=0;const code=$('#sc-code');
+  const rows=(o,p)=>Object.keys(o).map(n=>`<div class="var${p&&p[n]!==o[n]?' new':''}"><span>${n}</span><span>${esc(o[n])}</span></div>`).join('');
+  function render(){const v=V[mode],s=v.steps[k],p=k?v.steps[k-1]:null;
+    markLines(code,i=>i===s.l?'cur':'');
+    $('#sc-g').innerHTML='<h4>Global namespace</h4>'+rows(s.g,p&&p.g);
+    const L=$('#sc-l');L.classList.toggle('gone',s.L==='gone');
+    L.innerHTML=s.L&&s.L!=='gone'?'<h4>Local namespace · call f(3)</h4>'+rows(s.L,p&&p.L&&p.L!=='gone'?p.L:{}):s.L==='gone'?'<h4>Local namespace · call f(3)</h4><div class="empty">Discarded when f returned</div>':'<h4>Local namespace</h4><div class="empty">No function is running</div>';
+    set('sc-note',s.n);set('sc-out',s.o.map(esc).join('\n'));set('sc-k',`step ${k+1} of ${v.steps.length}`);
+    $('#sc-back').disabled=k===0;$('#sc-next').disabled=k===v.steps.length-1}
+  function load(){code.innerHTML=codeLines(V[mode].src);k=0;render()}
+  $('#sc-next').onclick=()=>{k++;render()};$('#sc-back').onclick=()=>{k--;render()};$('#sc-reset').onclick=()=>{k=0;render()};
+  seg($('#sc-mode'),v=>{mode=v;load()});load();
+})();
+
+/* ---------- 03 try / except ---------- */
+(function(){
+  const TRY=['try:','    x = int(text)','    print(100 / x)','except ValueError:','    print("Not a whole number")','except ZeroDivisionError:','    print("Can\'t divide by zero")','else:','    print("No errors")','finally:','    print("Done")'];
+  const BARE=['x = int(text)','print(100 / x)','print("Done")'];
+  let mode='try';const code=$('#te-code');
+  function run(){const t=$('#te-in').value,x=pyInt(t);let err=null,msg='',errLine;
+    if(x===null){err='ValueError';msg=`invalid literal for int() with base 10: ${pyRepr(t)}`}else if(x===0){err='ZeroDivisionError';msg='division by zero'}
+    const out=[],st={};
+    if(mode==='try'){code.innerHTML=codeLines(TRY);st[0]='ok';
+      if(err==='ValueError'){st[1]='bad';st[2]='skip';st[3]=st[4]='ok';st[5]=st[6]=st[7]=st[8]='skip';out.push('Not a whole number')}
+      else if(err){st[1]='ok';st[2]='bad';st[3]=st[4]='skip';st[5]=st[6]='ok';st[7]=st[8]='skip';out.push("Can't divide by zero")}
+      else{st[1]=st[2]='ok';out.push(pyFloat(100/x));st[3]=st[4]=st[5]=st[6]='skip';st[7]=st[8]='ok';out.push('No errors')}
+      st[9]=st[10]='ok';out.push('Done');
+      set('te-out',out.map(esc).join('\n'));set('te-exc',err?`<span style="color:var(--tail)">${err}</span> <small style="font-weight:400;color:var(--muted)">caught</small>`:'none');set('te-prog','<span style="color:var(--good)">finished normally</span>')}
+    else{code.innerHTML=codeLines(BARE);
+      if(err){errLine=err==='ValueError'?0:1;st[errLine]='bad';if(errLine===1)st[0]='ok';st[2]='skip';if(errLine===0)st[1]='skip';
+        set('te-out',`<span class="e">Traceback (most recent call last):\n  File "main.py", line ${errLine+1}, in &lt;module&gt;\n${err}: ${esc(msg)}</span>`);
+        set('te-exc',`<span style="color:var(--tail)">${err}</span> <small style="font-weight:400;color:var(--muted)">not caught</small>`);set('te-prog','<span style="color:var(--tail)">crashed, "Done" never printed</span>')}
+      else{st[0]=st[1]=st[2]='ok';set('te-out',esc(pyFloat(100/x)+'\nDone'));set('te-exc','none');set('te-prog','<span style="color:var(--good)">finished normally</span>')}}
+    markLines(code,i=>st[i]||'')}
+  $('#te-in').addEventListener('input',run);
+  $('#te-pre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#te-in').value=b.dataset.v;run()});
+  seg($('#te-mode'),v=>{mode=v;run()});run();
+})();
+
+/* ---------- 04 count_odds trace ---------- */
+(function(){
+  const SRC=['def count_odds(nums):','    count = 0','    for n in nums:','        if n % 2 != 0:','            count += 1','    return count'];
+  const code=$('#co-code');code.innerHTML=codeLines(SRC);
+  let nums=[],ev=[],k=-1,timer=null;
+  function parse(){const raw=$('#co-list').value.replace(/[\[\]\s]/g,'');if(raw==='')return[];const p=raw.split(',').filter(x=>x!=='');if(p.some(x=>!/^[+-]?\d+$/.test(x)))return null;return p.slice(0,10).map(Number)}
+  function build(){ev=[{l:0,i:-1,c:null,n:`count_odds is called with nums = ${pyList(nums)}.`},{l:1,i:-1,c:0,n:'Start the counter at 0, before the loop.'}];let c=0;
+    nums.forEach((n,i)=>{ev.push({l:2,i,c,n:`Next item: n = ${n}.`});const m=pyMod(n,2);
+      ev.push({l:3,i,c,m,n:`${n} % 2 = ${m}. ${m?'Not 0, so it is odd.':'It is 0, so it is even. Skip the next line.'}`});
+      if(m){c++;ev.push({l:4,i,c,m,odd:1,n:`Add 1: count is now ${c}.`})}});
+    ev.push({l:5,i:nums.length,c,n:`The loop is done. <b>return count</b> gives back <b>${c}</b>.`});k=0}
+  function render(){const e=ev[k];markLines(code,i=>i===e.l?'cur':'');
+    $('#co-chips').innerHTML=nums.length?nums.map((n,i)=>{let c='chip';if(i===e.i)c+=' cur';if(i<e.i||(i===e.i&&(e.l===4||(e.l===3&&!e.m))))c+=pyMod(n,2)?' odd':' even';if(e.l===5)c+=pyMod(n,2)?' odd':' even';return`<span class="${c}">${n}</span>`}).join(''):'<span class="empty">empty list: the loop body never runs</span>';
+    set('co-n',e.i>=0&&e.i<nums.length?nums[e.i]:'–');set('co-m',e.m!=null?e.m:'–');set('co-c',e.c==null?'–':e.c);set('co-note',e.n);
+    $('#co-step').disabled=k>=ev.length-1}
+  function reset(){stop();const p=parse();if(p===null){set('co-note','Type whole numbers separated by commas, like [3, 8, 5].');return}nums=p;build();render()}
+  function stop(){clearInterval(timer);timer=null;$('#co-play').textContent='Play'}
+  $('#co-step').onclick=()=>{stop();if(k<ev.length-1){k++;render()}};
+  $('#co-play').onclick=()=>{if(timer){stop();return}if(k>=ev.length-1){k=0;render()}$('#co-play').textContent='Pause';timer=setInterval(()=>{if(k>=ev.length-1){stop();return}k++;render()},700)};
+  $('#co-reset').onclick=reset;$('#co-list').addEventListener('input',reset);reset();
+})();
+
+/* ---------- 04 editor: real Python in a worker ---------- */
+(function(){
+  const PYO='https://cdn.jsdelivr.net/npm/pyodide@0.26.4/';
+  const HARNESS=`
+import json, io, contextlib
+def __harness(src, name, tests_json):
+    tests = json.loads(tests_json)
+    res = {"error": None, "stdout": "", "tests": []}
+    out = io.StringIO()
+    g = {"__name__": "__main__"}
+    try:
+        with contextlib.redirect_stdout(out):
+            exec(compile(src, "your_code.py", "exec"), g)
+    except SyntaxError as e:
+        res["error"] = f"{type(e).__name__}: {e.msg} (line {e.lineno})"
+        return json.dumps(res)
+    except Exception as e:
+        res["error"] = f"{type(e).__name__}: {e}"
+        return json.dumps(res)
+    fn = g.get(name)
+    if not callable(fn):
+        res["error"] = f"No function named {name} was defined. Check the name on the def line."
+        res["stdout"] = out.getvalue()[-1500:]
+        return json.dumps(res)
+    for arg, exp in tests:
+        t = {"call": f"{name}({arg!r})", "expected": repr(exp)}
+        try:
+            with contextlib.redirect_stdout(out):
+                got = fn(list(arg))
+            t["got"] = repr(got)
+            t["pass"] = bool(got == exp and type(got) == type(exp))
+        except Exception as e:
+            t["got"] = f"{type(e).__name__}: {e}"
+            t["pass"] = False
+        res["tests"].append(t)
+    res["stdout"] = out.getvalue()[-1500:]
+    return json.dumps(res)
+`;
+  const WORKER=`importScripts(${JSON.stringify(PYO+'pyodide.js')});
+let py=null;
+const ready=loadPyodide({indexURL:${JSON.stringify(PYO)}}).then(p=>{py=p;py.runPython(${JSON.stringify(HARNESS)});postMessage({type:'ready'})});
+ready.catch(e=>postMessage({type:'loaderr',err:String(e)}));
+onmessage=async e=>{try{await ready}catch(err){return}
+  try{const f=py.globals.get('__harness');const r=f(e.data.src,e.data.name,e.data.tests);f.destroy();postMessage({type:'result',res:r})}
+  catch(err){postMessage({type:'result',res:JSON.stringify({error:String(err).split('\\n').filter(Boolean).pop(),tests:[],stdout:''})})}};`;
+  const EX={
+    count:{name:'count_odds',task:'Return how many numbers in <code>nums</code> are odd. This is exam question 4.',
+      start:'def count_odds(nums):\n    # your code here\n    pass\n',
+      tests:[[[1,2,3,4,5],3],[[],0],[[2,4,6],0],[[7],1],[[-3,-2,0,9],2],[[11,13,15,17],4]],
+      sol:'def count_odds(nums):\n    count = 0\n    for n in nums:\n        if n % 2 != 0:\n            count += 1\n    return count\n\n# one-line version\ndef count_odds(nums):\n    return sum(1 for n in nums if n % 2 != 0)'},
+    sum:{name:'sum_odds',task:'Same pattern, new job: return the <b>sum</b> of the odd numbers in <code>nums</code> (0 if there are none).',
+      start:'def sum_odds(nums):\n    # your code here\n    pass\n',
+      tests:[[[1,2,3,4,5],9],[[],0],[[2,4,6],0],[[-3,4,5],2],[[9],9]],
+      sol:'def sum_odds(nums):\n    total = 0\n    for n in nums:\n        if n % 2 != 0:\n            total += n\n    return total'},
+    only:{name:'only_odds',task:'Return a <b>new list</b> holding only the odd numbers, in their original order.',
+      start:'def only_odds(nums):\n    # your code here\n    pass\n',
+      tests:[[[1,2,3,4,5],[1,3,5]],[[],[]],[[2,4],[]],[[-1,0,-7],[-1,-7]]],
+      sol:'def only_odds(nums):\n    result = []\n    for n in nums:\n        if n % 2 != 0:\n            result.append(n)\n    return result\n\n# list-comprehension version\ndef only_odds(nums):\n    return [n for n in nums if n % 2 != 0]'}};
+  let cur='count',wk=null,ready=false,pending=null,timer=null,loadTimer=null;
+  const ta=$('#ed-src'),status=t=>set('ed-status',t);
+  const key=()=>'ds110-code-'+cur;
+  function load(){const e=EX[cur];set('ed-task',e.task);let s=null;try{s=localStorage.getItem(key())}catch(_){}ta.value=s||e.start;set('ed-tests','');$('#ed-solution').hidden=true;$('#ed-sol').textContent='Show a solution'}
+  ta.addEventListener('input',()=>{try{localStorage.setItem(key(),ta.value)}catch(_){}});
+  ta.addEventListener('keydown',e=>{if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();const s=ta.selectionStart,en=ta.selectionEnd;ta.setRangeText('    ',s,en,'end');ta.dispatchEvent(new Event('input'))}
+    else if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();runTests()}});
+  function kill(){if(wk){wk.terminate();wk=null}ready=false}
+  function getWorker(){if(wk)return;
+    try{wk=new Worker(URL.createObjectURL(new Blob([WORKER],{type:'text/javascript'})))}catch(err){fail();return}
+    loadTimer=setTimeout(()=>{if(!ready){kill();fail()}},90000);
+    wk.onmessage=e=>{const m=e.data;
+      if(m.type==='ready'){ready=true;clearTimeout(loadTimer);if(pending)send()}
+      else if(m.type==='loaderr'){clearTimeout(loadTimer);kill();fail()}
+      else if(m.type==='result'){clearTimeout(timer);$('#ed-run').disabled=false;show(JSON.parse(m.res))}};
+    wk.onerror=e=>{e.preventDefault();clearTimeout(loadTimer);kill();fail()}}
+  function fail(){pending=null;$('#ed-run').disabled=false;status('');set('ed-tests','<div class="n"><b>!</b><span>Python could not load (no connection, or the CDN is blocked on this network). The loop trace above still works offline, and "Show a solution" works too.</span></div>')}
+  function send(){status('Running…');wk.postMessage(pending);pending=null;
+    timer=setTimeout(()=>{kill();$('#ed-run').disabled=false;status('');set('ed-tests','<div class="n"><b>✗</b><span>Your code ran for more than 5 seconds and was stopped. Look for a loop that never ends.</span></div>')},5000)}
+  function runTests(){const e=EX[cur];$('#ed-run').disabled=true;pending={src:ta.value,name:e.name,tests:JSON.stringify(e.tests)};
+    if(!ready)status('Loading Python (first run only, about 10 MB)…');getWorker();if(ready)send()}
+  function show(r){status('');
+    if(r.error){set('ed-tests',`<div class="n"><b>✗</b><span>${esc(r.error)}</span></div>`+(r.stdout?`<div><b>›</b><span>printed: ${esc(r.stdout)}</span></div>`:''));return}
+    const ok=r.tests.filter(t=>t.pass).length;
+    set('ed-tests',r.tests.map(t=>`<div class="${t.pass?'y':'n'}"><b>${t.pass?'✓':'✗'}</b><span>${esc(t.call)} → ${esc(t.got)}${t.pass?'':`  (expected ${esc(t.expected)})`}</span></div>`).join('')+
+      `<div class="${ok===r.tests.length?'y':''}"><b>${ok===r.tests.length?'★':'·'}</b><span>${ok} of ${r.tests.length} tests passed${ok===r.tests.length?'. Nice: write it once more on paper without looking.':r.tests.some(t=>t.got==='None')?'. Getting None means the function never reached a return with a value.':''}</span></div>`+
+      (r.stdout?`<div><b>›</b><span>printed: ${esc(r.stdout)}</span></div>`:''))}
+  $('#ed-run').onclick=runTests;
+  $('#ed-sol').onclick=()=>{const p=$('#ed-solution');p.hidden=!p.hidden;if(!p.hidden)p.innerHTML=codeLines(EX[cur].sol);$('#ed-sol').textContent=p.hidden?'Show a solution':'Hide the solution'};
+  $('#ed-clear').onclick=()=>{try{localStorage.removeItem(key())}catch(_){}load()};
+  seg($('#ed-pick'),v=>{cur=v;load()});load();
+})();
+
+/* ---------- 05 while True ---------- */
+(function(){
+  const IN=['while True:','    city = input("Enter city: ")','    if city == "":','        break','    print("City: " + city)'];
+  const OUT=['while True:','    city = input("Enter city: ")','    if city == "":','        break','print("City: " + city)'];
+  let mode='in',k=0,c=0,done=false;const code=$('#lp-code'),box=$('#lp-term');
+  function prompt(){const d=document.createElement('div');d.innerHTML='Enter city: <input aria-label="Type a city" maxlength="24" autocomplete="off" spellcheck="false">';box.appendChild(d);const i=d.querySelector('input');
+    i.addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();const v=i.value;d.innerHTML='Enter city: '+esc(v);submit(v)});markLines(code,j=>j===1?'cur':'');return i}
+  function submit(v){k++;set('lp-k',k);
+    if(v===''){if(mode==='out'){box.insertAdjacentHTML('beforeend','<div>City: </div>');c++;set('lp-c',c)}
+      box.insertAdjacentHTML('beforeend',`<div class="d">(blank line, so break: the loop is over${mode==='out'?'. The print after the loop ran once, with city = ""':''})</div>`);done=true;markLines(code,j=>j===3||(mode==='out'&&j===4)?'cur':'');return}
+    if(mode==='in'){box.insertAdjacentHTML('beforeend',`<div class="g">City: ${esc(v)}</div>`);c++;set('lp-c',c)}
+    const i=prompt();i.focus({preventScroll:true});box.scrollTop=box.scrollHeight}
+  function reset(){code.innerHTML=codeLines(mode==='in'?IN:OUT);box.innerHTML='';k=0;c=0;done=false;set('lp-k',0);set('lp-c',0);prompt()}
+  box.addEventListener('click',()=>{const i=box.querySelector('input');if(i)i.focus({preventScroll:true})});
+  $('#lp-reset').onclick=()=>{reset();box.querySelector('input').focus({preventScroll:true})};
+  seg($('#lp-mode'),v=>{mode=v;reset()});reset();
+})();
+
+/* ---------- 06 slicing ---------- */
+(function(){
+  const S_=$('#sl-s'),A=$('#sl-a'),B=$('#sl-b'),C=$('#sl-c');
+  const num=el=>{const t=el.value.trim();if(t==='')return{v:null,t:''};if(!/^[+-]?\d+$/.test(t))return{bad:1};return{v:parseInt(t,10),t:String(parseInt(t,10))}};
+  function render(){const s=S_.value,ch=[...s],n=ch.length,a=num(A),b=num(B),c=num(C);
+    const expr=`s[${a.t??'?'}:${b.t??'?'}${C.value.trim()!==''?':'+(c.t??'?'):''}]`;set('sl-expr',esc(expr));
+    if(a.bad||b.bad||c.bad){set('sl-res','–');set('sl-why','Indexes must be whole numbers, or blank.');paint([],null);return}
+    let idx;try{idx=pySlice(n,a.v,b.v,c.v)}catch(e){set('sl-res','<span style="color:var(--tail)">ValueError</span>');set('sl-why','A step of 0 would never move: <code>slice step cannot be zero</code>.');paint([],null);return}
+    const res=idx.map(i=>ch[i]).join('');set('sl-res',esc(pyRepr(res)));
+    const step=c.v??1;let stop=null;
+    if(b.v!=null){let e=b.v<0?b.v+n:b.v;if(e>=0&&e<n)stop=e}
+    const desc=i=>`${i} (${ch[i]===' '?'space':esc(pyRepr(ch[i]))})`;
+    let why=a.v==null?`Start at the ${step>0?'beginning':'end'}`:`Start at index ${a.v<0?`${a.v} → ${Math.max(0,a.v+n)}`:a.v}`;
+    why+=b.v==null?`, go to the ${step>0?'end':'beginning'}`:`, stop <b>before</b> index ${b.v}${b.v<0&&b.v+n>=0?` (= ${b.v+n})`:''}`;
+    why+=step!==1?`, step ${step}`:'';
+    why+=idx.length?`. Indexes taken: ${idx.length>8?idx.slice(0,8).join(', ')+', …':idx.map(desc).join(', ')} → ${idx.length} character${idx.length===1?'':'s'}.`:'. Nothing is in range, so the result is the empty string.';
+    set('sl-why',why);paint(idx,stop)}
+  function paint(idx,stop){const ch=[...S_.value],n=ch.length;
+    $('#sl-chars').innerHTML=ch.map((c,i)=>{const o=idx.indexOf(i);return`<div class="ch${c===' '?' sp':''}${o>=0?' pick':''}${i===stop?' stop':''}"><i>${i}</i><b>${c===' '?'␣':esc(c)}${o>=0?`<sup>${o+1}</sup>`:''}</b><i>${i===stop?'end':i-n}</i></div>`}).join('')}
+  [S_,A,B,C].forEach(el=>el.addEventListener('input',render));
+  $('#sl-pre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S_.value=b.dataset.s;A.value=b.dataset.a;B.value=b.dataset.b;C.value=b.dataset.c;render()});
+  render();
+})();
+
+/* ---------- 07 string methods ---------- */
+(function(){
+  const M={replace:['old','new'],upper:[],lower:[],count:['sub'],find:['sub'],split:['sep (blank = spaces)'],strip:[]};
+  const DEF={replace:['World','Universe'],count:['l'],find:['World'],split:[', ']};
+  let m='replace';const T=term($('#sm-out'));
+  function args(){const a=M[m];[1,2].forEach(i=>{const show=a.length>=i;$('#sm-l'+i).hidden=!show;$('#sm-a'+i).hidden=!show;if(show)set('sm-l'+i,a[i-1])})}
+  function run(){const s=$('#sm-s').value,a1=$('#sm-a1').value,a2=$('#sm-a2').value;T.clear();let call,res,cap='';
+    if(m==='replace'){call=`s.replace(${pyLit(a1)}, ${pyLit(a2)})`;res=pyRepr(pyReplace(s,a1,a2));const k=pyCount(s,a1);cap=a1===''?'An empty old string matches between every character.':k?`Replaced ${k} match${k>1?'es':''}. Matching is case-sensitive.`:`No match for ${esc(pyRepr(a1))}, so you get an unchanged copy.`}
+    else if(m==='upper'||m==='lower'){call=`s.${m}()`;res=pyRepr(m==='upper'?s.toUpperCase():s.toLowerCase())}
+    else if(m==='count'){call=`s.count(${pyLit(a1)})`;res=String(pyCount(s,a1));cap='count returns an int: how many non-overlapping times sub appears.'}
+    else if(m==='find'){call=`s.find(${pyLit(a1)})`;res=String(a1===''?0:s.indexOf(a1)===-1?-1:[...s.slice(0,s.indexOf(a1))].length);cap='find returns the index where sub first starts, or -1 if it is not there.'}
+    else if(m==='split'){if(a1===''){call='s.split()';res=pyList(pySplitWS(s));cap='With no argument, split breaks on runs of whitespace and returns a list.'}else{call=`s.split(${pyLit(a1)})`;res=pyList(s.split(a1));cap='split returns a list of strings, not a string.'}}
+    else{call='s.strip()';res=pyRepr(s.trim());cap='strip removes spaces (and other whitespace) from both ends only.'}
+    T.cmd(call);T.line(esc(res),'g');T.cmd('s');T.line(esc(pyRepr(s)));
+    set('sm-cap',(cap?cap+' ':'')+'Asking for <code>s</code> afterwards shows it never changed: strings are immutable.')}
+  seg($('#sm-m'),v=>{m=v;if(DEF[v]){$('#sm-a1').value=DEF[v][0];if(DEF[v][1]!=null)$('#sm-a2').value=DEF[v][1]}args();run()});
+  ['#sm-s','#sm-a1','#sm-a2'].forEach(id=>$(id).addEventListener('input',run));args();run();
+})();
+
+/* ---------- shared number formatting ---------- */
+const nf=(v,d=2)=>{const r=+v.toFixed(d);return Object.is(r,-0)?'0':String(r)};
+const sgn=v=>v<0?'− '+nf(-v):'+ '+nf(v);
+function fit(X,Y){const n=X.length,xm=mean(X),ym=mean(Y);let sxy=0,sxx=0;for(let i=0;i<n;i++){sxy+=(X[i]-xm)*(Y[i]-ym);sxx+=(X[i]-xm)**2}const b1=sxy/sxx,b0=ym-b1*xm;let sse=0,sst=0;for(let i=0;i<n;i++){sse+=(Y[i]-b0-b1*X[i])**2;sst+=(Y[i]-ym)**2}return{n,xm,ym,sxy,sxx,b1,b0,sse,sst}}
+function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end',cls:'sans',text:xl},svg);S('text',{x:m.l-34,y:m.t-2,cls:'sans',text:yl},svg)}
+
+/* ---------- 08 deterministic vs probabilistic ---------- */
+(function(){
+  let sig=0,seed=7,show=true,P=[];
+  function gen(){const r=mulberry32(seed);P=[];for(let i=0;i<24;i++)P.push({x:Math.round((1+9*r())*2)/2,z:gauss(r)})}
+  const line=x=>50+4*x;
+  const render=chart($('#md-chart'),w=>Math.min(300,Math.max(230,w*0.5)),(svg,w,h)=>{
+    const m={l:46,r:14,t:18,b:34},sx=lin(0,11,m.l,w-m.r),sy=lin(30,110,h-m.b,m.t),cl=v=>Math.max(30,Math.min(110,v));
+    yGrid(svg,sy,[40,60,80,100],m.l,w-m.r);xAxis(svg,sx,[0,2,4,6,8,10],h-m.b,String,m.l,w-m.r);axisLabels(svg,m,w,h,'hours studied','score');
+    S('line',{x1:sx(0),x2:sx(11),y1:sy(line(0)),y2:sy(line(11)),stroke:'var(--accent)','stroke-width':2.5},svg);
+    P.forEach(p=>{const y=cl(line(p.x)+sig*p.z);if(show&&sig>0)S('line',{x1:sx(p.x),x2:sx(p.x),y1:sy(line(p.x)),y2:sy(y),stroke:'var(--tail)','stroke-width':1.5},svg);
+      S('circle',{cx:sx(p.x),cy:sy(y),r:4.5,fill:'var(--c1)',stroke:'var(--surface)','stroke-width':1.2},svg)});
+    S('text',{x:sx(10.9),y:sy(line(10.9))-8,'text-anchor':'end',cls:'ta b sans',text:'y = 50 + 4x'},svg)});
+  function upd(){const res=P.map(p=>sig*p.z);
+    set('md-tag',sig?'PROBABILISTIC':'DETERMINISTIC');set('md-eq',sig?'y = 50 + 4x + ε':'y = 50 + 4x');
+    set('md-why',sig?`Same line, plus a random error ε for each student (SD ${nf(sig,1)} points). Two students who study the same hours can now get different scores.`:'No error term: every student who studies the same hours gets exactly the same score. Real data never look like this.');
+    set('md-on',`${res.filter(r=>Math.abs(r)<0.01).length} of 24`);set('md-miss',nf(mean(res.map(Math.abs)),1)+' pts');render()}
+  range('md-s',v=>{sig=v;upd()},v=>nf(v,1));
+  $('#md-new').onclick=()=>{seed++;gen();if(sig===0){const s=$('#md-s');s.value=6;s.dispatchEvent(new Event('input'))}else upd()};
+  seg($('#md-res'),v=>{show=v==='1';render()});gen();upd();
+})();
+
+/* ---------- 09 least squares ---------- */
+(function(){
+  let seed=3,X=[],Y=[],F,b0=8,b1=0.4,squares=true;
+  function gen(){const r=mulberry32(seed);X=[];Y=[];for(let i=0;i<10;i++){const x=Math.round((1+i+r()*0.6)*10)/10;X.push(x);Y.push(Math.round((3+1.1*x+1.8*gauss(r))*10)/10)}F=fit(X,Y)}
+  gen();
+  const sse=()=>X.reduce((s,x,i)=>s+(Y[i]-b0-b1*x)**2,0);
+  const render=chart($('#ls-chart'),w=>Math.min(340,Math.max(250,w*0.55)),(svg,w,h)=>{
+    const m={l:40,r:14,t:14,b:30},sx=lin(0,11.5,m.l,w-m.r),sy=lin(-4,22,h-m.b,m.t);
+    const clip=S('clipPath',{id:'ls-clip'},svg);S('rect',{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b},clip);const g=S('g',{'clip-path':'url(#ls-clip)'},svg);
+    yGrid(svg,sy,[0,5,10,15,20],m.l,w-m.r);xAxis(svg,sx,[0,2,4,6,8,10],h-m.b,String,m.l,w-m.r);
+    if(squares)X.forEach((x,i)=>{const py=sy(Y[i]),ph=sy(b0+b1*x),s=Math.abs(py-ph),px=sx(x);const left=px+s>w-m.r;
+      S('rect',{x:left?px-s:px,y:Math.min(py,ph),width:s,height:s,fill:'var(--tail-soft)',stroke:'var(--tail)','stroke-width':1,'fill-opacity':.7},g)});
+    X.forEach((x,i)=>S('line',{x1:sx(x),x2:sx(x),y1:sy(Y[i]),y2:sy(b0+b1*x),stroke:'var(--tail)','stroke-width':1.5},g));
+    S('line',{x1:sx(0),x2:sx(11.5),y1:sy(b0),y2:sy(b0+b1*11.5),stroke:'var(--accent)','stroke-width':2.5},g);
+    S('circle',{cx:sx(F.xm),cy:sy(F.ym),r:7,fill:'none',stroke:'var(--amber)','stroke-width':2.5},svg);
+    X.forEach((x,i)=>S('circle',{cx:sx(x),cy:sy(Y[i]),r:4.5,fill:'var(--ink)',stroke:'var(--surface)','stroke-width':1.2},svg))});
+  function upd(){const you=sse(),best=F.sse,raw=X.reduce((s,x,i)=>s+(Y[i]-b0-b1*x),0);
+    set('ls-b1-o',nf(b1));set('ls-b0-o',nf(b0));set('ls-you',nf(you,1));set('ls-best',nf(best,1));set('ls-raw',nf(raw,2));
+    set('ls-stat',you<=best*1.005+1e-9?'<span class="pill keep">Least squares ✓</span>':`${nf(you/best,2)}× the minimum`);render()}
+  const i1=$('#ls-b1'),i0=$('#ls-b0');
+  i1.addEventListener('input',()=>{b1=+i1.value;upd()});i0.addEventListener('input',()=>{b0=+i0.value;upd()});
+  $('#ls-snap').onclick=()=>{b1=F.b1;b0=F.b0;i1.value=b1;i0.value=b0;upd()};
+  $('#ls-new').onclick=()=>{seed++;gen();b1=+i1.value;b0=+i0.value;upd()};
+  seg($('#ls-sq'),v=>{squares=v==='1';render()});upd();
+})();
+
+/* ---------- 09 by-hand table ---------- */
+(function(){
+  const X=[1,2,3,4,5],Y0=[2,4,5,4,5];const T=$('#lh-table');
+  T.innerHTML='<tr><th>x</th><th>y</th><th>x − x̄</th><th>y − ȳ</th><th>(x − x̄)(y − ȳ)</th><th>(x − x̄)²</th></tr>'+
+    X.map((x,i)=>`<tr><td class="n">${x}</td><td class="n"><input class="inp" type="number" step="any" value="${Y0[i]}" data-i="${i}" style="width:7ch;text-align:right" aria-label="y for x = ${x}"></td><td class="n" id="lh-dx${i}"></td><td class="n" id="lh-dy${i}"></td><td class="n" id="lh-p${i}"></td><td class="n" id="lh-q${i}"></td></tr>`).join('')+
+    '<tr><th>Mean / sum</th><td class="n" id="lh-ym"></td><td class="n">x̄ = 3</td><td></td><td class="n" id="lh-sp"></td><td class="n" id="lh-sq"></td></tr>';
+  function upd(){const Y=[...T.querySelectorAll('input')].map(i=>parseFloat(i.value));if(Y.some(v=>!isFinite(v)))return;
+    const F=fit(X,Y);X.forEach((x,i)=>{set('lh-dx'+i,nf(x-F.xm));set('lh-dy'+i,nf(Y[i]-F.ym));set('lh-p'+i,nf((x-F.xm)*(Y[i]-F.ym)));set('lh-q'+i,nf((x-F.xm)**2))});
+    set('lh-ym','ȳ = '+nf(F.ym));set('lh-sp','Σ = '+nf(F.sxy));set('lh-sq','Σ = '+nf(F.sxx));
+    set('lh-steps',`<li><span class="k">1</span><div><b>Means</b><p>x̄ = <span class="v">${nf(F.xm)}</span>, ȳ = <span class="v">${nf(F.ym)}</span></p></div></li>
+      <li><span class="k">2</span><div><b>Slope</b><p>b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)² = ${nf(F.sxy)} / ${nf(F.sxx)} = <span class="v">${nf(F.b1,3)}</span></p></div></li>
+      <li><span class="k">3</span><div><b>Intercept</b><p>b₀ = ȳ − b₁x̄ = ${nf(F.ym)} − ${nf(F.b1,3)} × ${nf(F.xm)} = <span class="v">${nf(F.b0,3)}</span></p></div></li>
+      <li><span class="k">4</span><div><b>The line</b><p><span class="v mono">ŷ = ${nf(F.b0,3)} ${sgn(F.b1).replace(/(\d)$/,'$1')}x</span>. At x = 6 it predicts ${nf(F.b0+F.b1*6)}. Check: at x̄ = ${nf(F.xm)} it gives ${nf(F.b0+F.b1*F.xm)} = ȳ.</p></div></li>`)}
+  T.addEventListener('input',upd);upd();
+})();
+
+/* ---------- 10 four steps ---------- */
+(function(){
+  const ST=[['Specify the model','Choose the variables and the form, e.g. y = β₀ + β₁x + ε.'],['Estimate the parameters','Use the sample and least squares to get b₀ and b₁.'],['Evaluate the model','Check residuals, R², and whether the slope is significant.'],['Use the model','Predict y for new x values, inside the range of the data.']];
+  let next=0;const L=$('#or-list');
+  function deal(){next=0;let o;do{o=[0,1,2,3].sort(()=>Math.random()-0.5)}while(o.join()==='0,1,2,3');
+    L.innerHTML=o.map(i=>`<button data-i="${i}"><span class="k">?</span><span><b>${ST[i][0]}</b><span class="d" hidden><br><span style="color:var(--muted);font-size:14px">${ST[i][1]}</span></span></span></button>`).join('');set('or-msg','Which comes first?')}
+  L.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.classList.contains('ok'))return;const i=+b.dataset.i;
+    if(i===next){b.classList.add('ok');b.querySelector('.k').textContent=i+1;b.querySelector('.d').hidden=false;next++;
+      set('or-msg',next===4?'<b style="color:var(--good)">All four in order.</b> Specify → Estimate → Evaluate → Use.':`Right. What comes after "${ST[i][0].toLowerCase()}"?`)}
+    else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');set('or-msg',next===0?'Not first. What do you need before you can calculate anything?':`Not yet. What has to happen right after "${ST[next-1][0].toLowerCase()}"?`)}});
+  $('#or-reset').onclick=deal;deal();
+
+  const H=[1,2,2,3,4,4,5,6,6,7,8,9],SC=[52,55,61,60,66,70,68,75,73,80,82,88];const F=fit(H,SC),n=H.length;
+  const R=H.map((x,i)=>SC[i]-F.b0-F.b1*x),r2=1-F.sse/F.sst,se=Math.sqrt(F.sse/(n-2)),t=F.b1/(se/Math.sqrt(F.sxx)),p=tTwo(t,n-2);
+  let step=1,px=5;
+  const render=chart($('#w4-chart'),w=>Math.min(300,Math.max(230,w*0.5)),(svg,w,h)=>{const m={l:46,r:14,t:16,b:34};
+    if(step===3){const M=Math.ceil(Math.max(...R.map(Math.abs))*1.4),sx=lin(0,10,m.l,w-m.r),sy=lin(-M,M,h-m.b,m.t);
+      yGrid(svg,sy,[-M,-Math.round(M/2),0,Math.round(M/2),M].filter((v,i,a)=>a.indexOf(v)===i),m.l,w-m.r);xAxis(svg,sx,[0,2,4,6,8,10],h-m.b,String,m.l,w-m.r);axisLabels(svg,m,w,h,'hours studied','residual');
+      S('line',{x1:m.l,x2:w-m.r,y1:sy(0),y2:sy(0),stroke:'var(--accent)','stroke-width':2},svg);
+      H.forEach((x,i)=>{S('line',{x1:sx(x),x2:sx(x),y1:sy(0),y2:sy(R[i]),stroke:'var(--tail)','stroke-width':1.5},svg);S('circle',{cx:sx(x),cy:sy(R[i]),r:4.5,fill:'var(--c1)',stroke:'var(--surface)','stroke-width':1.2},svg)});return}
+    const xmax=step===4?16:10,sx=lin(0,xmax,m.l,w-m.r),sy=lin(40,step===4?130:100,h-m.b,m.t);
+    yGrid(svg,sy,step===4?[40,60,80,100,120]:[40,60,80,100],m.l,w-m.r);xAxis(svg,sx,step===4?[0,4,8,12,16]:[0,2,4,6,8,10],h-m.b,String,m.l,w-m.r);axisLabels(svg,m,w,h,'hours studied','score');
+    if(step===4){S('rect',{x:sx(1),y:m.t,width:sx(9)-sx(1),height:h-m.t-m.b,fill:'var(--good-soft)','fill-opacity':.6},svg);S('text',{x:sx(5),y:m.t+12,'text-anchor':'middle',cls:'sans',text:'range of the data'},svg);
+      S('line',{x1:m.l,x2:w-m.r,y1:sy(100),y2:sy(100),stroke:'var(--muted)','stroke-dasharray':'5 4'},svg);S('text',{x:w-m.r,y:sy(100)-5,'text-anchor':'end',cls:'sans',text:'100 = perfect score'},svg)}
+    if(step>=2)S('line',{x1:sx(0),x2:sx(xmax),y1:sy(F.b0),y2:sy(F.b0+F.b1*xmax),stroke:'var(--accent)','stroke-width':2.5},svg);
+    H.forEach((x,i)=>S('circle',{cx:sx(x),cy:sy(SC[i]),r:4.5,fill:'var(--c1)',stroke:'var(--surface)','stroke-width':1.2},svg));
+    if(step===4){const y=F.b0+F.b1*px,out=px<1||px>9;S('line',{x1:sx(px),x2:sx(px),y1:h-m.b,y2:sy(y),stroke:out?'var(--tail)':'var(--amber)','stroke-dasharray':'3 3','stroke-width':1.5},svg);
+      S('circle',{cx:sx(px),cy:sy(y),r:7,fill:out?'var(--tail)':'var(--amber)',stroke:'var(--surface)','stroke-width':2},svg)}});
+  const stat=(a,b,hl)=>`<div class="stat${hl?' hl':''}"><span>${a}</span><b>${b}</b></div>`;
+  function upd(){$('#w4-ctl').hidden=step!==4;const eq=`ŷ = ${nf(F.b0,1)} + ${nf(F.b1,2)}x`;
+    if(step===1){set('w4-read',stat('Students','12')+stat('Model form','y = β₀ + β₁x + ε',1));set('w4-note','<b>Specify.</b> Score is the response y, hours studied is x. The scatter rises in a roughly straight pattern, so we hypothesize a straight line plus random error. The β\'s are unknown population values.')}
+    if(step===2){set('w4-read',stat('Slope b₁',nf(F.b1,2))+stat('Intercept b₀',nf(F.b0,1))+stat('Fitted line',eq,1));set('w4-note',`<b>Estimate.</b> Least squares turns the sample into numbers: each extra hour of study goes with about <b>${nf(F.b1,1)} more points</b> on average, and someone who studies 0 hours is predicted ${nf(F.b0,0)}.`)}
+    if(step===3){set('w4-read',stat('R²',nf(r2,3),1)+stat('Correlation r',nf(Math.sqrt(r2),3))+stat('Typical miss s',nf(se,2)+' pts')+stat('Slope test p',fmtP(p)));
+      set('w4-note',`<b>Evaluate.</b> The residuals bounce around 0 with no curve or funnel, so a straight line suits the data. R² = ${nf(r2,2)}: hours explain ${nf(r2*100,0)}% of the variation in scores. p ${p<0.001?'< 0.001':'= '+fmtP(p)} for the slope, so the relationship is very unlikely to be chance. Only now is the model worth using.`)}
+    if(step===4){const y=F.b0+F.b1*px,out=px<1||px>9;set('w4-read',stat('Hours',nf(px,1))+stat('Predicted score',nf(y,1),1)+stat('Inside the data?',out?'<span style="color:var(--tail)">No: extrapolating</span>':'<span style="color:var(--good)">Yes</span>'));
+      set('w4-note',out?`<b>Use, carefully.</b> ${nf(px,1)} hours is outside the 1–9 hours we measured. The line keeps going, but nothing says reality does${y>100?`: it predicts ${nf(y,0)} on a 100-point exam`:''}.`:`<b>Use.</b> For ${nf(px,1)} hours the model predicts about ${nf(y,0)} points. This is an average: individual students will scatter around it (that's ε).`)}
+    render()}
+  seg($('#w4-pick'),v=>{step=+v;upd()});range('w4-x',v=>{px=v;if(step===4)upd()},v=>nf(v,1));upd();
+})();
+
+/* ---------- 11 symbolic vs connectionist ---------- */
+(function(){
+  const IT=[['IF temperature > 38 AND cough THEN flu','s','A hand-written IF-THEN rule.'],['Learns to recognize cats from a million labeled photos','c','Learning patterns from examples.'],['You can read exactly why it made each decision','s','The rules are the explanation.'],['Its knowledge is spread across millions of weights','c','Nothing in one weight means "cat"; the pattern is distributed.'],['Expert systems like MYCIN (1970s)','s','Hundreds of rules written with doctors.'],['Large language models like ChatGPT and Claude','c','Huge neural networks trained on text.'],['Breaks on a case nobody wrote a rule for','s','Brittleness: no rule, no answer.'],['Needs huge amounts of data and computing power to train','c','Learning from examples needs many examples.'],['Built from logic, symbols and search','s','Classic GOFAI ingredients.'],['Copes well with messy input like handwriting and speech','c','It learns the variation instead of listing it.'],['Often called a "black box"','c','Hard to explain why a particular output came out.'],['Inspired by how neurons connect in the brain','c','Hence "connectionist": intelligence from connections.']];
+  const L=$('#sg-list');let got={};
+  function paint(){L.innerHTML=IT.map(([t,a,w],i)=>{const g=got[i];return`<div class="it${g?(g===a?' ok':' no'):''}"><span>${t}</span><div class="seg" data-i="${i}"><button data-v="s" aria-pressed="${g==='s'}">Symbolic</button><button data-v="c" aria-pressed="${g==='c'}">Connectionist</button></div>${g?`<small>${g===a?'Right.':'It\'s '+(a==='s'?'symbolic':'connectionist')+'.'} ${w}</small>`:''}</div>`}).join('');
+    set('sg-score',Object.keys(got).filter(i=>got[i]===IT[i][1]).length)}
+  L.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.parentElement.dataset.i;if(got[i])return;got[i]=b.dataset.v;paint()});
+  $('#sg-reset').onclick=()=>{got={};paint()};set('sg-tot',IT.length);paint();
+  const RU=[[/free/i,'IF message contains "free" THEN spam'],[/winner|\bwon\b/i,'IF it contains "winner" or "won" THEN spam'],[/click here/i,'IF it contains "click here" THEN spam'],[/urgent/i,'IF it contains "urgent" THEN spam']];
+  function rf(){const t=$('#rf-in').value,hit=RU.map(r=>r[0].test(t)),first=hit.indexOf(true);
+    set('rf-rules',RU.map((r,i)=>`<div class="${hit[i]?'fire':''}">${hit[i]?'▶ ':''}${esc(r[1])}</div>`).join('')+`<div class="${first<0?'fire':''}">${first<0?'▶ ':''}ELSE not spam</div>`);
+    set('rf-v',first<0?'<span class="pill keep">Not spam</span>':'<span class="pill rej">Spam</span>');
+    set('rf-why',first<0?'No rule matched, so the default applied.':`Because: ${esc(RU[first][1].replace(/^IF /,'').replace(/ THEN spam$/,''))}.`)}
+  $('#rf-in').addEventListener('input',rf);$('#rf-pre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#rf-in').value=b.dataset.v;rf()});rf();
+})();
+
+/* ---------- 12 Turing judge ---------- */
+(function(){
+  const RD=[
+    {c:[['What is 3,847 × 29?','111,563.','ugh, no calculator on me. a bit over 110,000?']],m:0,w:'A answered instantly and perfectly; people rarely do. To pass, a program has to <b>hide</b> what it can do, so the test rewards imitating humans, not being intelligent.'},
+    {c:[['What did you have for breakfast?','just coffee, running late again','Why do you ask what I had for breakfast?'],['Can you just answer the question?','lol fine. coffee and half a granola bar','What makes you think I can\'t answer the question?']],m:1,w:'Turning every question back on the judge is how <b>ELIZA</b> (1966) worked, and some users still believed it was a person. Simple <b>tricks</b> can fool judges with no understanding at all.'},
+    {c:[['What\'s the capital of Australia?','Canberra. Everyone guesses Sydney though.','I am only 13 and from Odessa, we didn\'t study that yet. Do you have a guinea pig?']],m:1,w:'In 2014 "Eugene Goostman" was reported to fool a third of its judges by posing as a 13-year-old non-native speaker, so its gaps looked natural. Results depend heavily on the <b>judges</b> and the rules of the test.'},
+    {c:[['Describe the smell of rain.','Earthy and a little sweet, like warm pavement cooling off. There\'s even a word for it: petrichor.','like wet dirt?? kind of nice honestly']],m:0,w:'A was the machine, but modern language models write like either one, so this round is close to a coin flip. A machine can describe a smell it has never smelled: fluent behavior <b>isn\'t proof of understanding</b> (Searle\'s Chinese Room).'}];
+  let r=0,score=0,picked=false;
+  function paint(){const d=RD[r];set('tj-r',r+1);set('tj-n',RD.length);set('tj-s',score);
+    $('#tj-parties').innerHTML=[0,1].map(k=>`<div class="party" id="tj-p${k}"><h4><span>PARTNER ${'AB'[k]}</span><span class="lab-tag"></span></h4>${d.c.map(x=>`<div class="bub j">${esc(x[0])}</div><div class="bub a">${esc(x[1+k])}</div>`).join('')}</div>`).join('');
+    $('#tj-why').hidden=true;$('#tj-next').hidden=true;$('#tj-pick').hidden=false;picked=false}
+  $('#tj-pick').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||picked)return;picked=true;const d=RD[r],v=+b.dataset.v,ok=v===d.m;if(ok)score++;set('tj-s',score);
+    [0,1].forEach(k=>{const p=$('#tj-p'+k);p.classList.add(k===d.m?'machine':'human');p.querySelector('.lab-tag').textContent=k===d.m?'MACHINE':'HUMAN'});
+    const w=$('#tj-why');w.hidden=false;w.innerHTML=(ok?'<b style="color:var(--good)">You caught it.</b> ':'<b style="color:var(--tail)">Fooled.</b> ')+d.w;
+    $('#tj-pick').hidden=true;const n=$('#tj-next');n.hidden=false;n.textContent=r<RD.length-1?'Next round':`Final score ${score} of ${RD.length} · play again`});
+  $('#tj-next').onclick=()=>{if(r<RD.length-1)r++;else{r=0;score=0}paint()};paint();
+  $('#tt-myths').addEventListener('click',e=>{const b=e.target.closest('.myth');if(b)b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')});
+})();
+
+/* ---------- 13 neuron ---------- */
+(function(){
+  const PTS=[[0,0],[0,1],[1,0],[1,1]],G={and:[0,0,0,1],or:[0,1,1,1],nand:[1,1,1,0],xor:[0,1,1,0]};
+  let w1=0.5,w2=0.5,b=0,act='step',goal='and',inp=[1,1],timer=null;
+  const z=(x1,x2)=>w1*x1+w2*x2+b,f=v=>act==='step'?(v>=0?1:0):1/(1+Math.exp(-v)),fire=(x1,x2)=>f(z(x1,x2))>=0.5?1:0;
+  const col=v=>v>=0?'var(--accent)':'var(--tail)';
+  const diag=chart($('#nn-diag'),210,(svg,w,h)=>{const ix=34,sxp=Math.max(150,w*0.56),ox=w-30,cy=100,ys=[36,100,170];
+    const ins=[[`x₁ = ${inp[0]}`,inp[0],w1,'w₁'],[`x₂ = ${inp[1]}`,inp[1],w2,'w₂'],['1',1,b,'b']];
+    ins.forEach(([lab,v,wt,nm],i)=>{const y=ys[i];S('line',{x1:ix+16,y1:y,x2:sxp-26,y2:cy,stroke:col(wt),'stroke-width':1+Math.abs(wt)*2.2,'stroke-opacity':wt===0?.25:.9},svg);
+      const tt=0.42,mx=ix+16+(sxp-26-ix-16)*tt,my=y+(cy-y)*tt;S('text',{x:mx,y:my+(i===0?-12:i===1?-8:18),'text-anchor':'middle',cls:'b '+(wt<0?'tt':'ta'),text:`${nm} = ${nf(wt,1)}`},svg);
+      S('circle',{cx:ix,cy:y,r:16,fill:i===2?'var(--amber-soft)':v?'var(--accent-soft)':'var(--surface)',stroke:i===2?'var(--amber)':'var(--muted)','stroke-width':1.5},svg);
+      S('text',{x:ix,y:y+4,'text-anchor':'middle',cls:'ti b',text:i===2?'1':String(v)},svg);S('text',{x:ix,y:y-21,'text-anchor':'middle',cls:'sans',text:i===2?'bias':lab.split(' ')[0]},svg)});
+    const zv=z(inp[0],inp[1]),o=f(zv);
+    S('circle',{cx:sxp,cy:cy,r:26,fill:'var(--surface)',stroke:'var(--ink)','stroke-width':1.5},svg);S('text',{x:sxp,y:cy-4,'text-anchor':'middle',cls:'ti b',text:'Σ'},svg);S('text',{x:sxp,y:cy+12,'text-anchor':'middle',cls:'ti',text:nf(zv,2)},svg);
+    S('line',{x1:sxp+26,y1:cy,x2:ox-20,y2:cy,stroke:'var(--muted)','stroke-width':1.5},svg);
+    S('text',{x:(sxp+ox)/2,y:cy-10,'text-anchor':'middle',cls:'sans',text:act==='step'?'step':'sigmoid'},svg);
+    S('circle',{cx:ox,cy:cy,r:20,fill:'var(--good)','fill-opacity':.15+o*.75,stroke:'var(--good)','stroke-width':1.5},svg);S('text',{x:ox,y:cy+4,'text-anchor':'middle',cls:'ti b',text:act==='step'?String(o):nf(o,2)},svg);S('text',{x:ox,y:cy+38,'text-anchor':'middle',cls:'sans',text:'output'},svg)});
+  const plane=chart($('#nn-plane'),w=>Math.min(320,Math.max(240,w*0.85)),(svg,w,h)=>{const m={l:30,r:10,t:10,b:28},sz=Math.min(w-m.l-m.r,h-m.t-m.b),x0=m.l,y0=m.t,sx=lin(-0.5,1.5,x0,x0+sz),sy=lin(-0.5,1.5,y0+sz,y0);
+    const clip=S('clipPath',{id:'nn-clip'},svg);S('rect',{x:x0,y:y0,width:sz,height:sz},clip);const g=S('g',{'clip-path':'url(#nn-clip)'},svg);
+    const N=44,c=sz/N;for(let i=0;i<N;i++)for(let j=0;j<N;j++){const a=-0.5+(i+.5)*2/N,bb=-0.5+(j+.5)*2/N,o=f(z(a,bb));if(o>0.02)S('rect',{x:x0+i*c,y:y0+sz-(j+1)*c,width:c+.5,height:c+.5,fill:'var(--accent)','fill-opacity':o*0.26},g)}
+    S('rect',{x:x0,y:y0,width:sz,height:sz,fill:'none',stroke:'var(--line)'},svg);
+    if(Math.abs(w2)>1e-9){const yA=-(w1*-0.5+b)/w2,yB=-(w1*1.5+b)/w2;S('line',{x1:sx(-0.5),y1:sy(yA),x2:sx(1.5),y2:sy(yB),stroke:'var(--ink)','stroke-width':2,'stroke-dasharray':'6 4'},g)}
+    else if(Math.abs(w1)>1e-9){const xv=-b/w1;S('line',{x1:sx(xv),y1:y0,x2:sx(xv),y2:y0+sz,stroke:'var(--ink)','stroke-width':2,'stroke-dasharray':'6 4'},g)}
+    [0,1].forEach(t=>{S('text',{x:sx(t),y:y0+sz+16,'text-anchor':'middle',text:t},svg);S('text',{x:x0-8,y:sy(t)+4,'text-anchor':'end',text:t},svg)});
+    S('text',{x:x0+sz,y:y0+sz+16,'text-anchor':'end',cls:'sans',text:'x₁'},svg);S('text',{x:x0-8,y:y0+10,'text-anchor':'end',cls:'sans',text:'x₂'},svg);
+    PTS.forEach(([a,bb],i)=>{const t=G[goal][i],ok=fire(a,bb)===t,cx=sx(a),cy=sy(bb);
+      if(a===inp[0]&&bb===inp[1])S('circle',{cx,cy,r:17,fill:'none',stroke:'var(--amber)','stroke-width':2.5},svg);
+      if(!ok)S('circle',{cx,cy,r:12.5,fill:'none',stroke:'var(--tail)','stroke-width':2,'stroke-dasharray':'3 2'},svg);
+      S('circle',{cx,cy,r:8,fill:t?'var(--accent)':'var(--surface)',stroke:t?'var(--accent)':'var(--ink)','stroke-width':2},svg)})});
+  function upd(){const zv=z(inp[0],inp[1]),o=f(zv),k=PTS.filter(([a,bb],i)=>fire(a,bb)===G[goal][i]).length;
+    set('nn-z',`${nf(w1,1)}·${inp[0]} ${sgn(w2).replace(/^([+−]) /,'$1 ')}·${inp[1]} ${sgn(b)} = ${nf(zv,2)}`);
+    set('nn-o',act==='step'?`${o} <small style="font-weight:400;color:var(--muted)">${o?'fires':'stays off'}</small>`:nf(o,3));
+    set('nn-k',k===4?'4 of 4 <span class="pill keep">solved</span>':`${k} of 4`);diag();plane()}
+  const R={w1:range('nn-w1',v=>{w1=v;stopT();upd()},v=>nf(v,1)),w2:range('nn-w2',v=>{w2=v;stopT();upd()},v=>nf(v,1)),b:range('nn-b',v=>{b=v;stopT();upd()},v=>nf(v,1))};
+  function setW(a,c,d){[['w1',a],['w2',c],['b',d]].forEach(([k,v])=>{const el=R[k].el;el.value=v;set(el.id+'-o',nf(v,1))});w1=a;w2=c;b=d;upd()}
+  function stopT(){if(timer){clearInterval(timer);timer=null;$('#nn-train').disabled=false}}
+  $('#nn-train').onclick=()=>{stopT();let ep=0;$('#nn-train').disabled=true;const r1=v=>Math.max(-3,Math.min(3,Math.round(v*10)/10));
+    timer=setInterval(()=>{ep++;let a=w1,c=w2,d=b,miss=0;PTS.forEach(([x1,x2],i)=>{const y=a*x1+c*x2+d>=0?1:0,e=G[goal][i]-y;if(e){miss++;a=r1(a+0.5*e*x1);c=r1(c+0.5*e*x2);d=r1(d+0.5*e)}});
+      setW(a,c,d);const left=PTS.filter(([x1,x2],i)=>fire(x1,x2)!==G[goal][i]).length;
+      if(!left){set('nn-msg',`<b style="color:var(--good)">Learned ${goal.toUpperCase()} after ${ep} epoch${ep>1?'s':''}.</b> Final: w₁ = ${nf(w1,1)}, w₂ = ${nf(w2,1)}, b = ${nf(b,1)}.`);clearInterval(timer);timer=null;$('#nn-train').disabled=false;return}
+      set('nn-msg',`Epoch ${ep}: ${miss} mistake${miss===1?'':'s'}, weights nudged…`);
+      if(ep>=30){set('nn-msg',goal==='xor'?'<b style="color:var(--tail)">Still wrong after 30 epochs.</b> No straight line puts (0,1) and (1,0) on one side and (0,0), (1,1) on the other. One neuron can\'t learn XOR; a second layer can.':'Stopped after 30 epochs.');clearInterval(timer);timer=null;$('#nn-train').disabled=false}},420)};
+  $('#nn-zero').onclick=()=>{stopT();setW(0,0,0);set('nn-msg','')};
+  seg($('#nn-goal'),v=>{goal=v;set('nn-msg','');upd()});seg($('#nn-act'),v=>{act=v;upd()});seg($('#nn-in'),v=>{inp=v.split(',').map(Number);upd()});
+  upd();
+})();
+
+/* ---------- predict-the-output drill ---------- */
+(function(){
+  const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
+  const STRS=['Hello, World!','123456789','Python','abcdefgh','DS110 rocks','Newark NJ','machine'];
+  function gSlice(){for(let t=0;t<40;t++){const s=pick(STRS),ch=[...s],n=ch.length,k=ri(0,6);let a=null,b=null,c=null;
+      if(k===0){a=ri(0,n-2);b=ri(a+1,n)}else if(k===1)a=ri(1,n-1);else if(k===2)b=ri(1,n-1);else if(k===3)c=ri(2,3);else if(k===4){a=ri(0,n-3);b=ri(a+2,n);c=2}else if(k===5)a=-ri(2,Math.min(6,n-1));else{c=-1;if(Math.random()<.5){a=ri(2,n-1);b=ri(0,a-1)}}
+      const idx=pySlice(n,a,b,c),res=idx.map(i=>ch[i]).join('');if(!res||res!==res.trim())continue;
+      return{code:[`s = ${pyLit(s)}`,`print(s[${a??''}:${b??''}${c!=null?':'+c:''}])`],ans:res,why:`It takes index${idx.length>1?'es':''} ${idx.join(', ')}${b!=null?`, and stops before ${b}`:''}.`}}return gLen()}
+  function gIndex(){for(;;){const s=pick(STRS),ch=[...s],n=ch.length,i=ri(-n,n-1),c=ch[i<0?i+n:i];if(c===' ')continue;
+    return{code:[`s = ${pyLit(s)}`,`print(s[${i}])`],ans:c,why:i<0?`Negative indexes count from the end: ${i} is the same as ${i+n}.`:`Indexes start at 0, so s[${i}] is character number ${i+1}.`}}}
+  function gLen(){const s=pick(STRS);return{code:[`s = ${pyLit(s)}`,'print(len(s))'],ans:String([...s].length),why:'len counts every character, including spaces and punctuation.'}}
+  const REP=[['Hello, World!','World','Universe'],['banana','a','o'],['Hello, World!','o','0'],['Mississippi','ss','SS'],['I like cats','cats','dogs'],['2024-10-15','-','/'],['hello','l','L'],['Python','java','C']];
+  function gReplace(){const[s,o,n]=pick(REP);return{code:[`s = ${pyLit(s)}`,`print(s.replace(${pyLit(o)}, ${pyLit(n)}))`],ans:pyReplace(s,o,n),why:s.includes(o)?`Every ${pyRepr(o)} is replaced; everything else stays exactly the same.`:`There's no ${pyRepr(o)} in s, so you get it back unchanged.`}}
+  function gUpper(){const s=pick(['hi there','Data Science','ok']);if(Math.random()<.5)return{code:[`s = ${pyLit(s)}`,'s.upper()','print(s)'],ans:s,why:'upper() returned a new string, but nothing saved it. s itself never changes.'};
+    return{code:[`s = ${pyLit(s)}`,'s = s.upper()','print(s)'],ans:s.toUpperCase(),why:'This time the new string was assigned back to s.'}}
+  function gScope(){const K=ri(2,9),N=ri(2,5);let M=ri(0,9);if(M===K)M=(M+1)%10;const v=ri(0,2);
+    if(v===2)return{code:['def g():','    return y + 1','',`y = ${M}`,'print(g())'],ans:String(M+1),why:'g never assigns y, so the lookup falls back to the global y (LEGB).'};
+    const gl=v===1;return{code:['def f(b):',...(gl?['    global a']:[]),`    a = ${K}`,'    return a * b','',`a = ${M}`,`print(f(${N}))`,'print(a)'],ans:`${K*N}\n${gl?K:M}`,
+      why:gl?`global a makes the assignment change the global a, so the second line is ${K}.`:`a = ${K} inside f is a separate local variable; the global a stays ${M}.`}}
+  function gLoop(){if(Math.random()<.5){const st=ri(2,4),T=ri(7,15);let c=0;while(true){c+=st;if(c>=T)break}
+      return{code:['count = 0','while True:',`    count += ${st}`,`    if count >= ${T}:`,'        break','print(count)'],ans:String(c),why:`count goes ${Array.from({length:c/st},(_,i)=>(i+1)*st).join(', ')} and the loop breaks at the first value ≥ ${T}.`}}
+    const nums=Array.from({length:5},()=>ri(-5,12)),c=nums.filter(n=>pyMod(n,2)).length;
+    return{code:['c = 0',`for n in ${pyList(nums)}:`,'    if n % 2 != 0:','        c += 1','print(c)'],ans:String(c),why:`The odd ones: ${nums.filter(n=>pyMod(n,2)).join(', ')||'none'}.`}}
+  function gMod(){const n=ri(-9,17),d=pick([2,3]);return{code:[`print(${n} % ${d})`],ans:String(pyMod(n,d)),why:n<0?'In Python the result of % takes the sign of the divisor, so it is never negative here.':`${n} = ${Math.floor(n/d)} × ${d} + ${pyMod(n,d)}.`}}
+  function gTry(){const t=pick(['4','3','6','12','0','x','2.5']),x=pyInt(t),out=[];
+    if(x===null)out.push('bad number');else if(x===0)out.push('zero');else out.push(pyFloat(12/x));out.push('done');
+    return{code:['try:',`    x = int(${pyLit(t)})`,'    print(12 / x)','except ValueError:','    print("bad number")','except ZeroDivisionError:','    print("zero")','finally:','    print("done")'],ans:out.join('\n'),
+      why:x===null?`int(${pyRepr(t)}) raises ValueError, then finally still runs.`:x===0?'12 / 0 raises ZeroDivisionError, then finally still runs.':'/ always gives a float, so it prints with .0; finally always runs.'}}
+  const POOL={slice:[gSlice,gSlice,gIndex,gLen],str:[gReplace,gReplace,gUpper],scope:[gScope],flow:[gLoop,gMod,gTry]};
+  POOL.all=[...POOL.slice,...POOL.str,gScope,gScope,...POOL.flow];
+  let topic='all',cur=null,answered=false,st=0,best=0,right=0,tot=0;
+  try{best=+localStorage.getItem('ds110-drill-best')||0}catch(_){}
+  const clean=l=>l.trim().replace(/^(['"])(.*)\1$/,'$2');
+  function same(u,a){const ul=u.replace(/\r/g,'').split('\n').map(clean).filter(Boolean),al=a.split('\n');
+    if(ul.join('\n')===al.join('\n'))return true;
+    if(ul.length===1&&al.length>1&&al.every(l=>!/\s/.test(l)))return ul[0].split(/\s+/).join('\n')===al.join('\n');return false}
+  function tally(){set('dr-st',st);set('dr-best',best);set('dr-acc',`${right} / ${tot}`)}
+  function next(){cur=pick(POOL[topic])();answered=false;$('#dr-code').innerHTML=codeLines(cur.code);const i=$('#dr-in');i.value='';set('dr-fb','');$('#dr-go').disabled=false}
+  function check(){if(answered){next();$('#dr-in').focus({preventScroll:true});return}const u=$('#dr-in').value;if(!u.trim())return;answered=true;tot++;const ok=same(u,cur.ans);
+    if(ok){right++;st++;if(st>best){best=st;try{localStorage.setItem('ds110-drill-best',best)}catch(_){}}set('dr-fb',`<b style="color:var(--good)">Correct.</b> ${cur.why} <span style="color:var(--muted)">Press Enter for the next one.</span>`)}
+    else{st=0;set('dr-fb',`<b style="color:var(--tail)">Not quite.</b> Python prints:<pre class="code sm">${cur.ans.split('\n').map(l=>`<span class="ln">${esc(l)}</span>`).join('')}</pre>${cur.why}`)}
+    $('#dr-go').disabled=true;tally()}
+  $('#dr-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();check()}});
+  $('#dr-go').onclick=check;$('#dr-next').onclick=next;$('#dr-skip').onclick=()=>{if(!answered){st=0;tally()}next()};
+  seg($('#dr-topic'),v=>{topic=v;next()});tally();next();
+})();
+
+/* ---------- exam review ---------- */
+(function(){
+  const EX=[
+    {q:'What is the purpose of a class in Python?',to:'classes',a:'<p>A class is a <b>blueprint for creating objects</b>. It bundles data (attributes) and the functions that work on that data (methods) into one reusable template. Each object made from it is an instance with its own attribute values. <code>__init__</code> sets those starting values, and <code>self</code> refers to the specific object.</p>'},
+    {q:'What is the difference between a global and a local namespace in Python?',to:'scope',a:'<p><b>Global</b>: names defined at the top level of the module; visible throughout the file and they last for the whole program.</p><p><b>Local</b>: names created inside a function (parameters and assignments); visible only inside that function, created on each call and discarded when it returns. Python looks names up in LEGB order: Local → Enclosing → Global → Built-in.</p>'},
+    {q:'What is the purpose of the "try/except" statement in Python?',to:'tryexcept',a:'<p>To <b>handle errors (exceptions) at runtime</b> so the program doesn\'t crash. Code that might fail goes in <code>try</code>; if it raises a matching exception, the <code>except</code> block runs instead. Optional: <code>else</code> runs if no error happened, <code>finally</code> always runs (cleanup).</p>'},
+    {q:'Write a Python function that takes a list of numbers and returns the number of odd numbers in the list.',to:'countodds',a:codeBlock('def count_odds(nums):\n    count = 0\n    for n in nums:\n        if n % 2 != 0:\n            count += 1\n    return count','')},
+    {q:'What is the output of the following code?',code:'def f(b):\n    a = 6\n    return a * b\n\na = 0\nprint(f(3))\nprint(a)',to:'scope',a:codeBlock('18\n0','')+'<p>Inside <code>f</code>, <code>a = 6</code> is a new local variable, so f(3) returns 18. The global <code>a</code> is untouched and stays 0.</p>'},
+    {q:'What is the purpose of the following code?',code:'while True:\n    city = input("Enter city: ")\n    if city == "":\n        break\n    print("City: " + city)',to:'loops',a:'<p>It <b>repeatedly asks the user for a city and prints "City: &lt;name&gt;" for each one</b>. When the user presses Enter without typing anything, <code>input()</code> returns <code>""</code> and <code>break</code> ends the loop.</p>'},
+    {q:'What is the output of the following code?',code:'s = "Hello, World!"\nprint(s[1:5])',to:'slicing',a:codeBlock('ello','')+'<p>Indexes 1 to 4. The end index 5 (the comma) is excluded.</p>'},
+    {q:'What is the output of the following code?',code:'s = "Hello, World!"\nprint(s.replace("World", "Universe"))',to:'methods',a:codeBlock('Hello, Universe!','')+'<p>Only "World" changes; the exclamation mark stays.</p>'},
+    {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[::2])',to:'slicing',a:codeBlock('13579','')+'<p>Every second character, starting at index 0.</p>'},
+    {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[1:5:2])',to:'slicing',a:codeBlock('24','')+'<p>Indexes 1 and 3 ("2" and "4"); index 5 is excluded.</p>'},
+    {q:'What is the difference between deterministic and probabilistic models in the context of regression analysis?',to:'models',a:'<p>A <b>deterministic</b> model, y = β₀ + β₁x, assumes y is exactly determined by x, with no error. A <b>probabilistic</b> model, y = β₀ + β₁x + ε, adds a random error term ε for the variation x doesn\'t explain. Regression uses probabilistic models because real data scatter around the line.</p>'},
+    {q:'Explain the least squares method and how it is used to estimate the regression slope and intercept.',to:'lsq',a:'<p>Least squares chooses the slope and intercept that <b>minimize the sum of squared residuals</b> (SSE), where a residual is observed y minus predicted ŷ. Squaring keeps positive and negative errors from canceling and penalizes big misses more.</p><ul><li>Slope: b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</li><li>Intercept: b₀ = ȳ − b₁x̄</li><li>The line always passes through (x̄, ȳ).</li></ul>'},
+    {q:'What are the four steps involved in regression modeling, and what is the purpose of each step?',to:'steps4',a:'<ol><li><b>Specify the model</b>: choose its form, e.g. y = β₀ + β₁x + ε.</li><li><b>Estimate the parameters</b>: use sample data (least squares) to find b₀ and b₁.</li><li><b>Evaluate the model</b>: check fit and usefulness with residuals, R², and significance tests.</li><li><b>Use the model</b>: predict y for new x values or estimate the mean of y.</li></ol><p style="font-size:13px;color:var(--muted)">Check the wording against your lecture slides; courses phrase these steps differently.</p>'},
+    {q:'What are the key differences between the symbolic and connectionist approaches to AI?',to:'approaches',a:'<ul><li><b>Symbolic AI</b> represents knowledge as explicit symbols and hand-written rules/logic (e.g. expert systems). Interpretable and precise, but brittle; struggles with ambiguity and messy input.</li><li><b>Connectionist AI</b> uses neural networks that learn patterns from data by adjusting connection weights (e.g. image recognition, LLMs). Handles noisy data well, but needs lots of data and compute and is hard to interpret.</li><li><b>Core difference</b>: symbolic knowledge is explicit and programmed; connectionist knowledge is learned and spread across weights.</li></ul>'},
+    {q:'How does the Turing Test evaluate artificial intelligence, and what are its limitations?',to:'turing',a:'<p>Proposed by Alan Turing in 1950 as the "imitation game". A human judge has text conversations with a hidden human and a hidden machine; if the judge can\'t reliably tell which is the machine, it passes.</p><ul><li>It measures imitation of human behavior, not understanding (Searle\'s Chinese Room).</li><li>It can be gamed with tricks or evasive answers.</li><li>Results depend heavily on the judge.</li><li>It tests only conversation, and human-like is not the same as intelligent.</li></ul>'},
+    {q:'What is the role of weights and biases in a single artificial neuron?',to:'neuron',a:'<p>A neuron computes output = activation(w₁x₁ + … + wₙxₙ + b).</p><ul><li><b>Weights</b> scale each input, setting how much influence it has on the output (and in which direction).</li><li><b>The bias</b> shifts the weighted sum, moving the activation threshold, so the neuron can output something even when all inputs are 0 (like a regression intercept).</li><li>Both are learned during training by adjusting them to reduce error.</li></ul>'}];
+  let st={ans:{},rate:{},open:{}},filter='all';
+  try{st=Object.assign(st,JSON.parse(localStorage.getItem('ds110-exam')||'{}'))}catch(_){}
+  const save=()=>{try{localStorage.setItem('ds110-exam',JSON.stringify(st))}catch(_){}};
+  const RL={got:'Got it',part:'Partly',miss:'Missed'};
+  const L=$('#ex-list');
+  L.innerHTML=EX.map((e,i)=>`<article class="ex" data-i="${i}"><div class="ex-h"><b>Q${i+1}</b><a href="#${e.to}">Review the concept →</a></div><div class="qq">${e.q}</div>${e.code?codeBlock(e.code,'num'):''}
+    <textarea class="inp" rows="3" placeholder="Write your answer from memory before revealing…" aria-label="Your answer to question ${i+1}"></textarea>
+    <div class="row"><button class="btn pri" data-a="reveal">Reveal the model answer</button></div>
+    <div class="model" hidden><h4>Model answer</h4>${e.a}</div>
+    <div class="rate" hidden><span>How did you do?</span><div class="seg">${Object.keys(RL).map(k=>`<button data-r="${k}" aria-pressed="false">${RL[k]}</button>`).join('')}</div></div></article>`).join('');
+  function paint(){const cards=[...L.children];let c={got:0,part:0,miss:0};
+    cards.forEach((el,i)=>{const r=st.rate[i];if(r)c[r]++;el.dataset.r=r||'';el.querySelectorAll('.rate button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.r===r));
+      el.hidden=filter==='todo'?r==='got':filter==='miss'?r!=='miss':false;const open=!!st.open[i];el.querySelector('.model').hidden=!open;el.querySelector('.rate').hidden=!open;
+      el.querySelector('[data-a="reveal"]').textContent=open?'Hide the model answer':'Reveal the model answer'});
+    const left=EX.length-c.got-c.part-c.miss;
+    set('ex-tally',`<span class="pill keep">Got it ${c.got}</span><span class="pill" style="background:var(--amber-soft);color:var(--amber)">Partly ${c.part}</span><span class="pill rej">Missed ${c.miss}</span><span class="pill neu">Not rated ${left}</span>`);
+    if(filter!=='all'&&!cards.some(el=>!el.hidden))L.insertAdjacentHTML('afterbegin','<p class="cap ex-empty">Nothing here. Nice work.</p>');else L.querySelector('.ex-empty')?.remove()}
+  L.querySelectorAll('textarea').forEach((t,i)=>{t.value=st.ans[i]||'';t.addEventListener('input',()=>{st.ans[i]=t.value;save()})});
+  L.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const card=b.closest('.ex'),i=+card.dataset.i;
+    if(b.dataset.a==='reveal'){st.open[i]=!st.open[i];save();paint()}else if(b.dataset.r){st.rate[i]=st.rate[i]===b.dataset.r?undefined:b.dataset.r;save();paint()}});
+  seg($('#ex-filter'),v=>{filter=v;L.querySelector('.ex-empty')?.remove();paint()});
+  $('#ex-reset').onclick=()=>{if(!confirm('Clear all your written answers and ratings?'))return;st={ans:{},rate:{},open:{}};save();L.querySelectorAll('textarea').forEach(t=>t.value='');paint()};
+  paint();
+})();
+
+/* ---------- cheat sheet ---------- */
+(function(){
+  const C=[
+    ['Classes','Class = blueprint for objects: data (attributes) + functions (methods). <code>Dog("Rex")</code> makes an instance. <code>__init__</code> sets attributes; <code>self</code> = the object.'],
+    ['Namespaces','Global: top level, whole file, whole run. Local: inside a function call, gone when it returns. Lookup order LEGB. Assigning inside a function → new local unless <code>global x</code>.'],
+    ['try / except','<code>try</code> risky code → <code>except Err</code> only on that error → <code>else</code> only if no error → <code>finally</code> always. Purpose: handle errors, don\'t crash.'],
+    ['Count odds',codeBlock('def count_odds(nums):\n    count = 0\n    for n in nums:\n        if n % 2 != 0:\n            count += 1\n    return count','')],
+    ['Loops','<code>while True:</code> loops forever until <code>break</code>. <code>input()</code> returns a string; blank Enter → <code>""</code>. Indentation decides what\'s inside the loop.'],
+    ['Slicing','<code>s[start:end:step]</code>: start included, end <b>excluded</b>, index 0 first, -1 last. <code>s[::2]</code> every 2nd from 0, <code>s[::-1]</code> reversed. Spaces/punctuation count.'],
+    ['Strings','Immutable: methods return a new string. <code>replace(old, new)</code> swaps every match, case-sensitive. <code>upper lower strip split find count</code>.'],
+    ['Exam outputs','Q5 → 18, 0 · Q7 → ello · Q8 → Hello, Universe! · Q9 → 13579 · Q10 → 24 · <code>-3 % 2</code> → 1 · <code>12 / 4</code> → 3.0'],
+    ['Det. vs prob.','Deterministic: y = β₀ + β₁x (exact, no error). Probabilistic: y = β₀ + β₁x + ε (random error for what x doesn\'t explain). Regression is probabilistic.'],
+    ['Least squares','Minimize SSE = Σ(y − ŷ)². b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)². b₀ = ȳ − b₁x̄. Line passes through (x̄, ȳ). Square so errors don\'t cancel.'],
+    ['4 steps','1 Specify the model form · 2 Estimate b₀, b₁ (least squares) · 3 Evaluate (residuals, R², slope test) · 4 Use to predict (don\'t extrapolate).'],
+    ['Symbolic vs connectionist','Symbolic: hand-written rules/logic; explainable; brittle (expert systems). Connectionist: neural nets learn weights from data; robust; needs data/compute; black box (LLMs).'],
+    ['Turing Test','Turing 1950. Judge texts a hidden human + machine; can\'t tell → pass. Limits: behavior ≠ understanding (Chinese Room), judge-dependent, gameable (ELIZA, Eugene Goostman), language only.'],
+    ['Neuron','output = f(w₁x₁ + w₂x₂ + b). Weights: importance and direction of each input. Bias: shifts the threshold (like an intercept). Both learned in training. One neuron = one straight line (no XOR).']];
+  set('cheat',C.map(([h,t])=>`<div><b>${h}</b>${t}</div>`).join(''));
+  $('#cheat-print').onclick=()=>{const p=$('#print-area');p.innerHTML='<h1>DS 110 Midterm · Cheat sheet</h1>'+$('#cheat').outerHTML.replace('id="cheat"','');document.body.classList.add('printing');
+    const done=()=>{document.body.classList.remove('printing');window.removeEventListener('afterprint',done)};window.addEventListener('afterprint',done);window.print();setTimeout(done,1500)};
+})();
+
+/* ---------- checks ---------- */
+const Q={
+  classes:[
+    ['After these lines, what is <code>b.age</code>?',['<code>4</code>','<code>5</code>','<code>6</code>'],1,'Each object keeps its own attributes. <code>birthday()</code> changed <code>self.age</code>, and <code>self</code> was <code>a</code>, not <code>b</code>.','a = Dog("Rex", 3)\nb = Dog("Fido", 5)\na.birthday()'],
+    ['In <code>def speak(self):</code>, what is <code>self</code> when you call <code>b.speak()</code>?',['The Dog class itself','The object <code>b</code>','Whatever you type inside the parentheses'],1,'Python passes the object before the dot in as <code>self</code> automatically.']],
+  scope:[
+    ['What does this print?',['<code>10 5</code>','<code>10 10</code>','<code>5 5</code>'],0,'<code>x = 10</code> inside <code>g</code> creates a local x. The global x is still 5.','x = 5\ndef g():\n    x = 10\n    return x\nprint(g(), x)'],
+    ['What does this print?',['NameError: y is not defined','<code>8</code>','<code>0</code>'],1,'<code>h</code> never assigns <code>y</code>, so Python falls back to the global <code>y</code> (LEGB). It exists by the time <code>h</code> is called.','def h():\n    return y * 2\n\ny = 4\nprint(h())']],
+  tryexcept:[
+    ['What does this print?',['<code>A</code> then <code>C</code>','<code>A</code>, <code>B</code>, then <code>C</code>','only <code>C</code>','only <code>A</code>'],0,'<code>A</code> prints, then <code>1 / 0</code> raises, so the rest of the try block (<code>print("B")</code>) is skipped and the matching except prints <code>C</code>.','try:\n    print("A")\n    x = 1 / 0\n    print("B")\nexcept ZeroDivisionError:\n    print("C")'],
+    ['When does a <code>finally</code> block run?',['Only when an exception happened','Only when no exception happened','Every time, error or not'],2,'<code>finally</code> is for cleanup that must happen either way, like closing a file.']],
+  countodds:[
+    ['What does <code>17 % 2</code> evaluate to?',['<code>8</code>','<code>8.5</code>','<code>1</code>','<code>0</code>'],2,'<code>%</code> gives the remainder: 17 = 8 × 2 + 1. A remainder of 1 means odd.'],
+    ['This version has a bug. What does it print?',['<code>3</code>','<code>1</code>','<code>0</code>'],1,'<code>return count</code> is indented inside the loop, so the function returns after checking only the first number (1 is odd, so count is 1).','def count_odds(nums):\n    count = 0\n    for n in nums:\n        if n % 2 != 0:\n            count += 1\n        return count\n\nprint(count_odds([1, 3, 5]))']],
+  loops:[
+    ['What does this print?',['<code>2</code>','<code>3</code>','<code>4</code>','It never stops'],1,'count becomes 1, 2, 3; at 3 the if is true and <code>break</code> exits, then 3 is printed.','count = 0\nwhile True:\n    count += 1\n    if count == 3:\n        break\nprint(count)'],
+    ['In the exam code, the user types Paris, then Tokyo, then presses Enter on a blank line. How many lines start with "City:"?',['2','3','0'],0,'Paris and Tokyo are echoed. The blank entry hits <code>break</code> before the print line.']],
+  slicing:[
+    ['What does this print?',['<code>Pyt</code>','<code>yth</code>','<code>ytho</code>','<code>tho</code>'],1,'Indexes 1, 2, 3: y, t, h. Index 4 is excluded.','s = "Python"\nprint(s[1:4])'],
+    ['What does this print?',['<code>adg</code>','<code>cf</code>','<code>abc</code>','<code>beh</code>'],0,'Step 3 from index 0: indexes 0, 3, 6 are a, d, g.','s = "abcdefgh"\nprint(s[::3])']],
+  methods:[
+    ['What does this print?',['<code>bonono</code>','<code>bonana</code>','<code>banono</code>'],0,'<code>replace</code> swaps every match, not just the first.','s = "banana"\nprint(s.replace("a", "o"))'],
+    ['What does this print?',['<code>HI</code>','<code>hi</code>','<code>Hi</code>'],1,'<code>upper()</code> returned <code>\'HI\'</code>, but nothing saved it. <code>s</code> still refers to <code>\'hi\'</code>.','s = "hi"\ns.upper()\nprint(s)']],
+  models:[
+    ['Which one is a probabilistic model?',['<span class="mono">y = 3 + 2x</span>','<span class="mono">y = 3 + 2x + ε</span>','<span class="mono">y = 2x</span>'],1,'The random error term ε is what makes a model probabilistic.'],
+    ['Converting Celsius to Fahrenheit (F = 32 + 1.8C) is best described as…',['Deterministic: each C gives exactly one F, with no error','Probabilistic: measurements vary','Not a model at all'],0,'It\'s an exact formula, so there is no ε. Regression is for relationships with scatter.']],
+  lsq:[
+    ['x̄ = 4, ȳ = 10 and b₁ = 2. What is b₀?',['2','8','18','−2'],0,'b₀ = ȳ − b₁x̄ = 10 − 2 × 4 = 2.'],
+    ['The line predicts ŷ = 12 and the observed y = 9. What is the residual, and what does it add to SSE?',['−3, adds 9','3, adds 3','−3, adds −3'],0,'Residual = y − ŷ = 9 − 12 = −3. SSE adds its square: 9.']],
+  steps4:[
+    ['After fitting a line, the residual plot shows a clear U-shape. Which step caught it, and what next?',['Step 4: predict anyway','Step 3: go back to step 1 and try a different model form','Step 2: recompute the slope'],1,'A pattern in the residuals means the straight-line form is wrong. Evaluation sends you back to specify a better model.'],
+    ['Your data cover 1 to 10 hours of study. Predicting the score for 40 hours is…',['Fine, the line keeps going','Extrapolation: the model was never checked out there','Impossible to compute'],1,'You can compute it, but nothing says the relationship holds far outside the data.']],
+  approaches:[
+    ['A hospital needs every decision explained step by step to a regulator. Which approach makes that easiest?',['Symbolic','Connectionist'],0,'Symbolic systems decide with readable rules, so the rule that fired is the explanation.'],
+    ['What is the core difference?',['Symbolic AI runs on computers; connectionist AI runs on brains','Symbolic AI is programmed with explicit rules; connectionist AI learns patterns from data as weights','Connectionist AI is older'],1,'Programmed rules vs learned weights. Both run on computers; connectionist ideas are only inspired by brains.']],
+  turing:[
+    ['Why does the Turing Test use typed text only?',['Computers in 1950 could not handle audio','So the judge evaluates the conversation, not appearance or voice','To make it harder for the human'],1,'Text-only isolates the question Turing cared about: can the machine converse like a person?'],
+    ['Searle\'s Chinese Room argument claims that…',['Machines will never pass the Turing Test','Producing correct answers by following rules doesn\'t require understanding, so passing doesn\'t prove understanding','The test should be run in Chinese'],1,'It attacks what passing would mean, not whether a machine can pass.']],
+  neuron:[
+    ['Inputs x = (1, 0), weights w = (2, −1), bias = −1.5, step activation (fires if the sum ≥ 0). What is the output?',['0','1','0.5'],1,'Weighted sum: 2(1) + (−1)(0) − 1.5 = 0.5 ≥ 0, so it fires: 1.'],
+    ['You raise the bias b and leave the weights alone. The neuron now…',['fires more easily (for more inputs)','fires less easily','ignores its inputs'],0,'A larger b adds to every weighted sum, so more inputs push it past the threshold.']]};
+document.querySelectorAll('.check').forEach(el=>{const qs=Q[el.dataset.q];
+  el.innerHTML=qs.map(([q,o,,,c],k)=>`<div class="cq"><div class="q"><small>Check ${k+1} of ${qs.length}</small>${q}${c?codeBlock(c):''}</div><div class="opts">${o.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div><p class="fb" hidden></p></div>`).join('');
+  el.querySelectorAll('.cq').forEach((cq,k)=>{const [,,a,why]=qs[k];cq.querySelector('.opts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,bs=cq.querySelectorAll('.opts button');bs.forEach(x=>x.classList.remove('right','wrong'));b.classList.add(i===a?'right':'wrong');if(i!==a)bs[a].classList.add('right');
+    const fb=cq.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===a?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--tail)">Not quite.</b> ')+why})})});
+
+/* ---------- nav + progress ---------- */
+(function(){
+  const secs=[...document.querySelectorAll('section.concept')],con=secs.filter(s=>s.querySelector('.done'));let done={};
+  try{done=JSON.parse(localStorage.getItem('ds110-lab')||'{}')}catch(e){}
+  const save=()=>{try{localStorage.setItem('ds110-lab',JSON.stringify(done))}catch(e){}};
+  let k=0;secs.forEach(s=>{const c=con.includes(s);const lab=c?String(++k).padStart(2,'0'):s.id==='drill'?'↻':'✎';const li=document.createElement('li');li.innerHTML=`<a href="#${s.id}" data-id="${s.id}"><span class="n">${lab}</span><span class="t">${s.dataset.t}</span><span class="ck">✓</span></a>`;$('#toc-'+s.dataset.lec).appendChild(li)});
+  set('prog-t',con.length);
+  function paint(){let n=0;con.forEach(s=>{const on=!!done[s.id];if(on)n++;const b=s.querySelector('.done');b.setAttribute('aria-pressed',on);b.textContent=on?'Understood ✓':'Mark as understood';document.querySelector(`.toc a[data-id="${s.id}"]`).classList.toggle('done',on)});set('prog-n',n);$('#prog-bar').style.width=(n/con.length*100)+'%'}
+  document.querySelectorAll('.done').forEach(b=>b.onclick=()=>{const id=b.dataset.id;done[id]=!done[id];save();paint()});
+  paint();
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.toc a').forEach(a=>a.classList.toggle('on',a.dataset.id===e.target.id));const a=document.querySelector(`.toc a[data-id="${e.target.id}"]`);if(a&&window.innerWidth<=880)a.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})}})},{rootMargin:'-30% 0px -60% 0px'});
+  secs.forEach(s=>io.observe(s));
+})();
+
+/* fill any slider readouts that haven't been written yet */
+document.querySelectorAll('input[type=range]').forEach(i=>{const o=document.getElementById(i.id+'-o');if(o&&!o.textContent){const d=(i.step.split('.')[1]||'').length;o.textContent=nf(+i.value,d)}});
+</script>
+
+</body>
+</html>
