@@ -26,4 +26,4 @@ The code editor runs real Python in the browser with [Pyodide](https://pyodide.o
 
 Each concept has a short explanation, an interactive lab, a common mistake to avoid, and check questions. Progress, answers and drafts are saved in your browser only.
 
-Each page is a single self-contained HTML file (plain HTML, CSS and JavaScript, no build step). Open it locally or host it with GitHub Pages.
+Each page is a single self-contained HTML file (plain HTML, CSS and JavaScript, no build step). Open it locally, or deploy the repo as a static site (it is hosted on Vercel); no server is needed.
