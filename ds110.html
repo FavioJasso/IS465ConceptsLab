@@ -367,6 +367,32 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
 .ex .model ul,.ex .model ol{margin:0;padding-left:20px;display:grid;gap:4px}
 .rate{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
 
+/* review deck */
+.dk-strip{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:4px}
+.dk-strip a{height:30px;border-radius:6px;display:grid;place-items:center;font:600 11px var(--f-mono);background:var(--surface);border:1px solid var(--line);color:var(--muted);text-decoration:none;font-variant-numeric:tabular-nums}
+.dk-strip a.out{opacity:.3;border-style:dashed}
+.dk-strip a.got{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.dk-strip a.back{background:var(--tail-soft);border-color:var(--tail);color:var(--tail)}
+.dk-strip a.now{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.dk .seen{font:600 12px var(--f-body);color:var(--tail);background:var(--tail-soft);padding:2px 8px;border-radius:99px;margin-left:8px}
+.dk .yours{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;padding:10px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line)}
+.dk .yours.empty{color:var(--muted);font-style:italic}
+.dk .lab2{font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dk .show{width:100%;border:0;background:var(--accent);color:var(--surface);border-radius:8px;padding:12px;font-weight:600;font-size:16px}
+.dk-rate{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dk-rate button{border:1.5px solid;border-radius:8px;padding:9px 8px;display:grid;gap:2px;text-align:center;background:var(--surface)}
+.dk-rate b{font-size:16px}.dk-rate small{font-size:12px;color:var(--muted)}
+.dk-rate .a{border-color:var(--tail);color:var(--tail)}.dk-rate .a:hover{background:var(--tail-soft)}
+.dk-rate .m{border-color:var(--amber);color:var(--amber)}.dk-rate .m:hover{background:var(--amber-soft)}
+.dk-rate .g{border-color:var(--good);color:var(--good)}.dk-rate .g:hover{background:var(--good-soft)}
+.dk-toast{font-size:14px;color:var(--muted);min-height:1.5em;text-align:center}
+.dk-list{display:grid;gap:6px}
+.dk-list div{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 10px;border-radius:8px;background:var(--paper);font-size:15px}
+.dk-list .n{font:600 13px var(--f-mono);color:var(--accent)}.dk-list .c{font:600 13px var(--f-mono);color:var(--tail);white-space:nowrap}
+.match{display:inline-block;font:600 12px var(--f-body);padding:2px 9px;border-radius:99px;margin-left:6px;letter-spacing:0;text-transform:none}
+.match.y{background:var(--good-soft);color:var(--good)}.match.n{background:var(--tail-soft);color:var(--tail)}
+@media (max-width:520px){.dk-strip{grid-template-columns:repeat(8,minmax(0,1fr))}}
+
 /* cheat sheet + print */
 .cheat{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px 22px}
 .cheat>div{font-size:14px;border-top:1px solid var(--line);padding-top:8px;min-width:0}
@@ -946,17 +972,20 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
 </section>
 
 <!-- exam -->
-<section class="concept" id="exam" data-lec="prac" data-t="Full exam review">
-  <header><span class="eyebrow">Exam review</span><h2>Answer every question from memory</h2></header>
-  <p class="lead">Write each answer before you look. Then reveal the model answer, compare honestly, and rate yourself. Your answers and ratings are saved, so come back tomorrow and work on whatever isn't "Got it" yet.</p>
+<section class="concept" id="exam" data-lec="prac" data-t="Exam review deck">
+  <header><span class="eyebrow">Exam review</span><h2>Review deck: all 16 questions</h2></header>
+  <p class="lead">Answer each question from memory, then reveal the model answer and rate yourself. <b>Again</b> brings the card back after 3 more cards, <b>Almost</b> after 6, and <b>Got it</b> retires it for this round. When the round ends, drill only the ones you missed. Your place is saved in this browser.</p>
   <div class="lab">
     <div class="row" style="justify-content:space-between">
-      <div class="seg" id="ex-filter"><button data-v="all" aria-pressed="true">All 16</button><button data-v="todo" aria-pressed="false">Not "Got it" yet</button><button data-v="miss" aria-pressed="false">Missed</button></div>
-      <div class="tally" id="ex-tally"></div>
+      <div class="tally" id="dk-counts"></div>
+      <div class="row"><button class="btn" id="dk-order" aria-pressed="true">Shuffled</button><button class="btn ghost" id="dk-restart">Restart all 16</button></div>
     </div>
-    <div class="row"><button class="btn ghost" id="ex-reset">Clear my answers and ratings</button></div>
+    <div class="row" id="dk-confirm" hidden><span style="font-size:14px;color:var(--muted)">Start over with all 16 cards? This clears the current round.</span><button class="btn" id="dk-yes">Yes, restart</button><button class="btn ghost" id="dk-no">Keep going</button></div>
+    <div class="dk-strip" id="dk-strip"></div>
   </div>
-  <div class="exam" id="ex-list"></div>
+  <article class="ex dk" id="dk-card" aria-live="polite"></article>
+  <p class="dk-toast" id="dk-toast" aria-live="polite"></p>
+  <p class="cap">Keys: <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> shows the answer while typing, or <span class="kbd">Space</span> when you're not typing. Then <span class="kbd">1</span> Again · <span class="kbd">2</span> Almost · <span class="kbd">3</span> Got it.</p>
   <div class="lab" id="cheat-lab">
     <div class="lab-h"><h3>One-page cheat sheet</h3><span class="hint">the exam allows one single-sided letter page</span></div>
     <div class="cheat" id="cheat"></div>
@@ -1525,48 +1554,68 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
   seg($('#dr-topic'),v=>{topic=v;next()});tally();next();
 })();
 
-/* ---------- exam review ---------- */
+/* ---------- exam review deck (spaced repeats within a round) ---------- */
 (function(){
   const EX=[
     {q:'What is the purpose of a class in Python?',to:'classes',a:'<p>A class is a <b>blueprint for creating objects</b>. It bundles data (attributes) and the functions that work on that data (methods) into one reusable template. Each object made from it is an instance with its own attribute values. <code>__init__</code> sets those starting values, and <code>self</code> refers to the specific object.</p>'},
     {q:'What is the difference between a global and a local namespace in Python?',to:'scope',a:'<p><b>Global</b>: names defined at the top level of the module; visible throughout the file and they last for the whole program.</p><p><b>Local</b>: names created inside a function (parameters and assignments); visible only inside that function, created on each call and discarded when it returns. Python looks names up in LEGB order: Local → Enclosing → Global → Built-in.</p>'},
     {q:'What is the purpose of the "try/except" statement in Python?',to:'tryexcept',a:'<p>To <b>handle errors (exceptions) at runtime</b> so the program doesn\'t crash. Code that might fail goes in <code>try</code>; if it raises a matching exception, the <code>except</code> block runs instead. Optional: <code>else</code> runs if no error happened, <code>finally</code> always runs (cleanup).</p>'},
     {q:'Write a Python function that takes a list of numbers and returns the number of odd numbers in the list.',to:'countodds',a:codeBlock('def count_odds(nums):\n    count = 0\n    for n in nums:\n        if n % 2 != 0:\n            count += 1\n    return count','')},
-    {q:'What is the output of the following code?',code:'def f(b):\n    a = 6\n    return a * b\n\na = 0\nprint(f(3))\nprint(a)',to:'scope',a:codeBlock('18\n0','')+'<p>Inside <code>f</code>, <code>a = 6</code> is a new local variable, so f(3) returns 18. The global <code>a</code> is untouched and stays 0.</p>'},
+    {q:'What is the output of the following code?',code:'def f(b):\n    a = 6\n    return a * b\n\na = 0\nprint(f(3))\nprint(a)',x:'18\n0',to:'scope',a:codeBlock('18\n0','')+'<p>Inside <code>f</code>, <code>a = 6</code> is a new local variable, so f(3) returns 18. The global <code>a</code> is untouched and stays 0.</p>'},
     {q:'What is the purpose of the following code?',code:'while True:\n    city = input("Enter city: ")\n    if city == "":\n        break\n    print("City: " + city)',to:'loops',a:'<p>It <b>repeatedly asks the user for a city and prints "City: &lt;name&gt;" for each one</b>. When the user presses Enter without typing anything, <code>input()</code> returns <code>""</code> and <code>break</code> ends the loop.</p>'},
-    {q:'What is the output of the following code?',code:'s = "Hello, World!"\nprint(s[1:5])',to:'slicing',a:codeBlock('ello','')+'<p>Indexes 1 to 4. The end index 5 (the comma) is excluded.</p>'},
-    {q:'What is the output of the following code?',code:'s = "Hello, World!"\nprint(s.replace("World", "Universe"))',to:'methods',a:codeBlock('Hello, Universe!','')+'<p>Only "World" changes; the exclamation mark stays.</p>'},
-    {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[::2])',to:'slicing',a:codeBlock('13579','')+'<p>Every second character, starting at index 0.</p>'},
-    {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[1:5:2])',to:'slicing',a:codeBlock('24','')+'<p>Indexes 1 and 3 ("2" and "4"); index 5 is excluded.</p>'},
+    {q:'What is the output of the following code?',code:'s = "Hello, World!"\nprint(s[1:5])',x:'ello',to:'slicing',a:codeBlock('ello','')+'<p>Indexes 1 to 4. The end index 5 (the comma) is excluded.</p>'},
+    {q:'What is the output of the following code?',code:'s = "Hello, World!"\nprint(s.replace("World", "Universe"))',x:'Hello, Universe!',to:'methods',a:codeBlock('Hello, Universe!','')+'<p>Only "World" changes; the exclamation mark stays.</p>'},
+    {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[::2])',x:'13579',to:'slicing',a:codeBlock('13579','')+'<p>Every second character, starting at index 0.</p>'},
+    {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[1:5:2])',x:'24',to:'slicing',a:codeBlock('24','')+'<p>Indexes 1 and 3 ("2" and "4"); index 5 is excluded.</p>'},
     {q:'What is the difference between deterministic and probabilistic models in the context of regression analysis?',to:'models',a:'<p>A <b>deterministic</b> model, y = β₀ + β₁x, assumes y is exactly determined by x, with no error. A <b>probabilistic</b> model, y = β₀ + β₁x + ε, adds a random error term ε for the variation x doesn\'t explain. Regression uses probabilistic models because real data scatter around the line.</p>'},
     {q:'Explain the least squares method and how it is used to estimate the regression slope and intercept.',to:'lsq',a:'<p>Least squares chooses the slope and intercept that <b>minimize the sum of squared residuals</b> (SSE), where a residual is observed y minus predicted ŷ. Squaring keeps positive and negative errors from canceling and penalizes big misses more.</p><ul><li>Slope: b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</li><li>Intercept: b₀ = ȳ − b₁x̄</li><li>The line always passes through (x̄, ȳ).</li></ul>'},
     {q:'What are the four steps involved in regression modeling, and what is the purpose of each step?',to:'steps4',a:'<ol><li><b>Specify the model</b>: choose its form, e.g. y = β₀ + β₁x + ε.</li><li><b>Estimate the parameters</b>: use sample data (least squares) to find b₀ and b₁.</li><li><b>Evaluate the model</b>: check fit and usefulness with residuals, R², and significance tests.</li><li><b>Use the model</b>: predict y for new x values or estimate the mean of y.</li></ol><p style="font-size:13px;color:var(--muted)">Check the wording against your lecture slides; courses phrase these steps differently.</p>'},
     {q:'What are the key differences between the symbolic and connectionist approaches to AI?',to:'approaches',a:'<ul><li><b>Symbolic AI</b> represents knowledge as explicit symbols and hand-written rules/logic (e.g. expert systems). Interpretable and precise, but brittle; struggles with ambiguity and messy input.</li><li><b>Connectionist AI</b> uses neural networks that learn patterns from data by adjusting connection weights (e.g. image recognition, LLMs). Handles noisy data well, but needs lots of data and compute and is hard to interpret.</li><li><b>Core difference</b>: symbolic knowledge is explicit and programmed; connectionist knowledge is learned and spread across weights.</li></ul>'},
     {q:'How does the Turing Test evaluate artificial intelligence, and what are its limitations?',to:'turing',a:'<p>Proposed by Alan Turing in 1950 as the "imitation game". A human judge has text conversations with a hidden human and a hidden machine; if the judge can\'t reliably tell which is the machine, it passes.</p><ul><li>It measures imitation of human behavior, not understanding (Searle\'s Chinese Room).</li><li>It can be gamed with tricks or evasive answers.</li><li>Results depend heavily on the judge.</li><li>It tests only conversation, and human-like is not the same as intelligent.</li></ul>'},
     {q:'What is the role of weights and biases in a single artificial neuron?',to:'neuron',a:'<p>A neuron computes output = activation(w₁x₁ + … + wₙxₙ + b).</p><ul><li><b>Weights</b> scale each input, setting how much influence it has on the output (and in which direction).</li><li><b>The bias</b> shifts the weighted sum, moving the activation threshold, so the neuron can output something even when all inputs are 0 (like a regression intercept).</li><li>Both are learned during training by adjusting them to reduce error.</li></ul>'}];
-  let st={ans:{},rate:{},open:{}},filter='all';
-  try{st=Object.assign(st,JSON.parse(localStorage.getItem('ds110-exam')||'{}'))}catch(_){}
-  const save=()=>{try{localStorage.setItem('ds110-exam',JSON.stringify(st))}catch(_){}};
-  const RL={got:'Got it',part:'Partly',miss:'Missed'};
-  const L=$('#ex-list');
-  L.innerHTML=EX.map((e,i)=>`<article class="ex" data-i="${i}"><div class="ex-h"><b>Q${i+1}</b><a href="#${e.to}">Review the concept →</a></div><div class="qq">${e.q}</div>${e.code?codeBlock(e.code,'num'):''}
-    <textarea class="inp" rows="3" placeholder="Write your answer from memory before revealing…" aria-label="Your answer to question ${i+1}"></textarea>
-    <div class="row"><button class="btn pri" data-a="reveal">Reveal the model answer</button></div>
-    <div class="model" hidden><h4>Model answer</h4>${e.a}</div>
-    <div class="rate" hidden><span>How did you do?</span><div class="seg">${Object.keys(RL).map(k=>`<button data-r="${k}" aria-pressed="false">${RL[k]}</button>`).join('')}</div></div></article>`).join('');
-  function paint(){const cards=[...L.children];let c={got:0,part:0,miss:0};
-    cards.forEach((el,i)=>{const r=st.rate[i];if(r)c[r]++;el.dataset.r=r||'';el.querySelectorAll('.rate button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.r===r));
-      el.hidden=filter==='todo'?r==='got':filter==='miss'?r!=='miss':false;const open=!!st.open[i];el.querySelector('.model').hidden=!open;el.querySelector('.rate').hidden=!open;
-      el.querySelector('[data-a="reveal"]').textContent=open?'Hide the model answer':'Reveal the model answer'});
-    const left=EX.length-c.got-c.part-c.miss;
-    set('ex-tally',`<span class="pill keep">Got it ${c.got}</span><span class="pill" style="background:var(--amber-soft);color:var(--amber)">Partly ${c.part}</span><span class="pill rej">Missed ${c.miss}</span><span class="pill neu">Not rated ${left}</span>`);
-    if(filter!=='all'&&!cards.some(el=>!el.hidden))L.insertAdjacentHTML('afterbegin','<p class="cap ex-empty">Nothing here. Nice work.</p>');else L.querySelector('.ex-empty')?.remove()}
-  L.querySelectorAll('textarea').forEach((t,i)=>{t.value=st.ans[i]||'';t.addEventListener('input',()=>{st.ans[i]=t.value;save()})});
-  L.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const card=b.closest('.ex'),i=+card.dataset.i;
-    if(b.dataset.a==='reveal'){st.open[i]=!st.open[i];save();paint()}else if(b.dataset.r){st.rate[i]=st.rate[i]===b.dataset.r?undefined:b.dataset.r;save();paint()}});
-  seg($('#ex-filter'),v=>{filter=v;L.querySelector('.ex-empty')?.remove();paint()});
-  $('#ex-reset').onclick=()=>{if(!confirm('Clear all your written answers and ratings?'))return;st={ans:{},rate:{},open:{}};save();L.querySelectorAll('textarea').forEach(t=>t.value='');paint()};
-  paint();
+  const N=EX.length,GAP={again:3,almost:6},KEY='ds110-deck-v1',TOPIC=i=>document.getElementById(EX[i].to)?.dataset.t||'';
+  let shuffle=true,S=null;
+  function fresh(ids){const q=[...ids];if(shuffle)for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}return{queue:q,deck:[...ids],got:[],lapses:{},reviews:0,shown:false,drafts:{}}}
+  try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.queue)){S=v;shuffle=v.shuffle!==false}}catch(_){}
+  if(!S)S=fresh(EX.map((_,i)=>i));S.drafts=S.drafts||{};
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({...S,shuffle}))}catch(_){}};
+  const card=$('#dk-card'),toast=t=>set('dk-toast',t);
+  const norm=t=>t.replace(/\r/g,'').split('\n').map(l=>l.trim().replace(/^(['"])(.*)\1$/,'$2')).filter(Boolean);
+  function matches(u,x){const ul=norm(u),xl=x.split('\n');if(ul.join('\n')===xl.join('\n'))return true;return ul.length===1&&xl.length>1&&ul[0].split(/\s+/).join('\n')===xl.join('\n')}
+  function status(){const cur=S.queue[0],back=new Set(S.queue.filter(i=>S.lapses[i]));
+    set('dk-counts',`<span class="pill neu">Left in round ${S.queue.length}</span><span class="pill rej">Coming back ${back.size}</span><span class="pill keep">Got it ${S.got.length} / ${S.deck.length}</span><span class="pill" style="background:var(--paper);color:var(--muted)">Reviews ${S.reviews}</span>`);
+    set('dk-strip',EX.map((_,i)=>{let c='';if(!S.deck.includes(i))c='out';else if(i===cur&&S.queue.length)c='now';else if(S.got.includes(i))c='got';else if(back.has(i))c='back';return`<a class="${c}" href="#${EX[i].to}" title="Q${i+1}: review the concept">${i+1}</a>`}).join(''));
+    const o=$('#dk-order');o.textContent=shuffle?'Shuffled':'Exam order';o.setAttribute('aria-pressed',shuffle)}
+  function render(){status();if(!S.queue.length)return summary();
+    const i=S.queue[0],e=EX[i],d=S.drafts[i]||'',lap=S.lapses[i]||0,isCode=!!(e.code||/^Write a Python/.test(e.q));
+    card.innerHTML=`<div class="ex-h"><b>Q${i+1}${lap?`<span class="seen">seen ${lap+1}×</span>`:''}</b><a href="#${e.to}">${esc(TOPIC(i))} · review the concept →</a></div>
+      <div class="qq">${e.q}</div>${e.code?codeBlock(e.code,'num'):''}
+      ${S.shown?answer(i):`<textarea class="inp" id="dk-ans" rows="3" spellcheck="${isCode?'false':'true'}" style="${isCode?'font-family:var(--f-mono)':''}" placeholder="${e.x?'Type exactly what Python prints, one line per printed line…':'Answer from memory first…'}" aria-label="Your answer to question ${i+1}">${esc(d)}</textarea>`}
+      ${S.shown?`<div class="dk-rate"><button class="a" data-r="again"><b>Again</b><small>back in ${GAP.again} cards</small></button><button class="m" data-r="almost"><b>Almost</b><small>back in ${GAP.almost} cards</small></button><button class="g" data-r="got"><b>Got it</b><small>done this round</small></button></div>`:'<button class="show" id="dk-show">Show answer</button>'}`;
+    const ta=$('#dk-ans');if(ta){ta.addEventListener('input',()=>{S.drafts[i]=ta.value;save()});ta.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&(ev.ctrlKey||ev.metaKey)){ev.preventDefault();reveal()}})}
+    const sh=$('#dk-show');if(sh)sh.onclick=reveal;card.querySelectorAll('.dk-rate button').forEach(b=>b.onclick=()=>rate(b.dataset.r))}
+  function answer(i){const e=EX[i],u=S.drafts[i]||'';const badge=e.x&&u.trim()?(matches(u,e.x)?'<span class="match y">Matches the output</span>':'<span class="match n">Doesn\'t match</span>'):'';
+    return`<div class="lab2">Your answer ${badge}</div><div class="yours${u.trim()?'':' empty'}">${u.trim()?esc(u):'You didn\'t write anything this time.'}</div><div class="model"><h4>Model answer</h4>${e.a}</div>`}
+  function reveal(){S.shown=true;save();render();toast('');card.querySelector('.dk-rate .g')?.focus({preventScroll:true})}
+  function rate(r){const i=S.queue.shift();S.reviews++;S.shown=false;
+    if(r==='got'){S.got.push(i);delete S.drafts[i];toast(`Q${i+1} done for this round.`)}
+    else{S.lapses[i]=(S.lapses[i]||0)+1;const pos=Math.min(GAP[r],S.queue.length);S.queue.splice(pos,0,i);S.drafts[i]='';
+      toast(pos===0?`Q${i+1} again right away (it's the last card left).`:`Q${i+1} comes back after ${pos} more card${pos>1?'s':''}.`)}
+    save();render();const top=card.getBoundingClientRect().top;if(top<0||top>innerHeight*0.6)card.scrollIntoView({block:'start',behavior:'smooth'})}
+  function summary(){const missed=S.deck.filter(i=>S.lapses[i]),first=S.deck.length-missed.length;
+    card.innerHTML=`<div class="ex-h"><b>ROUND DONE</b><span style="font-size:13px;color:var(--muted)">${S.reviews} reviews</span></div>
+      <div class="qq" style="font-family:var(--f-display);font-size:24px">${missed.length?`${first} of ${S.deck.length} right the first time.`:`All ${S.deck.length} right the first time.`}</div>
+      ${missed.length?`<p>These took more than one try. Practice them next:</p><div class="dk-list">${missed.sort((a,b)=>S.lapses[b]-S.lapses[a]).map(i=>`<div><span class="n">Q${i+1}</span><span>${EX[i].q}${EX[i].code?' <code>'+esc(EX[i].code.split('\n').pop())+'</code>':''}</span><span class="c">${S.lapses[i]+1} tries</span></div>`).join('')}</div>`:'<p>Nothing came back this round. Run it again tomorrow to make it stick.</p>'}
+      <div class="row"><button class="btn pri" id="dk-missed" ${missed.length?'':'disabled'}>Practice the ${missed.length||''} I missed</button><button class="btn" id="dk-all">Start all 16 again</button></div>`;
+    $('#dk-missed').onclick=()=>{S=fresh(missed);save();render()};$('#dk-all').onclick=()=>{S=fresh(EX.map((_,i)=>i));save();render()}}
+  document.addEventListener('keydown',ev=>{if(ev.target.closest&&ev.target.closest('textarea,input,select'))return;if(ev.metaKey||ev.ctrlKey||ev.altKey||!S.queue.length)return;
+    const r=card.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
+    if(!S.shown&&(ev.key===' '||ev.key==='Enter')){if(ev.target.closest&&ev.target.closest('button,a'))return;ev.preventDefault();reveal()}
+    else if(S.shown&&['1','2','3'].includes(ev.key)){ev.preventDefault();rate(['again','almost','got'][+ev.key-1])}});
+  $('#dk-order').onclick=()=>{shuffle=!shuffle;save();status();toast(shuffle?'New rounds will start shuffled.':'New rounds will follow the exam order.')};
+  $('#dk-restart').onclick=()=>{$('#dk-confirm').hidden=false};$('#dk-no').onclick=()=>{$('#dk-confirm').hidden=true};
+  $('#dk-yes').onclick=()=>{$('#dk-confirm').hidden=true;S=fresh(EX.map((_,i)=>i));save();render();toast('Fresh round with all 16 cards.')};
+  render();
 })();
 
 /* ---------- cheat sheet ---------- */

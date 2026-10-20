@@ -18,7 +18,7 @@ Introduction to AI, midterm review. Thirteen concepts mapped to the 16 midterm q
 - **Part 1 · Python**: classes and objects, global vs local namespaces (with a step-through of the exam's scope question), try/except, writing `count_odds`, `while True` / `break`, slicing, and string methods.
 - **Part 2 · Regression**: deterministic vs probabilistic models, least squares (drag the line, then work it by hand), and the four steps of regression modeling.
 - **Part 3 · AI concepts**: symbolic vs connectionist AI, the Turing Test and its limits, and weights and biases in a single neuron (tune it, then train it).
-- **Practice**: an endless predict-the-output drill, a full exam review where you write each answer before revealing the model answer, and a printable one-page cheat sheet.
+- **Practice**: an endless predict-the-output drill, a review deck of all 16 exam questions (write your answer, reveal, rate yourself; cards you miss come back a few cards later, and you can drill only the ones you missed), and a printable one-page cheat sheet.
 
 The code editor runs real Python in the browser with [Pyodide](https://pyodide.org), loaded on first use from jsDelivr.
 
