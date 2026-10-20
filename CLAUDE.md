@@ -8,6 +8,11 @@ Interactive study pages, one self-contained HTML file per course (`index.html` =
 - Each concept section: eyebrow with the exam question(s) it covers, a short lead, an interactive lab, "Remember" + "Common mistake" notes, two check questions, and a "Mark as understood" button. Progress is saved in `localStorage` (wrap every access in try/catch).
 - Verify every code output and worked number by running it in real Python before committing.
 
+## Keep each course's questions in its own tab
+- A course's check questions, drill, review deck and cheat sheet live only in that course's HTML file. Never put one course's questions on another tab, and never share a question bank or deck across pages.
+- Prefix every `localStorage` key with the course id (`is465-…`, `ds110-…`, `<course>-…`). All pages share one origin on Vercel, so an unprefixed key would mix progress between tabs.
+- The only cross-page element is the `.courses` tab bar.
+
 ## End-of-page review: always an Anki-style deck
 The review questions at the end of a course page are a spaced review deck, **not a flat list**. Reuse the deck in `ds110.html` (section `#exam`, JS block "exam review deck"):
 - One card at a time: question (+ code), a textarea to answer from memory, then **Show answer** reveals the model answer next to what was typed.
