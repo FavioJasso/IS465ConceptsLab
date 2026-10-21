@@ -421,6 +421,63 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
   .ch b{font-size:16px}
   .drill-a{flex-direction:column}
 }
+
+/* ---------- Part 4: lecture topics ---------- */
+.sort .it .seg{flex-wrap:wrap}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:15px}
+.flow .box{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:8px 12px;display:grid;gap:2px;min-width:0}
+.flow .box small{font-size:12px;color:var(--muted)}
+.flow .box.hot{border-color:var(--accent);background:var(--accent-soft)}
+.flow .arr{color:var(--muted);font-weight:600}
+.flow pre.code{margin:0}
+.nest{position:relative;width:100%;max-width:300px;aspect-ratio:1;margin:0 auto}
+.ring{position:absolute;left:50%;bottom:0;transform:translateX(-50%);border-radius:50%;border:2px solid;display:flex;justify-content:center;align-items:flex-start;font:600 13px var(--f-body);padding-top:9%}
+.ring.r1{width:100%;height:100%;background:var(--good-soft);border-color:var(--good);color:var(--good);padding-top:6%}
+.ring.r2{width:72%;height:72%;background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.ring.r3{width:42%;height:42%;background:var(--accent-soft);border-color:var(--accent);color:var(--accent);align-items:center;padding-top:0}
+.ring[aria-pressed="true"]{box-shadow:0 0 0 3px var(--surface),0 0 0 5px currentColor}
+.steps.tl li{grid-template-columns:52px minmax(0,1fr)}
+.steps.tl .k{width:auto;height:26px;border-radius:6px;padding:0 6px;font-size:13px}
+.dstab td,.dstab th{transition:background .2s}
+.dstab .hi{background:var(--accent-soft)}
+.dstab .hi-l{background:var(--good-soft)}
+.dstab .hi-m{background:var(--tail-soft)}
+.ladder2{display:grid;gap:6px}
+.ladder2 div{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;padding:8px 12px;border-radius:8px;border-left:4px solid var(--accent);background:var(--paper)}
+.ladder2 div:nth-child(2){margin-left:6%;border-left-color:var(--amber)}
+.ladder2 div:nth-child(3){margin-left:12%;border-left-color:var(--tail)}
+.ladder2 span{font-size:14px;color:var(--muted)}
+.cmtab td,.cmtab th{text-align:center}
+.cmtab td b{display:block;font:600 22px var(--f-mono)}
+.cmtab td.ok{background:var(--good-soft)}.cmtab td.bad{background:var(--tail-soft)}
+.loop4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.loop4 span{text-align:center;font-size:12.5px;padding:7px 4px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--muted)}
+.loop4 span.on{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+@media (max-width:520px){.loop4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mxrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.mxlab{font-size:12px;color:var(--muted);margin-bottom:4px}
+.mxop{font:600 22px var(--f-mono);color:var(--muted)}
+.mx{display:inline-grid;gap:3px}
+.mx span,.mx button{min-width:38px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:5px;background:var(--surface);font:600 13px var(--f-mono);padding:0 4px;font-variant-numeric:tabular-nums}
+.mx button{cursor:pointer}
+.mx .on{background:var(--accent-soft);border-color:var(--accent)}
+.mx .sel{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.mx .q1{background:var(--accent-soft)}.mx .q2{background:var(--good-soft)}.mx .q3{background:var(--amber-soft)}.mx .q4{background:var(--tail-soft)}
+.mx .max{outline:2px solid var(--ink);outline-offset:-2px}
+.mx .salt{background:var(--tail-soft);border-color:var(--tail)}
+.cswrap{display:flex;gap:10px}
+.swatch{flex:1;height:56px;border-radius:8px;border:1px solid var(--line)}
+.layers{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:2px}
+.layers span{height:38px;border-radius:3px;background:var(--line);display:grid;place-items:end center;font:600 9px var(--f-mono);color:var(--muted);padding-bottom:2px;transition:background .2s}
+.layers span.on{background:var(--accent);color:var(--surface)}
+@media (max-width:520px){.layers{grid-template-columns:repeat(12,minmax(0,1fr))}}
+.cycle{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.cycle div{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--paper);display:grid;gap:2px;font-size:14px}
+.cycle div b{font:600 12px var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.cycle div.on{border-color:var(--tail);background:var(--tail-soft)}
+.cycle div.on b{color:var(--tail)}
+@media (max-width:620px){.cycle{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fa-g{font-weight:600}
 </style>
 </head>
 <body>
@@ -432,11 +489,12 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
 
 <div class="layout">
 <nav class="toc" aria-label="Concepts">
-  <div class="prog"><span><b id="prog-n">0</b> of <span id="prog-t">13</span> understood</span><div class="bar"><i id="prog-bar"></i></div></div>
+  <div class="prog"><span><b id="prog-n">0</b> of <span id="prog-t">26</span> understood</span><div class="bar"><i id="prog-bar"></i></div></div>
   <div class="lists">
     <div><h4>Part 1 · Python</h4><ol id="toc-py"></ol></div>
     <div><h4>Part 2 · Regression</h4><ol id="toc-reg"></ol></div>
     <div><h4>Part 3 · AI concepts</h4><ol id="toc-ai"></ol></div>
+    <div><h4>Part 4 · Lecture slides</h4><ol id="toc-lec"></ol></div>
     <div><h4>Practice</h4><ol id="toc-prac"></ol></div>
   </div>
 </nav>
@@ -445,7 +503,7 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
 <header class="hero">
   <span class="eyebrow">DS 110 · Midterm review</span>
   <h1>Concept Lab</h1>
-  <p>Thirteen concepts behind the 16 midterm questions, in the order they build on each other. Each one gives you the idea, something you can run or change to see why it works, the mistake people usually make, and two check questions. Then drill code questions until they're automatic, and answer the whole exam from memory.</p>
+  <p>Thirteen concepts behind the 16 midterm questions, then thirteen more from the lecture slides, in the order they build on each other. Each one gives you the idea, something you can run or change to see why it works, the mistake people usually make, and two check questions. Then drill code questions until they're automatic, and answer the whole exam from memory.</p>
   <div class="howto"><span><b>1</b>Read the idea</span><span><b>2</b>Run it, change it</span><span><b>3</b>Answer the checks</span><span><b>4</b>Mark it understood</span><span><b>5</b>Finish with the exam review</span></div>
 </header>
 
@@ -748,6 +806,7 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
       <li><b>Probabilistic</b>: <span class="mono">y = β₀ + β₁x + ε</span>. ε is random variation plus everything x doesn't explain.</li>
       <li>ε averages out to 0, so the line predicts the <b>average</b> y for each x.</li>
       <li>Regression uses probabilistic models because real data always scatter around the line.</li>
+      <li>Lecture examples: <b>BMI = kg / m²</b> is deterministic (no error term); <b>newborn SBP = 6 × age(days) + ε</b> is probabilistic (ε covers other factors, like birthweight).</li>
     </ul></div>
     <div class="trap"><h3>Common mistake</h3>"Probabilistic" doesn't mean the model is a guess or the relationship is weak. It means the model admits that individual points scatter around the line.</div>
   </div>
@@ -797,7 +856,7 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
 <!-- 10 -->
 <section class="concept" id="steps4" data-lec="reg" data-t="Four steps of modeling">
   <header><span class="eyebrow">10 · Exam Q13</span><h2>The four steps of regression modeling</h2></header>
-  <p class="lead">Regression is a process, not one formula. You <b>specify</b> a model, <b>estimate</b> its numbers from data, <b>evaluate</b> whether it's any good, and only then <b>use</b> it to predict. Skipping step 3 is how people end up confidently predicting with a model that doesn't fit.</p>
+  <p class="lead">Regression is a process, not one formula. In the lecture's wording: <b>hypothesize the deterministic component</b> and estimate its unknown parameters, <b>specify the probability distribution of the random error</b> and estimate its standard deviation, <b>evaluate the fitted model</b>, and only then <b>use it</b> for prediction and estimation. Skipping step 3 is how people end up confidently predicting with a model that doesn't fit.</p>
   <div class="lab">
     <div class="lab-h"><h3>Put the steps in order</h3><span class="hint">tap them first to last</span></div>
     <div class="order" id="or-list"></div>
@@ -805,7 +864,7 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
   </div>
   <div class="lab">
     <div class="lab-h"><h3>One example, all four steps</h3><span class="hint">12 students: hours studied vs exam score</span></div>
-    <div class="seg" id="w4-pick"><button data-v="1" aria-pressed="true">1 · Specify</button><button data-v="2" aria-pressed="false">2 · Estimate</button><button data-v="3" aria-pressed="false">3 · Evaluate</button><button data-v="4" aria-pressed="false">4 · Use</button></div>
+    <div class="seg" id="w4-pick"><button data-v="1" aria-pressed="true">1 · Hypothesize &amp; estimate</button><button data-v="2" aria-pressed="false">2 · Error term</button><button data-v="3" aria-pressed="false">3 · Evaluate</button><button data-v="4" aria-pressed="false">4 · Use</button></div>
     <div class="plot" id="w4-chart"></div>
     <div class="ctl" id="w4-ctl" hidden><label for="w4-x">Hours studied <output id="w4-x-o"></output></label><input type="range" id="w4-x" min="0" max="16" step="0.5" value="5"></div>
     <div class="read" id="w4-read"></div>
@@ -813,12 +872,12 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
   </div>
   <div class="notes">
     <div class="keys"><h3>Remember</h3><ul>
-      <li><b>1 Specify</b>: pick the variables and the form, e.g. <span class="mono">y = β₀ + β₁x + ε</span>.</li>
-      <li><b>2 Estimate</b>: use sample data, usually least squares, to get b₀ and b₁.</li>
-      <li><b>3 Evaluate</b>: check the fit: residuals, R², whether the slope is significantly different from 0.</li>
-      <li><b>4 Use</b>: predict y for new x values, inside the range of the data.</li>
+      <li><b>1 Hypothesize the deterministic component</b>: define the dependent and independent variables and the form (e.g. a straight line), then <b>estimate the unknown parameters</b> b₀ and b₁ with least squares.</li>
+      <li><b>2 Specify the probability distribution of the random error term ε</b> and <b>estimate its standard deviation</b>.</li>
+      <li><b>3 Evaluate the fitted model</b>: residuals, R², whether the slope is significantly different from 0.</li>
+      <li><b>4 Use the model for prediction and estimation</b>, inside the range of the data.</li>
     </ul></div>
-    <div class="trap"><h3>Common mistake</h3>Courses word these steps differently, and some textbooks list five (adding "describe the error ε" after estimating). Match your lecture slides' wording on the exam; the logic is the same.</div>
+    <div class="trap"><h3>Common mistake</h3>Listing "estimate" as its own step. In the lecture, estimating the parameters is part of step 1, and step 2 is about the <b>error term</b>: its distribution and standard deviation.</div>
   </div>
   <div class="check" data-q="steps4"></div>
   <button class="done" data-id="steps4" aria-pressed="false">Mark as understood</button>
@@ -953,6 +1012,560 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
   <button class="done" data-id="neuron" aria-pressed="false">Mark as understood</button>
 </section>
 
+
+<div class="part"><span class="eyebrow">Part 4</span><h2>From the lecture slides</h2><p>Topics from the course lectures that the midterm review above doesn't cover: machine learning basics, training a network, regression by hand, computer vision and CNNs, self-supervised speech, and fairness.</p></div>
+
+<!-- 14 -->
+<section class="concept" id="ai-def" data-lec="lec" data-t="What counts as AI">
+  <header><span class="eyebrow">14 · Lecture: Inside the Glass Box</span><h2>What counts as AI, and how ML differs from rules</h2></header>
+  <p class="lead">The lecture's working definition: AI is <em>a human-made system that may sense, predict, generate, plan, or act</em>. Inside AI sits <b>machine learning</b> (trained on existing data to find patterns and predict on new data), and inside ML sits <b>deep learning</b> (multi-layered networks for highly sophisticated tasks). The older approach, <b>GOFAI</b> ("good old-fashioned AI"), runs only on human-written, readable instructions. In GOFAI, code is the blueprint. In machine learning, <em>data is the blueprint</em>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Is it AI?</h3><span class="hint"><b id="aid-score">0</b> of <span id="aid-tot">0</span> right</span></div>
+    <div class="sort" id="aid-list"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Two ways to build a program</h3><span class="hint">compare what goes in and what comes out</span></div>
+    <div class="seg" id="aid-mode"><button data-v="gofai" aria-pressed="true">Rules-based (GOFAI)</button><button data-v="ml" aria-pressed="false">Machine learning</button></div>
+    <div class="flow" id="aid-flow"></div>
+    <p class="note" id="aid-note"></p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>AI ⊃ ML ⊃ DL, and the timeline</h3><span class="hint">click a ring</span></div>
+    <div class="split">
+      <div class="nest" id="aid-nest">
+        <button class="ring r1" data-k="ai"><span>Artificial intelligence</span></button>
+        <button class="ring r2" data-k="ml"><span>Machine learning</span></button>
+        <button class="ring r3" data-k="dl"><span>Deep learning</span></button>
+      </div>
+      <div class="stack">
+        <p class="note" id="aid-ring">Click a ring to see its definition.</p>
+        <ol class="steps tl">
+          <li><span class="k">1950</span><div><b>Turing Test</b></div></li>
+          <li><span class="k">1997</span><div><b>Deep Blue beats the chess champion</b><p>by massive search, not learning</p></div></li>
+          <li><span class="k">2012</span><div><b>AlexNet</b><p>the deep learning breakthrough</p></div></li>
+          <li><span class="k">Now</span><div><b>Generative AI and ChatGPT</b></div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>To count as AI here, a system must be <b>human-made</b> and able to sense, predict, generate, plan or act. A calculator only follows fixed rules; a dog learns, but isn't human-made.</li>
+      <li><b>GOFAI</b>: Data + Code → Answers. The programmer writes strict instructions.</li>
+      <li><b>ML</b>: Data + Known answers (labels) → the model (the instructions). The programmer provides examples.</li>
+      <li>Every deep learning system is ML, and every ML system is AI, but not the other way around.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Thinking "smart" means AI. The dog is intelligent and learns from examples, but it isn't a human-made system, so it doesn't fit the lecture's definition.</div>
+  </div>
+  <div class="check" data-q="ai-def"></div>
+  <button class="done" data-id="ai-def" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 15 -->
+<section class="concept" id="workflow" data-lec="lec" data-t="ML workflow & data">
+  <header><span class="eyebrow">15 · Lecture: Inside the Glass Box</span><h2>The ML workflow and the anatomy of a dataset</h2></header>
+  <p class="lead">Building a model is a loop: <b>Ask → Collect &amp; Process → Train → Test → Improve → Serve</b>, then back to Ask. The data itself has three parts: <b>examples</b> (the rows), <b>features</b> (the clues in the columns) and the <b>label</b> (what you want to predict). <em>Supervised</em> learning trains on labeled data; <em>unsupervised</em> learning gets no labels and finds hidden patterns on its own.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Put the workflow in order</h3><span class="hint">tap first to last</span></div>
+    <div class="order" id="wf-order"></div>
+    <div class="row"><span id="wf-msg" style="font-size:14px;color:var(--muted)" aria-live="polite"></span><button class="btn ghost" id="wf-reset" style="margin-left:auto">Shuffle again</button></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Anatomy of a dataset</h3><span class="hint">the lecture's house-price table · prices in $100s</span></div>
+    <div class="seg" id="ds-hl"><button data-v="ex" aria-pressed="true">Examples</button><button data-v="feat" aria-pressed="false">Features</button><button data-v="label" aria-pressed="false">Label</button><button data-v="miss" aria-pressed="false">Missing value</button></div>
+    <div class="scroll"><table class="t dstab" id="ds-table">
+      <tr><th>House</th><th>Size (sqft)</th><th>Age (years)</th><th>Sale price ($100s)</th></tr>
+      <tr><td>Avalon</td><td class="n">2650</td><td class="n">13</td><td class="n">2050</td></tr>
+      <tr><td>Cross Winds</td><td class="n">2600</td><td class="n">*</td><td class="n">2080</td></tr>
+      <tr><td>The White House</td><td class="n">2554</td><td class="n">6</td><td class="n">2150</td></tr>
+      <tr><td>Millan Tree</td><td class="n">2900</td><td class="n">17</td><td class="n">2280</td></tr>
+      <tr><td>Central Jordens</td><td class="n">2632</td><td class="n">14</td><td class="n">2300</td></tr>
+    </table></div>
+    <p class="note" id="ds-note"></p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Supervised or unsupervised?</h3><span class="hint"><b id="su-score">0</b> of <span id="su-tot">0</span> right</span></div>
+    <div class="sort" id="su-list"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Test</b> means checking the model on <em>unseen</em> data: the exam. <b>Train</b> is the practice.</li>
+      <li>Rows are examples, input columns are features, the column you predict is the label.</li>
+      <li><b>Supervised</b>: labeled data, learn to map features to a specific output. <b>Unsupervised</b>: unlabeled data, the algorithm finds hidden patterns, e.g. clusters.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Calling the label a feature. Sale price is what we predict, so it's the label; size and age are the features used to predict it.</div>
+  </div>
+  <div class="check" data-q="workflow"></div>
+  <button class="done" data-id="workflow" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 16 -->
+<section class="concept" id="trees" data-lec="lec" data-t="Trees & overfitting">
+  <header><span class="eyebrow">16 · Lecture: Inside the Glass Box</span><h2>Decision trees, overfitting and explainability</h2></header>
+  <p class="lead">A decision tree plays "20 questions" with the data. It doesn't think; it searches for splits that make the resulting groups purer, which the lecture calls maximizing <b>information gain</b>. The <b>root node</b> is the first split, <b>decision nodes</b> split again, and <b>leaf nodes</b> give the final answer. Grow the tree too deep and it <em>memorizes the training data</em> instead of learning rules: that's <b>overfitting</b>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Trace the lecture's risk tree</h3><span class="hint">change the person</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="tr-age">Age <output id="tr-age-o"></output></label><input type="range" id="tr-age" min="10" max="30" step="1" value="16"></div>
+      <div class="ctl"><label for="tr-w">Weight (kg) <output id="tr-w-o"></output></label><input type="range" id="tr-w" min="40" max="90" step="1" value="70"></div>
+    </div>
+    <div class="plot" id="tr-chart"></div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)">LEAF</span><b id="tr-leaf">–</b><span id="tr-path"></span></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>How deep is too deep?</h3><span class="hint">illustrative curves; depth 8 uses the lecture's 99% vs 60%</span></div>
+    <div class="ctl"><label for="tr-d">Tree depth <output id="tr-d-o"></output></label><input type="range" id="tr-d" min="1" max="8" step="1" value="3"></div>
+    <div class="plot" id="tr-acc"></div>
+    <div class="read">
+      <div class="stat"><span>Training accuracy</span><b id="tr-tr">–</b></div>
+      <div class="stat"><span>Test accuracy</span><b id="tr-te">–</b></div>
+      <div class="stat hl"><span>Diagnosis</span><b id="tr-dx">–</b></div>
+    </div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>The explainability–accuracy trade-off</h3></div>
+    <div class="ladder2">
+      <div><b>Rule-based &amp; decision trees</b><span>Easiest to explain: you can read every rule.</span></div>
+      <div><b>Random forest &amp; support vector machines</b><span>More accurate, harder to explain.</span></div>
+      <div><b>Artificial neural networks</b><span>Highly accurate for images and text, but a true "black box".</span></div>
+    </div>
+    <p class="cap">As accuracy and complexity go up, explainability goes down. <b>XAI</b> (explainable AI) adds an explanation interface so people can see <em>how</em> a model decided.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Depth 1: too simple, misses patterns (underfitting). Depth 3: captures the core rules and generalizes. Depth 8: overfitted, a complex, brittle tree.</li>
+      <li>The clue for overfitting is a <b>big gap between training and test accuracy</b> (99% vs 60% in the lecture).</li>
+      <li>Training is the practice; testing is the exam.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Trusting 99% training accuracy. A model that memorized its training data can look perfect there and still fail on new data.</div>
+  </div>
+  <div class="check" data-q="trees"></div>
+  <button class="done" data-id="trees" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 17 -->
+<section class="concept" id="confusion" data-lec="lec" data-t="Confusion matrix">
+  <header><span class="eyebrow">17 · Lecture: Inside the Glass Box</span><h2>The confusion matrix</h2></header>
+  <p class="lead">A confusion matrix counts the four ways a yes/no prediction can land. With "detect dogs" as the goal: a dog called a dog is a <b>true positive</b>, a cat ignored is a <b>true negative</b>, a cat called a dog is a <b>false positive (Type I error)</b>, and a dog that's missed is a <b>false negative (Type II error)</b>. <em>Accuracy = correct predictions ÷ all predictions</em>, but it's only a starting point.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Tune a dog detector</h3><span class="hint">20 photos, each with the model's "dog" score</span></div>
+    <div class="ctl"><label for="cm-t">Call it a dog when the score is at least <output id="cm-t-o"></output></label><input type="range" id="cm-t" min="0.05" max="0.95" step="0.05" value="0.5"></div>
+    <div class="plot" id="cm-strip"></div>
+    <div class="legend"><span><i style="background:var(--c1)"></i>Actually a dog</span><span><i style="background:var(--c2)"></i>Actually a cat</span><span><i style="background:transparent;border:2px solid var(--tail)"></i>Wrong prediction</span></div>
+    <div class="scroll"><table class="t cmtab" id="cm-table"></table></div>
+    <div class="read">
+      <div class="stat hl"><span>Accuracy</span><b id="cm-acc">–</b></div>
+      <div class="stat"><span>False positives (Type I)</span><b id="cm-fp">–</b></div>
+      <div class="stat"><span>False negatives (Type II)</span><b id="cm-fn">–</b></div>
+    </div>
+    <p class="cap">Raise the threshold and false positives fall while false negatives rise. Which one matters more depends on the job: for a <b>medical diagnosis</b> a missed case (false negative) is far more dangerous; for <b>video recommendations</b> a wrong suggestion barely matters.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>FP = Type I</b>: predicted positive, actually negative (cat called a dog).</li>
+      <li><b>FN = Type II</b>: predicted negative, actually positive (dog missed).</li>
+      <li>Accuracy = (TP + TN) ÷ (TP + TN + FP + FN).</li>
+    </ul></div>
+    <div class="trap"><h3>Watch the slide</h3>On the lecture slide, the FP and FN boxes are in each other's positions for the row and column labels. The captions inside them are right; use the definitions above.</div>
+  </div>
+  <div class="check" data-q="confusion"></div>
+  <button class="done" data-id="confusion" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 18 -->
+<section class="concept" id="training" data-lec="lec" data-t="Training a network">
+  <header><span class="eyebrow">18 · Lecture: The Blueprint of Intelligence</span><h2>How a neural network learns</h2></header>
+  <p class="lead">Neurons are stacked into an <b>input layer</b> (raw features), <b>hidden layers</b> (extract patterns) and an <b>output layer</b> (the prediction). Training repeats one loop: <em>Predict</em> (forward pass) → <em>Measure error</em> (loss) → <em>Propagate error</em> (backward pass) → <em>Update</em> the weights. "Biology inspired the architecture, but calculus drives the optimization."</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Biology → math</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th>Biology</th><th>Artificial neuron</th><th>Role</th></tr>
+      <tr><td>Dendrites</td><td>Inputs (x)</td><td>The raw data entering the system</td></tr>
+      <tr><td>Synapses</td><td>Weights (w)</td><td>The strength or importance of each connection</td></tr>
+      <tr><td>Soma (cell body)</td><td>Activation function</td><td>The threshold that decides the output</td></tr>
+      <tr><td>Axon</td><td>Output (y)</td><td>The final transmitted signal</td></tr>
+    </table></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>One training step, number by number</h3><span class="hint">one neuron · x = 2, target y = 1 · sigmoid · loss = ½(p − y)²</span></div>
+    <div class="stepper"><button class="btn pri" id="nt-next">Next stage ▶</button><button class="btn" id="nt-run">Run 25 full steps</button><button class="btn ghost" id="nt-reset">Reset</button></div>
+    <div class="ctl" style="max-width:360px"><label for="nt-lr">Learning rate η <output id="nt-lr-o"></output></label><input type="range" id="nt-lr" min="0.1" max="3" step="0.1" value="1"></div>
+    <div class="split">
+      <div class="stack">
+        <div class="loop4" id="nt-loop"><span data-s="0">1 · Predict</span><span data-s="1">2 · Measure error</span><span data-s="2">3 · Propagate error</span><span data-s="3">4 · Update</span></div>
+        <div class="tests" id="nt-math"></div>
+      </div>
+      <div class="plot" id="nt-chart"></div>
+    </div>
+    <p class="cap">The backward pass uses the lecture's chain rule: Δp = ∂Loss/∂p, then Δz = Δp · ∂p/∂z, then ΔW = Δz · ∂z/∂W and Δb = Δz · ∂z/∂b. Each weight moves against its gradient, scaled by the learning rate.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Gradient descent: rolling into the valley</h3><span class="hint">the "landscape of error"</span></div>
+    <div class="ctl" style="max-width:360px"><label for="gd-lr">Step size (learning rate) <output id="gd-lr-o"></output></label><input type="range" id="gd-lr" min="0.05" max="1.1" step="0.05" value="0.3"></div>
+    <div class="plot" id="gd-chart"></div>
+    <div class="row"><button class="btn pri" id="gd-step">Take a step</button><button class="btn" id="gd-run">Take 10</button><button class="btn ghost" id="gd-reset">Start over</button><span id="gd-msg" style="font-size:14px;color:var(--muted)"></span></div>
+    <p class="cap">Real networks have hundreds of millions of weights ("knobs"). Stochastic gradient descent (SGD) follows the <b>negative gradient</b>, the steepest way downhill, toward the valley where average error is lowest. Too big a step overshoots the valley.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Two passes, one objective</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th></th><th>Forward pass</th><th>Backward pass</th></tr>
+      <tr><th>Direction</th><td>Left to right (input → output)</td><td>Right to left (output → input)</td></tr>
+      <tr><th>Goal</th><td>Predict the outcome</td><td>Correct the mistakes</td></tr>
+      <tr><th>Key metric</th><td>Output value</td><td>Gradient / loss</td></tr>
+      <tr><th>Action</th><td>Compute data via weights</td><td>Update weights via error</td></tr>
+    </table></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Loss</b>: how far the prediction is from the actual target. Measuring it is the first step toward learning.</li>
+      <li>A <b>gradient</b> is the rate of change of the error with respect to a weight.</li>
+      <li><b>Backpropagation</b> sends the error backward and adjusts each weight by its contribution to the mistake.</li>
+      <li>Applications named in the lecture: image recognition, natural language processing, recommendation systems.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Mixing up the mapping: synapses are the <b>weights</b>, not the inputs. The dendrites are the inputs.</div>
+  </div>
+  <div class="check" data-q="training"></div>
+  <button class="done" data-id="training" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 19 -->
+<section class="concept" id="lsqtable" data-lec="lec" data-t="Least squares by table">
+  <header><span class="eyebrow">19 · Lecture: Regression</span><h2>Least squares by hand: the table method</h2></header>
+  <p class="lead">The lecture computes the slope with a <b>computation table</b> and a shortcut formula, so you never have to calculate deviations. Fill in columns for X, Y, X², Y² and XY, add them up, then <span class="mono">β̂₁ = SSxy / SSxx</span> where <span class="mono">SSxy = ΣXY − (ΣX)(ΣY)/n</span> and <span class="mono">SSxx = ΣX² − (ΣX)²/n</span>. Finally <span class="mono">β̂₀ = ȳ − β̂₁x̄</span>. The hats mean <em>estimates from a sample</em> of the unknown population values β₀ and β₁.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Work the lecture's examples</h3><span class="hint">edit any value and every number updates</span></div>
+    <div class="seg" id="lt-pick"><button data-v="estriol" aria-pressed="true">Estriol → birthweight</button><button data-v="milk" aria-pressed="false">Food → milk yield</button></div>
+    <div class="scroll"><table class="t" id="lt-table"></table></div>
+    <ol class="steps" id="lt-steps"></ol>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)">INTERPRETATION</span><b class="mono" id="lt-eq">–</b><span id="lt-int"></span></div>
+    <div class="ctl" style="max-width:420px"><label for="lt-x">Predict at X = <output id="lt-x-o"></output></label><input type="range" id="lt-x" min="0" max="15" step="0.5" value="3"></div>
+    <p class="note" id="lt-pred"></p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Population vs sample, and kinds of regression</h3></div>
+    <div class="two">
+      <div class="scroll"><table class="t">
+        <tr><th></th><th>Population (unknown)</th><th>Sample (estimated)</th></tr>
+        <tr><th>Model</th><td class="mono">Y = β₀ + β₁X + ε</td><td class="mono">Y = β̂₀ + β̂₁X + ε̂</td></tr>
+        <tr><th>Line</th><td class="mono">E(Y) = β₀ + β₁X</td><td class="mono">Ŷ = β̂₀ + β̂₁X</td></tr>
+        <tr><th>Error</th><td>ε, random error</td><td>ε̂, residual</td></tr>
+      </table></div>
+      <ul class="rules" style="grid-template-columns:minmax(0,1fr)">
+        <li><b>Simple vs multiple</b><span>1 explanatory variable vs 2 or more.</span></li>
+        <li><b>Linear vs non-linear</b><span>The functional form of the relationship.</span></li>
+        <li><b>Variables</b><span>The response (Y) must be numerical; explanatory variables can be numerical or categorical.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Slope: "Y is expected to change by β̂₁ for each 1-unit increase in X."</li>
+      <li>Intercept: "the average Y when X is 0". It may not make sense if X = 0 is impossible or outside the data.</li>
+      <li>Why square the errors: positive and negative differences would offset each other. LS minimizes SSE = Σ(Y − Ŷ)².</li>
+      <li>The formulas come from setting ∂SSE/∂β₀ = 0 and ∂SSE/∂β₁ = 0.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Forgetting to divide by n in the shortcut terms. SSxy is ΣXY minus (ΣX)(ΣY)<b>/n</b>, not minus (ΣX)(ΣY).</div>
+  </div>
+  <div class="check" data-q="lsqtable"></div>
+  <button class="done" data-id="lsqtable" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 20 -->
+<section class="concept" id="images" data-lec="lec" data-t="How machines see images">
+  <header><span class="eyebrow">20 · Lecture: Teaching Machines How to See</span><h2>From the eye to an image tensor</h2></header>
+  <p class="lead">The eye works like a camera: the <b>iris</b> is the aperture, the <b>pupil</b> the opening (shutter), and the <b>retina</b> the sensor. To a computer, a grayscale image is a 2D function <span class="mono">z = f(x, y)</span>: x and y are pixel coordinates and z is an intensity integer. A color image is a stack of matrices with shape <em>Channels × Height × Width</em>, by default the three channels R, G and B.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Order the evolution of the eye</h3><span class="hint">simplest first</span></div>
+    <div class="order" id="eye-order"></div>
+    <div class="row"><span id="eye-msg" style="font-size:14px;color:var(--muted)" aria-live="polite"></span><button class="btn ghost" id="eye-reset" style="margin-left:auto">Shuffle again</button></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>One color, three color spaces</h3><span class="hint">move the RGB sliders</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="cs-r">Red <output id="cs-r-o"></output></label><input type="range" id="cs-r" min="0" max="255" step="1" value="36"></div>
+      <div class="ctl"><label for="cs-g">Green <output id="cs-g-o"></output></label><input type="range" id="cs-g" min="0" max="255" step="1" value="80"></div>
+      <div class="ctl"><label for="cs-b">Blue <output id="cs-b-o"></output></label><input type="range" id="cs-b" min="0" max="255" step="1" value="200"></div>
+    </div>
+    <div class="cswrap"><div class="swatch" id="cs-sw"></div><div class="swatch" id="cs-gray"></div></div>
+    <div class="read">
+      <div class="stat"><span>RGB (0–255)</span><b id="cs-rgb">–</b></div>
+      <div class="stat"><span>HSV (H°, S, V)</span><b id="cs-hsv">–</b></div>
+      <div class="stat"><span>L*a*b*</span><b id="cs-lab">–</b></div>
+      <div class="stat hl"><span>Intensity (gray)</span><b id="cs-y">–</b></div>
+    </div>
+    <div class="scroll"><table class="t">
+      <tr><th>Space</th><th>What it is</th><th>Strength / drawback</th></tr>
+      <tr><td><b>RGB</b></td><td>The default digital space</td><td>Channels are strongly correlated; doesn't match human perception</td></tr>
+      <tr><td><b>HSV</b></td><td>Hue and saturation separate from value (lighting)</td><td>Intuitive for people picking colors</td></tr>
+      <tr><td><b>L*a*b*</b></td><td>L = luminance, a = green–red, b = blue–yellow</td><td>Perceptually uniform: numeric distance matches perceived difference</td></tr>
+    </table></div>
+    <p class="cap">The swatch on the right keeps only intensity. Structure (edges, shapes) lives mostly in intensity, which is why vision systems often drop color.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Biology and light</h3></div>
+    <div class="two">
+      <div class="scroll"><table class="t">
+        <tr><th></th><th>Rods</th><th>Cones</th></tr>
+        <tr><th>Sensitivity</th><td>Highly sensitive; work at night</td><td>Less sensitive; need bright light</td></tr>
+        <tr><th>Output</th><td>Grayscale vision</td><td>Color vision</td></tr>
+      </table></div>
+      <div class="scroll"><table class="t">
+        <tr><th></th><th>Lambertian</th><th>Specular</th></tr>
+        <tr><th>Reflection</th><td>Diffuse, same from every viewing angle</td><td>Mirror-like, depends on where the viewer is</td></tr>
+        <tr><th>Examples</th><td>Chalk, paper, cloth, rough walls</td><td>Shiny metal, glass, water, glossy paint</td></tr>
+      </table></div>
+    </div>
+    <p class="cap">The lecture's lighting equation adds three terms: <b>ambient</b> k<sub>a</sub>i<sub>a</sub>, <b>diffuse</b> k<sub>d</sub>(L̂·N̂)i<sub>d</sub> and <b>specular</b> k<sub>s</sub>(R̂·V̂)<sup>α</sup>i<sub>s</sub>, summed over the lights.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Eye evolution: pigment spot → pigment cup → simple optic cup (pinhole) → primitive lens → complex eye.</li>
+      <li>Image = <span class="mono">z = f(x, y)</span>; color image tensor = Channels × Height × Width.</li>
+      <li>Rods: night and grayscale. Cones: color in bright light.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Thinking RGB is how people see color. RGB is the default for storage, but L*a*b* is the one built to match human perception.</div>
+  </div>
+  <div class="check" data-q="images"></div>
+  <button class="done" data-id="images" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 21 -->
+<section class="concept" id="convolution" data-lec="lec" data-t="Filtering & convolution">
+  <header><span class="eyebrow">21 · Lectures: How to See, CNN Anatomy</span><h2>Filtering and convolution</h2></header>
+  <p class="lead">Image filtering changes each pixel using its <b>neighborhood</b>. In <b>convolution</b>, a small matrix of weights (the <b>kernel</b> or filter) slides over the image; at each position you multiply element by element and add it all up. The result is a <em>feature map</em> showing where the kernel's pattern appears: <span class="mono">g(x,y) = Σ Σ k(u,v) · f(x−u, y−v)</span>, where f is the input, k the kernel and g the output.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Convolve the lecture's 5 × 5 image</h3><span class="hint">click any output cell</span></div>
+    <div class="seg" id="cv-k"><button data-v="lec" aria-pressed="true">Lecture kernel</button><button data-v="mean" aria-pressed="false">Mean blur</button><button data-v="gauss" aria-pressed="false">Gaussian blur</button><button data-v="sobel" aria-pressed="false">Sobel (edges)</button></div>
+    <div class="mxrow">
+      <div><div class="mxlab">Input f</div><div class="mx" id="cv-in"></div></div>
+      <div class="mxop">∗</div>
+      <div><div class="mxlab">Kernel k</div><div class="mx" id="cv-ker"></div></div>
+      <div class="mxop">=</div>
+      <div><div class="mxlab">Output g (3 × 3)</div><div class="mx" id="cv-out"></div></div>
+    </div>
+    <p class="note mono" id="cv-math" style="font-size:14px"></p>
+    <p class="cap" id="cv-cap"></p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Mean vs median on salt-and-pepper noise</h3><span class="hint">one 3 × 3 neighborhood</span></div>
+    <div class="row"><button class="btn" id="mm-salt">Add a white speck (255)</button><button class="btn" id="mm-pep">Add a black speck (0)</button><button class="btn ghost" id="mm-reset">Clean patch</button></div>
+    <div class="mxrow"><div><div class="mxlab">Neighborhood</div><div class="mx" id="mm-nb"></div></div></div>
+    <div class="read">
+      <div class="stat"><span>Mean filter (average)</span><b id="mm-mean">–</b></div>
+      <div class="stat hl"><span>Median filter (sort, take middle)</span><b id="mm-med">–</b></div>
+    </div>
+    <p class="cap">One extreme speck drags the average far off, so a mean filter smears the noise and blurs edges. The median just picks the middle value, so outliers are ignored. That's why the median filter cleans salt-and-pepper noise.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Convolution = element-wise multiply, then sum, at every window position.</li>
+      <li><b>Mean blur</b>: all 1/9, uniform averaging. <b>Gaussian blur</b>: 1/4 center, 1/8 edges, 1/16 corners, weighted toward the center like a lens. <b>Sobel</b>: [1 0 −1; 2 0 −2; 1 0 −1], edge detection by differentiation.</li>
+      <li>A 5 × 5 input with a 3 × 3 kernel (stride 1, no padding) gives a 3 × 3 output.</li>
+    </ul></div>
+    <div class="trap"><h3>Watch the slide</h3>On one lecture slide the output "4" is drawn in the border column. It belongs under the 13: the full third row is 4, 1, 2.</div>
+  </div>
+  <div class="check" data-q="convolution"></div>
+  <button class="done" data-id="convolution" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 22 -->
+<section class="concept" id="cnnblocks" data-lec="lec" data-t="CNN building blocks">
+  <header><span class="eyebrow">22 · Lecture: CNN Anatomy and Evolution</span><h2>CNN building blocks: conv layers, pooling, sizes</h2></header>
+  <p class="lead">Traditional computer vision hand-engineered its features (SIFT → Fisher vectors → SVM). A <b>convolutional neural network</b> learns its own features <em>end to end, directly from pixels</em>. It alternates <b>convolution layers</b> (pattern matching) with <b>pooling layers</b> (downsampling), then finishes with fully connected layers.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Output size calculator</h3><span class="hint">out = (n + 2p − k) / s + 1</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="os-n">Input size n <output id="os-n-o"></output></label><input type="range" id="os-n" min="4" max="256" step="1" value="32"></div>
+      <div class="ctl"><label for="os-k">Kernel size k <output id="os-k-o"></output></label><input type="range" id="os-k" min="1" max="11" step="1" value="5"></div>
+      <div class="ctl"><label for="os-s">Stride s <output id="os-s-o"></output></label><input type="range" id="os-s" min="1" max="4" step="1" value="1"></div>
+      <div class="ctl"><label for="os-p">Padding p <output id="os-p-o"></output></label><input type="range" id="os-p" min="0" max="3" step="1" value="0"></div>
+    </div>
+    <div class="row" id="os-pre"><button class="btn sm" data-v="5,3,1,0">Lecture 5×5, 3×3</button><button class="btn sm" data-v="32,5,1,0">LeNet conv1</button><button class="btn sm" data-v="14,5,1,0">LeNet conv2</button><button class="btn sm" data-v="227,11,4,0">AlexNet C1</button></div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)">OUTPUT</span><b class="mono" id="os-out">–</b><span id="os-why"></span></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>2 × 2 max pooling</h3><span class="hint">the lecture's 4 × 4 example · click a block</span></div>
+    <div class="mxrow">
+      <div><div class="mxlab">Input (4 × 4)</div><div class="mx" id="mp-in"></div></div>
+      <div class="mxop">→</div>
+      <div><div class="mxlab">Max pool (2 × 2)</div><div class="mx" id="mp-out"></div></div>
+    </div>
+    <p class="note" id="mp-note"></p>
+    <p class="cap">Pooling keeps the strongest activation in each block, halving height and width while the depth stays the same: 224 × 224 × 64 becomes 112 × 112 × 64. That cuts parameters and helps prevent overfitting.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>LeNet (1998), shape by shape</h3><span class="hint">2 conv layers + 3 linear layers</span></div>
+    <ol class="steps">
+      <li><span class="k">0</span><div><b>Input 32 × 32 × 3</b></div></li>
+      <li><span class="k">1</span><div><b>conv1 = Conv2d(3, 6, 5) → 28 × 28 × 6</b><p>32 − 5 + 1 = 28; 6 filters</p></div></li>
+      <li><span class="k">2</span><div><b>Pool → 14 × 14 × 6</b></div></li>
+      <li><span class="k">3</span><div><b>conv2 = Conv2d(6, 16, 5) → 10 × 10 × 16</b><p>14 − 5 + 1 = 10</p></div></li>
+      <li><span class="k">4</span><div><b>Pool → 5 × 5 × 16, flatten → 400</b><p>that's why fc1 = Linear(16*5*5, 120)</p></div></li>
+      <li><span class="k">5</span><div><b>Fully connected → 120 → 84 → 10 outputs</b></div></li>
+    </ol>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><code>torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)</code>: in_channels matches the input depth; out_channels is the number of filters; kernel_size is the window (e.g. 3 × 3).</li>
+      <li><b>im2col + GEMM</b>: flatten every patch into one big matrix so the whole convolution becomes a single matrix multiplication, which GPUs do very fast.</li>
+      <li>Each kernel's depth equals the input's depth.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Thinking pooling reduces the number of channels. It shrinks height and width only; 64 channels in means 64 channels out.</div>
+  </div>
+  <div class="check" data-q="cnnblocks"></div>
+  <button class="done" data-id="cnnblocks" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 23 -->
+<section class="concept" id="alexnet" data-lec="lec" data-t="ImageNet, AlexNet, VGG">
+  <header><span class="eyebrow">23 · Lecture: CNN Anatomy and Evolution</span><h2>ImageNet, AlexNet and VGG</h2></header>
+  <p class="lead">The ImageNet challenge (ILSVRC) asked models to sort about 1,000,000 training images into <b>1,000 categories</b> (50,000 validation images). In 2012 <b>AlexNet</b> (Krizhevsky, Sutskever, Hinton) cut the error from 25.7% to 17.0%, an ~10% drop overnight: <em>end-to-end feature learning beat decades of hand-engineered vision</em>. VGG (2014) then went deeper with only small 3 × 3 filters.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Top-1 vs top-5 error</h3><span class="hint">the model's ranked guesses for one photo</span></div>
+    <div class="row"><label for="t5-true" style="font-size:14px;color:var(--muted)">True label:</label><select class="inp" id="t5-true"></select></div>
+    <div class="tests" id="t5-list"></div>
+    <div class="read">
+      <div class="stat hl"><span>Top-1 error</span><b id="t5-1">–</b></div>
+      <div class="stat hl"><span>Top-5 error</span><b id="t5-5">–</b></div>
+    </div>
+    <p class="cap">Top-1 counts only the first guess. Top-5 counts it correct if the true label is anywhere in the top 5. In the lecture's example the true label is "Abyssinian cat", ranked 4th: top-1 error 1.0, top-5 error 0.0.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Shattering the benchmark</h3><span class="hint">classification error, lower is better</span></div>
+    <div class="plot" id="an-bars"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Dropout</h3><span class="hint">each training step drops a random half of the hidden units</span></div>
+    <div class="plot" id="do-net"></div>
+    <div class="row"><button class="btn pri" id="do-step">Next training step</button><button class="btn ghost" id="do-off">Show the full network</button></div>
+    <p class="cap">Without dropout, nodes can <b>co-adapt</b>, over-relying on specific neighbors, which leads to overfitting. Randomly zeroing outputs during training forces redundant, robust features.</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>The evolution of depth</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th>Year</th><th>Model</th><th>Role</th><th>Key ideas</th></tr>
+      <tr><td>1998</td><td><b>LeNet</b></td><td>The blueprint</td><td>Small; alternating convolution and pooling</td></tr>
+      <tr><td>2012</td><td><b>AlexNet</b></td><td>The breakthrough</td><td>5 conv + 3 FC layers (FC8 = 1000 classes); GPU training, ReLU, momentum &amp; weight decay, data augmentation, dropout; error 17%</td></tr>
+      <tr><td>2014</td><td><b>VGG</b></td><td>The standardization</td><td>Simonyan &amp; Zisserman; only stacked 3 × 3 convs instead of 11 × 11; deeper and simpler</td></tr>
+    </table></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>AlexNet's arsenal: <b>GPU</b> computation, <b>ReLU</b> instead of sigmoid/tanh (fixes vanishing gradients, trains faster), <b>momentum &amp; weight decay</b>, <b>data augmentation</b>, plus <b>dropout</b>.</li>
+      <li>Data augmentation in the lecture: take random 224 × 224 crops of a 256 × 256 image, so the network sees more variety and learns positional invariance.</li>
+      <li>Error table: sparse coding 28.2%, SIFT + Fisher vectors 25.7% (best traditional), AlexNet 17.0%.</li>
+      <li>Later models (GoogLeNet, ResNet, EfficientNet) build on the same blueprint.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Saying AlexNet invented CNNs. LeNet came 14 years earlier; AlexNet's achievement was scaling the blueprint with GPUs and new training tricks.</div>
+  </div>
+  <div class="check" data-q="alexnet"></div>
+  <button class="done" data-id="alexnet" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 24 -->
+<section class="concept" id="ssl" data-lec="lec" data-t="Self-supervised speech">
+  <header><span class="eyebrow">24 · Lecture: Self-Supervised Speech Learning</span><h2>Self-supervised speech learning</h2></header>
+  <p class="lead">Labeled speech is scarce (hundreds of hours of human transcription), but raw audio is nearly unlimited. So training happens in <b>two phases</b>: an <b>upstream</b> model pre-trains on unlabeled audio by solving a <em>pretext task</em>, learning task-agnostic representations; then small <b>downstream</b> models (speech recognition, speaker ID…) fine-tune on a little labeled data.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Sort the models into pretext families</h3><span class="hint"><b id="ss-score">0</b> of <span id="ss-tot">0</span> right · per the lecture's comparison table</span></div>
+    <div class="sort" id="ss-list"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>The paradigm matrix</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th></th><th>Generative</th><th>Contrastive</th><th>Predictive</th></tr>
+      <tr><th>Objective</th><td>Reconstruct the corrupted (masked or future) input</td><td>Tell the true sample apart from negatives</td><td>Predict a target made by a teacher</td></tr>
+      <tr><th>Target</th><td>Continuous raw audio or spectrograms</td><td>Quantized latent representations</td><td>Discrete cluster IDs or teacher EMA</td></tr>
+      <tr><th>Loss</th><td>L1 / MSE</td><td>InfoNCE (contrastive cross-entropy)</td><td>Categorical cross-entropy / smoothed L1</td></tr>
+      <tr><th>Models</th><td>APC, Mockingjay, TERA</td><td>wav2vec 2.0, vq-wav2vec, CPC</td><td>HuBERT, data2vec, WavLM</td></tr>
+    </table></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Which layers should you use?</h3><span class="hint">a 24-layer model</span></div>
+    <div class="seg" id="ly-task"><button data-v="spk" aria-pressed="false">Speaker verification</button><button data-v="asr" aria-pressed="true">Speech recognition (ASR)</button><button data-v="rec" aria-pressed="false">Pretext reconstruction</button></div>
+    <div class="layers" id="ly-bar"></div>
+    <p class="note" id="ly-note"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Speech is harder than text: <b>sequence length</b> (thousands of frames per second), <b>boundary ambiguity</b> (no spaces between words) and <b>feature entanglement</b> (content, speaker, emotion and noise in one signal).</li>
+      <li>Payoff: a supervised baseline needed 960 hours of labels; self-supervised models get near-zero error with 10 minutes to 1 hour of fine-tuning.</li>
+      <li>Contrastive learning avoids collapsing to a trivial solution; predictive learning needs no negative samples.</li>
+      <li>Robust to noise and microphones; XLSR was trained on 53 languages. Textless NLP models language straight from audio, keeping emotion and prosody.</li>
+    </ul></div>
+    <div class="trap"><h3>Watch the slide</h3>The deck's title graphic puts some models in the wrong family. Go by the comparison table above (HuBERT is predictive, wav2vec 2.0 is contrastive).</div>
+  </div>
+  <div class="check" data-q="ssl"></div>
+  <button class="done" data-id="ssl" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 25 -->
+<section class="concept" id="ethics" data-lec="lec" data-t="Ethics & bias">
+  <header><span class="eyebrow">25 · Lectures: Responsible Systems, Glass Box</span><h2>Ethics and how bias gets amplified</h2></header>
+  <p class="lead">"How's the water?" Ethics in ML isn't about personal feelings or legal compliance; it's seeing the <em>invisible structural environment</em> an algorithm operates in. Models don't just reflect historical bias, they <b>amplify</b> it: biased data trains a biased model, whose actions make the world's data more biased. And a model's output is a prediction; <em>humans make the decisions</em>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>The bias amplification loop: Amazon, 2018</h3><span class="hint">step around the loop</span></div>
+    <div class="cycle" id="ba-cycle"></div>
+    <p class="note" id="ba-note"></p>
+    <div class="row"><button class="btn pri" id="ba-next">Next ▶</button></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>COMPAS: "blind" to race, still unequal</h3><span class="hint">error rates by group</span></div>
+    <div class="plot" id="cp-bars"></div>
+    <p class="cap">COMPAS predicted re-offending and left race out of its inputs. Its scores matched overall probabilities, yet the errors were lopsided: Black defendants were labeled high-risk without re-offending almost twice as often (44.9% vs 23.5%), while white defendants were more often labeled low-risk and then re-offended (47.7% vs 28.0%).</p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Match the ethical theory</h3><span class="hint"><b id="et-score">0</b> of <span id="et-tot">0</span> right</span></div>
+    <div class="sort" id="et-list"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Paperclip maximizer</b>: an AI told only to make paperclips converts everything into paperclips. Small objective misalignments compound at scale.</li>
+      <li><b>Liability trolley</b>: pulling the lever = 1 death + 1 wrongful-death suit; doing nothing = 5 deaths + 0 liability. Incentives can favor inaction.</li>
+      <li><b>A prediction is not a decision</b>: image generators showed CEOs and lawyers as almost all men and cashiers as mostly women. The math was "correct"; the outcome was flawed.</li>
+      <li>Responsible deployment = model evidence + context + human policy + human review.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>"Remove the protected attribute and the model is fair." COMPAS removed race and its errors were still unequal, because other features carry the same information and base rates differ.</div>
+  </div>
+  <div class="check" data-q="ethics"></div>
+  <button class="done" data-id="ethics" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 26 -->
+<section class="concept" id="fairness" data-lec="lec" data-t="Fairness trade-offs">
+  <header><span class="eyebrow">26 · Lecture: Architecting Responsible Systems</span><h2>Fairness trade-offs and their limits</h2></header>
+  <p class="lead">There are at least <b>21 mathematical definitions of fairness</b>, and stakeholders want different ones: a decision-maker wants accurate positives, a defendant wants few false positives, society wants <b>demographic parity</b>. The <b>Chouldechova impossibility theorem</b>, as the lecture states it: <em>if base rates differ between two groups, an algorithm cannot have equal false positive rates and equal false negative rates at the same time</em>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Try to make a loan model fair</h3><span class="hint">two groups with different base rates of repaying · simulated</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="fa-tb">Blue group threshold <output id="fa-tb-o"></output></label><input type="range" id="fa-tb" min="20" max="80" step="1" value="50"></div>
+      <div class="ctl"><label for="fa-to">Orange group threshold <output id="fa-to-o"></output></label><input type="range" id="fa-to" min="20" max="80" step="1" value="50"></div>
+    </div>
+    <div class="row" id="fa-pre"><button class="btn sm" data-v="blind">Same threshold (blind)</button><button class="btn sm" data-v="dp">Equal approval rates</button><button class="btn sm" data-v="eo">Equal true positive rates</button></div>
+    <div class="plot" id="fa-chart"></div>
+    <div class="scroll"><table class="t" id="fa-table"></table></div>
+    <p class="note" id="fa-note"></p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Equality, equity, justice</h3></div>
+    <div class="seg" id="ej-mode"><button data-v="equality" aria-pressed="true">Equality</button><button data-v="equity" aria-pressed="false">Equity</button><button data-v="justice" aria-pressed="false">Justice</button></div>
+    <div class="plot" id="ej-chart"></div>
+    <p class="note" id="ej-note"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Demographic parity</b>: equal approval rates. <b>Equal opportunity</b>: equal true positive rates.</li>
+      <li>Lecture's loan simulation: Max profit 32,400; Demographic parity ~28,000; Equal opportunity ~26,000. Every fairness criterion costs some utility.</li>
+      <li>Equality = algorithmic blindness (fails). Equity = adjust thresholds (costs utility). Justice = fix the base rate, the data-generating process (the only structural fix).</li>
+      <li>Diverse teams catch bias: Turkish "O bir doktor / O bir hemşire" was translated "He is a doctor / She is a nurse".</li>
+      <li>Architect's mandate: acknowledge the water, anticipate the trade-offs, engineer the room.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Hoping to satisfy every fairness metric at once. With different base rates you have to choose which errors to equalize and accept the cost.</div>
+  </div>
+  <div class="check" data-q="fairness"></div>
+  <button class="done" data-id="fairness" aria-pressed="false">Mark as understood</button>
+</section>
 <div class="part"><span class="eyebrow">Practice</span><h2>Make it stick</h2><p>Reading feels like learning; retrieving is what makes it last. Drill the code questions until they're automatic, then answer the whole exam from memory.</p></div>
 
 <!-- drill -->
@@ -992,6 +1605,24 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
     <div class="row"><button class="btn pri" id="cheat-print">Print the cheat sheet</button></div>
     <p class="cap">Prints on one letter page. Writing your own by hand is even better study, so use this as a checklist.</p>
   </div>
+</section>
+
+
+<!-- lecture deck -->
+<section class="concept" id="lecdeck" data-lec="prac" data-t="Lecture review deck">
+  <header><span class="eyebrow">Lecture review</span><h2>Review deck: the lecture topics</h2></header>
+  <p class="lead">Same format as the deck above, but only for Part 4: the lecture topics that the midterm review doesn't cover. Answer from memory, reveal, and rate yourself. <b>Again</b> brings a card back after 3 more cards, <b>Almost</b> after 6, and <b>Got it</b> retires it for this round. This deck keeps its own progress.</p>
+  <div class="lab">
+    <div class="row" style="justify-content:space-between">
+      <div class="tally" id="lk-counts"></div>
+      <div class="row"><button class="btn" id="lk-order" aria-pressed="true">Shuffled</button><button class="btn ghost" id="lk-restart">Restart the deck</button></div>
+    </div>
+    <div class="row" id="lk-confirm" hidden><span style="font-size:14px;color:var(--muted)">Start over with every card? This clears the current round.</span><button class="btn" id="lk-yes">Yes, restart</button><button class="btn ghost" id="lk-no">Keep going</button></div>
+    <div class="dk-strip" id="lk-strip"></div>
+  </div>
+  <article class="ex dk" id="lk-card" aria-live="polite"></article>
+  <p class="dk-toast" id="lk-toast" aria-live="polite"></p>
+  <p class="cap">Keys: <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> shows the answer while typing, or <span class="kbd">Space</span> when you're not typing. Then <span class="kbd">1</span> Again · <span class="kbd">2</span> Almost · <span class="kbd">3</span> Got it.</p>
 </section>
 
 <p class="foot">Built from the DS 110 Introduction to AI midterm questions (NJIT). Simulations use fresh random draws. The code editor runs real Python (Pyodide) in your browser. Progress, answers and drafts are saved in this browser only.</p>
@@ -1387,13 +2018,13 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
 
 /* ---------- 10 four steps ---------- */
 (function(){
-  const ST=[['Specify the model','Choose the variables and the form, e.g. y = β₀ + β₁x + ε.'],['Estimate the parameters','Use the sample and least squares to get b₀ and b₁.'],['Evaluate the model','Check residuals, R², and whether the slope is significant.'],['Use the model','Predict y for new x values, inside the range of the data.']];
+  const ST=[['Hypothesize the deterministic component','Choose the variables and form, then estimate the unknown parameters b₀ and b₁ (least squares).'],['Specify the distribution of the random error','Describe ε and estimate its standard deviation.'],['Evaluate the fitted model','Check residuals, R², and whether the slope is significant.'],['Use the model for prediction & estimation','Predict y for new x values, inside the range of the data.']];
   let next=0;const L=$('#or-list');
   function deal(){next=0;let o;do{o=[0,1,2,3].sort(()=>Math.random()-0.5)}while(o.join()==='0,1,2,3');
     L.innerHTML=o.map(i=>`<button data-i="${i}"><span class="k">?</span><span><b>${ST[i][0]}</b><span class="d" hidden><br><span style="color:var(--muted);font-size:14px">${ST[i][1]}</span></span></span></button>`).join('');set('or-msg','Which comes first?')}
   L.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.classList.contains('ok'))return;const i=+b.dataset.i;
     if(i===next){b.classList.add('ok');b.querySelector('.k').textContent=i+1;b.querySelector('.d').hidden=false;next++;
-      set('or-msg',next===4?'<b style="color:var(--good)">All four in order.</b> Specify → Estimate → Evaluate → Use.':`Right. What comes after "${ST[i][0].toLowerCase()}"?`)}
+      set('or-msg',next===4?'<b style="color:var(--good)">All four in order.</b> Hypothesize &amp; estimate → Error term → Evaluate → Use.':`Right. What comes after "${ST[i][0].toLowerCase()}"?`)}
     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');set('or-msg',next===0?'Not first. What do you need before you can calculate anything?':`Not yet. What has to happen right after "${ST[next-1][0].toLowerCase()}"?`)}});
   $('#or-reset').onclick=deal;deal();
 
@@ -1401,7 +2032,7 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
   const R=H.map((x,i)=>SC[i]-F.b0-F.b1*x),r2=1-F.sse/F.sst,se=Math.sqrt(F.sse/(n-2)),t=F.b1/(se/Math.sqrt(F.sxx)),p=tTwo(t,n-2);
   let step=1,px=5;
   const render=chart($('#w4-chart'),w=>Math.min(300,Math.max(230,w*0.5)),(svg,w,h)=>{const m={l:46,r:14,t:16,b:34};
-    if(step===3){const M=Math.ceil(Math.max(...R.map(Math.abs))*1.4),sx=lin(0,10,m.l,w-m.r),sy=lin(-M,M,h-m.b,m.t);
+    if(step===2){const M=Math.ceil(Math.max(...R.map(Math.abs))*1.4),sx=lin(0,10,m.l,w-m.r),sy=lin(-M,M,h-m.b,m.t);
       yGrid(svg,sy,[-M,-Math.round(M/2),0,Math.round(M/2),M].filter((v,i,a)=>a.indexOf(v)===i),m.l,w-m.r);xAxis(svg,sx,[0,2,4,6,8,10],h-m.b,String,m.l,w-m.r);axisLabels(svg,m,w,h,'hours studied','residual');
       S('line',{x1:m.l,x2:w-m.r,y1:sy(0),y2:sy(0),stroke:'var(--accent)','stroke-width':2},svg);
       H.forEach((x,i)=>{S('line',{x1:sx(x),x2:sx(x),y1:sy(0),y2:sy(R[i]),stroke:'var(--tail)','stroke-width':1.5},svg);S('circle',{cx:sx(x),cy:sy(R[i]),r:4.5,fill:'var(--c1)',stroke:'var(--surface)','stroke-width':1.2},svg)});return}
@@ -1409,16 +2040,16 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
     yGrid(svg,sy,step===4?[40,60,80,100,120]:[40,60,80,100],m.l,w-m.r);xAxis(svg,sx,step===4?[0,4,8,12,16]:[0,2,4,6,8,10],h-m.b,String,m.l,w-m.r);axisLabels(svg,m,w,h,'hours studied','score');
     if(step===4){S('rect',{x:sx(1),y:m.t,width:sx(9)-sx(1),height:h-m.t-m.b,fill:'var(--good-soft)','fill-opacity':.6},svg);S('text',{x:sx(5),y:m.t+12,'text-anchor':'middle',cls:'sans',text:'range of the data'},svg);
       S('line',{x1:m.l,x2:w-m.r,y1:sy(100),y2:sy(100),stroke:'var(--muted)','stroke-dasharray':'5 4'},svg);S('text',{x:w-m.r,y:sy(100)-5,'text-anchor':'end',cls:'sans',text:'100 = perfect score'},svg)}
-    if(step>=2)S('line',{x1:sx(0),x2:sx(xmax),y1:sy(F.b0),y2:sy(F.b0+F.b1*xmax),stroke:'var(--accent)','stroke-width':2.5},svg);
+    if(step!==2)S('line',{x1:sx(0),x2:sx(xmax),y1:sy(F.b0),y2:sy(F.b0+F.b1*xmax),stroke:'var(--accent)','stroke-width':2.5},svg);
     H.forEach((x,i)=>S('circle',{cx:sx(x),cy:sy(SC[i]),r:4.5,fill:'var(--c1)',stroke:'var(--surface)','stroke-width':1.2},svg));
     if(step===4){const y=F.b0+F.b1*px,out=px<1||px>9;S('line',{x1:sx(px),x2:sx(px),y1:h-m.b,y2:sy(y),stroke:out?'var(--tail)':'var(--amber)','stroke-dasharray':'3 3','stroke-width':1.5},svg);
       S('circle',{cx:sx(px),cy:sy(y),r:7,fill:out?'var(--tail)':'var(--amber)',stroke:'var(--surface)','stroke-width':2},svg)}});
   const stat=(a,b,hl)=>`<div class="stat${hl?' hl':''}"><span>${a}</span><b>${b}</b></div>`;
   function upd(){$('#w4-ctl').hidden=step!==4;const eq=`ŷ = ${nf(F.b0,1)} + ${nf(F.b1,2)}x`;
-    if(step===1){set('w4-read',stat('Students','12')+stat('Model form','y = β₀ + β₁x + ε',1));set('w4-note','<b>Specify.</b> Score is the response y, hours studied is x. The scatter rises in a roughly straight pattern, so we hypothesize a straight line plus random error. The β\'s are unknown population values.')}
-    if(step===2){set('w4-read',stat('Slope b₁',nf(F.b1,2))+stat('Intercept b₀',nf(F.b0,1))+stat('Fitted line',eq,1));set('w4-note',`<b>Estimate.</b> Least squares turns the sample into numbers: each extra hour of study goes with about <b>${nf(F.b1,1)} more points</b> on average, and someone who studies 0 hours is predicted ${nf(F.b0,0)}.`)}
-    if(step===3){set('w4-read',stat('R²',nf(r2,3),1)+stat('Correlation r',nf(Math.sqrt(r2),3))+stat('Typical miss s',nf(se,2)+' pts')+stat('Slope test p',fmtP(p)));
-      set('w4-note',`<b>Evaluate.</b> The residuals bounce around 0 with no curve or funnel, so a straight line suits the data. R² = ${nf(r2,2)}: hours explain ${nf(r2*100,0)}% of the variation in scores. p ${p<0.001?'< 0.001':'= '+fmtP(p)} for the slope, so the relationship is very unlikely to be chance. Only now is the model worth using.`)}
+    if(step===1){set('w4-read',stat('Model form','y = β₀ + β₁x + ε')+stat('Slope b₁',nf(F.b1,2))+stat('Intercept b₀',nf(F.b0,1))+stat('Fitted line',eq,1));set('w4-note',`<b>Hypothesize, then estimate.</b> Score is the response y and hours studied is x. The scatter rises in a roughly straight pattern, so we hypothesize a straight line. Least squares then estimates the unknown β's: each extra hour of study goes with about <b>${nf(F.b1,1)} more points</b> on average.`)}
+    if(step===2){set('w4-read',stat('Mean of residuals','0')+stat('SD of the error, s',nf(se,2)+' pts',1)+stat('s = √(SSE / (n − 2))',`√(${nf(F.sse,1)} / ${n-2})`));set('w4-note',`<b>Specify the random error.</b> The residuals are our view of ε. We assume ε is random noise centered on 0 (commonly taken as normal) and estimate its standard deviation from the residuals: s = ${nf(se,2)} points, the typical distance from a point to the line.`)}
+    if(step===3){set('w4-read',stat('R²',nf(r2,3),1)+stat('Correlation r',nf(Math.sqrt(r2),3))+stat('Slope test p',fmtP(p)));
+      set('w4-note',`<b>Evaluate.</b> The fitted line tracks the data closely. R² = ${nf(r2,2)}: hours explain ${nf(r2*100,0)}% of the variation in scores. p ${p<0.001?'< 0.001':'= '+fmtP(p)} for the slope, so the relationship is very unlikely to be chance. Only now is the model worth using.`)}
     if(step===4){const y=F.b0+F.b1*px,out=px<1||px>9;set('w4-read',stat('Hours',nf(px,1))+stat('Predicted score',nf(y,1),1)+stat('Inside the data?',out?'<span style="color:var(--tail)">No: extrapolating</span>':'<span style="color:var(--good)">Yes</span>'));
       set('w4-note',out?`<b>Use, carefully.</b> ${nf(px,1)} hours is outside the 1–9 hours we measured. The line keeps going, but nothing says reality does${y>100?`: it predicts ${nf(y,0)} on a 100-point exam`:''}.`:`<b>Use.</b> For ${nf(px,1)} hours the model predicts about ${nf(y,0)} points. This is an average: individual students will scatter around it (that's ε).`)}
     render()}
@@ -1507,6 +2138,362 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
   upd();
 })();
 
+/* =================== Part 4: lecture topics =================== */
+function sortGame(list,scoreId,totId,items,cats){let got={};
+  const ph=k=>cats.find(c=>c[0]===k)[2];
+  function paint(){list.innerHTML=items.map(([t,a,w],i)=>{const g=got[i];return`<div class="it${g?(g===a?' ok':' no'):''}"><span>${t}</span><div class="seg" data-i="${i}">${cats.map(([k,l])=>`<button data-v="${k}" aria-pressed="${g===k}">${l}</button>`).join('')}</div>${g?`<small>${g===a?'Right.':`It's ${ph(a)}.`} ${w}</small>`:''}</div>`}).join('');
+    set(scoreId,Object.keys(got).filter(i=>got[i]===items[i][1]).length)}
+  list.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.parentElement.dataset.i)return;const i=+b.parentElement.dataset.i;if(got[i])return;got[i]=b.dataset.v;paint()});
+  set(totId,items.length);paint()}
+function orderGame(list,msgId,resetBtn,ST,first){let next=0;
+  function deal(){next=0;let o;do{o=ST.map((_,i)=>i).sort(()=>Math.random()-0.5)}while(o.every((v,i)=>v===i));
+    list.innerHTML=o.map(i=>`<button data-i="${i}"><span class="k">?</span><span><b>${ST[i][0]}</b><span class="d" hidden><br><span style="color:var(--muted);font-size:14px">${ST[i][1]}</span></span></span></button>`).join('');set(msgId,first)}
+  list.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.classList.contains('ok'))return;const i=+b.dataset.i;
+    if(i===next){b.classList.add('ok');b.querySelector('.k').textContent=i+1;b.querySelector('.d').hidden=false;next++;
+      set(msgId,next===ST.length?`<b style="color:var(--good)">All ${ST.length} in order.</b> ${ST.map(s=>s[0]).join(' → ')}`:`Right. What comes after "${ST[i][0]}"?`)}
+    else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');set(msgId,next===0?'Not first. What has to happen before anything else?':`Not yet. What comes right after "${ST[next-1][0]}"?`)}});
+  resetBtn.onclick=deal;deal()}
+const mxHTML=(M,cls)=>`<div class="mx" style="grid-template-columns:repeat(${M[0].length},auto)">${M.flat().map((v,i)=>`<span class="${cls?cls(Math.floor(i/M[0].length),i%M[0].length):''}">${v}</span>`).join('')}</div>`;
+
+/* ---------- 14 what counts as AI ---------- */
+(function(){
+  sortGame($('#aid-list'),'aid-score','aid-tot',[
+    ['A calculator','n','It follows fixed, hard-coded arithmetic rules and can\'t learn or adapt.'],
+    ['A dog that learns tricks','n','It learns from examples, but it\'s a living animal, not a human-made system.'],
+    ['A self-driving car','y','A human-made system that senses its surroundings, finds patterns and acts on its own.'],
+    ['A spam filter trained on emails people marked as spam','y','Human-made, and it learned to predict from labeled examples.'],
+    ['ChatGPT drafting an email','y','A human-made system that generates content: generative AI.'],
+    ['A plain light switch','n','It senses, predicts and decides nothing; it only closes a circuit.']],
+    [['y','AI','AI'],['n','Not AI','not AI']]);
+  const F={gofai:{h:`<div class="box"><small>Input</small><b>Data</b></div><span class="arr">+</span><div class="box hot"><small>Input · written by the programmer</small>${codeBlock('if inputs > 5:\n    output = 1\nelse:\n    output = 0','')}</div><span class="arr">→</span><div class="box"><small>Output</small><b>Answers</b></div>`,
+      n:'<b>Rules-based (GOFAI):</b> the programmer writes strict, readable instructions. Code is the blueprint. It can only handle cases someone wrote a rule for.'},
+    ml:{h:`<div class="box"><small>Input</small><b>Data</b></div><span class="arr">+</span><div class="box hot"><small>Input · provided by the programmer</small><b>Known answers (labels)</b></div><span class="arr">→</span><div class="box"><small>Training</small><b>Gradient-descent loop adjusts the weights</b></div><span class="arr">→</span><div class="box hot"><small>Output</small><b>The model (the instructions)</b></div>`,
+      n:'<b>Machine learning:</b> the programmer provides examples with answers, and training produces the rules. Data is the blueprint.'}};
+  function show(v){set('aid-flow',F[v].h);set('aid-note',F[v].n)}
+  seg($('#aid-mode'),show);show('gofai');
+  const R={ai:'<b>Artificial intelligence</b> mimics human intelligence. It includes GOFAI, which runs only on human-written, readable instructions.',
+    ml:'<b>Machine learning</b> is trained on existing data to find patterns and make predictions on new data.',
+    dl:'<b>Deep learning</b> uses complex, multi-layered neural networks for highly sophisticated tasks (images, speech, language).'};
+  $('#aid-nest').addEventListener('click',e=>{const b=e.target.closest('.ring');if(!b)return;$('#aid-nest').querySelectorAll('.ring').forEach(r=>r.setAttribute('aria-pressed',r===b));set('aid-ring',R[b.dataset.k])});
+})();
+
+/* ---------- 15 workflow + dataset ---------- */
+(function(){
+  orderGame($('#wf-order'),'wf-msg',$('#wf-reset'),[['Ask','Define the question and the target.'],['Collect & Process','Gather raw data and turn it into a usable format.'],['Train','Feed data into an algorithm to practice and build the model.'],['Test','Check the model on unseen data: the exam.'],['Improve','Tune parameters and refine based on accuracy metrics.'],['Serve','Deploy the model for real-world predictions, then loop back to Ask.']],'Which step comes first?');
+  const T=$('#ds-table'),rows=[...T.rows];
+  const N={ex:'<b>Examples</b> are the rows: each house is one example.',feat:'<b>Features</b> are the clues the model uses: Size and Age.',label:'<b>The label</b> is what we want to predict: Sale price (in hundreds of dollars, so 2050 = $205,000).',miss:'<b>Missing value:</b> Cross Winds has no age (*). Real data needs cleaning in the Collect &amp; Process step.'};
+  function hl(v){rows.forEach((r,i)=>[...r.cells].forEach((c,j)=>{c.className=c.className.replace(/\s*hi(-[lm])?/g,'');
+    if(v==='ex'&&i>0)c.classList.add('hi');if(v==='feat'&&(j===1||j===2))c.classList.add('hi');if(v==='label'&&j===3)c.classList.add('hi-l');if(v==='miss'&&i===2&&j===2)c.classList.add('hi-m')}));set('ds-note',N[v])}
+  seg($('#ds-hl'),hl);hl('ex');
+  sortGame($('#su-list'),'su-score','su-tot',[
+    ['Predict a house\'s sale price from past sales with known prices','s','The known prices are labels.'],
+    ['Group customers by shopping behavior, with no categories given','u','No labels; the algorithm finds the clusters.'],
+    ['Flag spam using emails people already marked as spam','s','The marks are labels.'],
+    ['Discover groups of similar songs in a music library','u','Clustering unlabeled data.'],
+    ['Recognize handwritten digits from images labeled 0–9','s','Every image comes with its answer.'],
+    ['Find hidden topics in thousands of unlabeled news articles','u','No answers are provided; the patterns are discovered.']],
+    [['s','Supervised','supervised'],['u','Unsupervised','unsupervised']]);
+})();
+
+/* ---------- 16 decision tree + overfitting ---------- */
+(function(){
+  let age=16,w=70;
+  const render=chart($('#tr-chart'),230,(svg,W,H)=>{const young=age<18,heavy=w>=60;
+    const P={root:[W/2,30],wt:[W*0.3,110],l3:[W*0.74,110],l1:[W*0.14,195],l2:[W*0.46,195]};
+    const on={rw:young,rl:!young,w1:young&&!heavy,w2:young&&heavy};
+    const edge=(a,b,lab,act)=>{S('line',{x1:P[a][0],y1:P[a][1],x2:P[b][0],y2:P[b][1],stroke:act?'var(--accent)':'var(--line)','stroke-width':act?3:1.5},svg);
+      S('text',{x:(P[a][0]+P[b][0])/2+(P[b][0]<P[a][0]?-8:8),y:(P[a][1]+P[b][1])/2,'text-anchor':P[b][0]<P[a][0]?'end':'start',cls:act?'ta b':'',text:lab},svg)};
+    edge('root','wt','Age < 18',on.rw);edge('root','l3','Age 18–30',on.rl);edge('wt','l1','< 60 kg',on.w1);edge('wt','l2','≥ 60 kg',on.w2);
+    const node=(k,txt,sub,act,leaf,risk)=>{const[x,y]=P[k],bw=Math.min(118,W*0.26);S('rect',{x:x-bw/2,y:y-17,width:bw,height:34,rx:leaf?17:6,fill:act?(leaf?(risk==='High'?'var(--tail-soft)':'var(--good-soft)'):'var(--accent-soft)'):'var(--surface)',stroke:act?(leaf?(risk==='High'?'var(--tail)':'var(--good)'):'var(--accent)'):'var(--line)','stroke-width':act?2:1},svg);
+      S('text',{x,y:y-1,'text-anchor':'middle',cls:'ti b sans',text:txt},svg);S('text',{x,y:y+12,'text-anchor':'middle',text:sub},svg)};
+    node('root','Age?','root node',true,false);node('wt','Weight?','decision node',young,false);node('l3','Low risk','leaf',!young,true,'Low');node('l1','Low risk','leaf',young&&!heavy,true,'Low');node('l2','High risk','leaf',young&&heavy,true,'High')});
+  function upd(){const young=age<18,heavy=w>=60,leaf=young?(heavy?'High risk':'Low risk'):'Low risk';
+    set('tr-leaf',leaf);set('tr-path',young?`Age ${age} is under 18, so the tree asks about weight: ${w} kg is ${heavy?'60 or more':'under 60'}.`:`Age ${age} falls in 18–30, which goes straight to a leaf. Weight is never asked.`);render()}
+  range('tr-age',v=>{age=v;upd()}).go();range('tr-w',v=>{w=v;upd()},v=>v+' kg').go();
+  const TR=[70,80,88,92,95,97,98,99],TE=[66,76,82,80,76,71,65,60];let d=3;
+  const acc=chart($('#tr-acc'),200,(svg,W,H)=>{const m={l:40,r:16,t:14,b:30},sx=lin(1,8,m.l,W-m.r),sy=lin(50,100,H-m.b,m.t);
+    yGrid(svg,sy,[60,70,80,90,100],m.l,W-m.r,v=>v+'%');xAxis(svg,sx,[1,2,3,4,5,6,7,8],H-m.b,String,m.l,W-m.r);
+    S('rect',{x:sx(2.5),y:m.t,width:sx(3.5)-sx(2.5),height:H-m.t-m.b,fill:'var(--good-soft)','fill-opacity':.7},svg);
+    [[TR,'var(--accent)','training'],[TE,'var(--tail)','test']].forEach(([a,c,l])=>{S('path',{d:a.map((v,i)=>(i?'L':'M')+sx(i+1)+','+sy(v)).join(''),fill:'none',stroke:c,'stroke-width':2.5},svg);
+      S('circle',{cx:sx(d),cy:sy(a[d-1]),r:6,fill:c,stroke:'var(--surface)','stroke-width':2},svg);S('text',{x:sx(8)-4,y:sy(a[7])+(l==='test'?16:-8),'text-anchor':'end',cls:'sans b',text:l,style:`fill:${c}`},svg)});
+    S('line',{x1:sx(d),x2:sx(d),y1:sy(TR[d-1]),y2:sy(TE[d-1]),stroke:'var(--ink)','stroke-dasharray':'3 3'},svg);S('text',{x:W-m.r,y:H-4,'text-anchor':'end',cls:'sans',text:'tree depth'},svg)});
+  range('tr-d',v=>{d=v;set('tr-tr',TR[d-1]+'%');set('tr-te',TE[d-1]+'%');
+    set('tr-dx',d<=2?'<span style="color:var(--amber)">Too simple (underfit)</span>':d===3?'<span style="color:var(--good)">Balanced</span>':d<=5?`<span style="color:var(--amber)">Starting to overfit</span>`:`<span style="color:var(--tail)">Overfit: ${TR[d-1]-TE[d-1]}-point gap</span>`);acc()}).go();
+})();
+
+/* ---------- 17 confusion matrix ---------- */
+(function(){
+  const DOG=[0.95,0.9,0.85,0.8,0.72,0.66,0.58,0.45,0.35,0.22],CAT=[0.7,0.55,0.42,0.38,0.3,0.25,0.18,0.12,0.08,0.05];let t=0.5;
+  const draw=chart($('#cm-strip'),130,(svg,W,H)=>{const m={l:16,r:16,t:14,b:28},sx=lin(0,1,m.l,W-m.r),yd=44,yc=86;
+    xAxis(svg,sx,[0,0.25,0.5,0.75,1],H-m.b,v=>v,m.l,W-m.r);S('text',{x:m.l,y:yd-14,cls:'sans',text:'dogs'},svg);S('text',{x:m.l,y:yc+22,cls:'sans',text:'cats'},svg);
+    S('rect',{x:sx(t),y:m.t-6,width:W-m.r-sx(t),height:H-m.b-m.t+6,fill:'var(--accent-soft)','fill-opacity':.6},svg);
+    S('line',{x1:sx(t),x2:sx(t),y1:m.t-6,y2:H-m.b,stroke:'var(--accent)','stroke-width':2},svg);S('text',{x:sx(t)+5,y:m.t+4,cls:'ta b sans',text:'predicted "dog" →'},svg);
+    [[DOG,yd,'var(--c1)',1],[CAT,yc,'var(--c2)',0]].forEach(([a,y,c,isDog])=>a.forEach((s,i)=>{const cx=sx(s),cy=y+(i%2?6:-6),wrong=isDog?s<t:s>=t;
+      if(wrong)S('circle',{cx,cy,r:10,fill:'none',stroke:'var(--tail)','stroke-width':2},svg);S('circle',{cx,cy,r:6,fill:c,stroke:'var(--surface)','stroke-width':1.5},svg)}))});
+  range('cm-t',v=>{t=v;const TP=DOG.filter(s=>s>=t).length,FN=10-TP,FP=CAT.filter(s=>s>=t).length,TN=10-FP;
+    set('cm-table',`<tr><th></th><th>Predicted dog</th><th>Predicted not dog</th></tr><tr><th>Actually a dog</th><td class="ok"><b>${TP}</b>True positive</td><td class="bad"><b>${FN}</b>False negative · Type II<br><small>dog missed</small></td></tr><tr><th>Actually a cat</th><td class="bad"><b>${FP}</b>False positive · Type I<br><small>cat called a dog</small></td><td class="ok"><b>${TN}</b>True negative</td></tr>`);
+    set('cm-acc',`(${TP} + ${TN}) / 20 = ${Math.round((TP+TN)/20*100)}%`);set('cm-fp',FP);set('cm-fn',FN);draw()},v=>v.toFixed(2)).go();
+})();
+
+/* ---------- 18 neural network training ---------- */
+(function(){
+  const X=2,Y=1,sig=z=>1/(1+Math.exp(-z));let w=-0.5,b=0,stage=-1,hist=[],lr=1,cur=null;
+  function reset(){w=-0.5;b=0;stage=-1;hist=[];cur=null;paint();draw()}
+  function fwd(){const z=w*X+b,p=sig(z),L=0.5*(p-Y)**2,dp=p-Y,dz=dp*p*(1-p);return{z,p,L,dp,dz,dW:dz*X,db:dz}}
+  const f4=v=>nf(v,4);
+  function paint(){$('#nt-loop').querySelectorAll('span').forEach(s=>s.classList.toggle('on',+s.dataset.s===stage));
+    const c=cur,L=[];L.push(['·',`Current weights: w = ${f4(w)}, b = ${f4(b)}${hist.length?` · ${hist.length} update${hist.length>1?'s':''} so far`:''}`]);
+    if(stage>=0)L.push(['1',`Forward: z = w·x + b = ${f4(c.w)}·2 + ${f4(c.b)} = ${f4(c.z)};  p = σ(z) = ${f4(c.p)}`]);
+    if(stage>=1)L.push(['2',`Loss = ½(p − y)² = ½(${f4(c.p)} − 1)² = ${f4(c.L)}`]);
+    if(stage>=2){L.push(['3',`Δp = ∂Loss/∂p = p − y = ${f4(c.dp)}`]);L.push(['',`Δz = Δp · ∂p/∂z = Δp · p(1 − p) = ${f4(c.dz)}`]);L.push(['',`ΔW = Δz · ∂z/∂W = Δz · x = ${f4(c.dW)};  Δb = Δz · ∂z/∂b = Δz · 1 = ${f4(c.db)}`])}
+    if(stage>=3)L.push(['4',`Update: w ← ${f4(c.w)} − ${nf(lr,1)}·(${f4(c.dW)}) = ${f4(w)};  b ← ${f4(c.b)} − ${nf(lr,1)}·(${f4(c.db)}) = ${f4(b)}`]);
+    set('nt-math',L.map(([k,t])=>`<div class="${k==='4'?'y':''}"><b>${k}</b><span>${t}</span></div>`).join(''));
+    set('nt-next',stage===3||stage===-1?(hist.length?'Next step: predict ▶':'Start: predict ▶'):['Measure error ▶','Propagate error ▶','Update ▶'][stage])}
+  function advance(){if(stage===-1||stage===3){cur={w,b,...fwd()};stage=0}else if(stage<2)stage++;else{w-=lr*cur.dW;b-=lr*cur.db;hist.push(cur.L);stage=3}paint();draw()}
+  const draw=chart($('#nt-chart'),220,(svg,W,H)=>{const m={l:44,r:12,t:16,b:30},n=Math.max(10,hist.length+1),all=[...hist,fwd().L],mx=Math.max(0.3,...all);
+    const sx=lin(0,n,m.l,W-m.r),sy=lin(0,mx,H-m.b,m.t);yGrid(svg,sy,[0,mx/2,mx].map(v=>+v.toFixed(2)),m.l,W-m.r);xAxis(svg,sx,[0,Math.round(n/2),n],H-m.b,String,m.l,W-m.r);
+    S('text',{x:W-m.r,y:H-4,'text-anchor':'end',cls:'sans',text:'updates'},svg);S('text',{x:W-m.r,y:m.t+4,'text-anchor':'end',cls:'sans',text:'loss per update'},svg);
+    S('path',{d:all.map((v,i)=>(i?'L':'M')+sx(i)+','+sy(v)).join(''),fill:'none',stroke:'var(--accent)','stroke-width':2.5},svg);
+    all.forEach((v,i)=>S('circle',{cx:sx(i),cy:sy(v),r:i===all.length-1?5:3,fill:'var(--accent)'},svg))});
+  $('#nt-next').onclick=advance;
+  $('#nt-run').onclick=()=>{if(stage>=0&&stage<3){cur={w,b,...fwd()}}for(let i=0;i<25;i++){cur={w,b,...fwd()};w-=lr*cur.dW;b-=lr*cur.db;hist.push(cur.L)}stage=3;paint();draw()};
+  $('#nt-reset').onclick=reset;range('nt-lr',v=>{lr=v},v=>nf(v,1)).go();reset();
+  /* gradient descent on a 1-D error landscape */
+  const Lf=x=>0.5*(x-1)**2+0.5,dL=x=>x-1;let gx=-3.5,trail=[],glr=0.3;
+  const g=chart($('#gd-chart'),200,(svg,W,H)=>{const m={l:36,r:12,t:12,b:28},sx=lin(-4,6,m.l,W-m.r),sy=lin(0,13,H-m.b,m.t),cl=v=>Math.max(-4,Math.min(6,v));
+    xAxis(svg,sx,[-4,-2,0,2,4,6],H-m.b,String,m.l,W-m.r);S('text',{x:W-m.r,y:H-4,'text-anchor':'end',cls:'sans',text:'weight w'},svg);S('text',{x:m.l-30,y:m.t+4,cls:'sans',text:'error'},svg);
+    S('path',{d:pathFn(Lf,-4,6,sx,sy),fill:'none',stroke:'var(--muted)','stroke-width':2},svg);
+    S('circle',{cx:sx(1),cy:sy(0.5),r:5,fill:'var(--good)'},svg);S('text',{x:sx(1),y:sy(0.5)-12,'text-anchor':'middle',cls:'sans',text:'valley (minimum)'},svg);
+    trail.forEach((x,i)=>{if(i)S('line',{x1:sx(cl(trail[i-1])),y1:sy(Math.min(13,Lf(trail[i-1]))),x2:sx(cl(x)),y2:sy(Math.min(13,Lf(x))),stroke:'var(--tail)','stroke-width':1.5,'stroke-dasharray':'3 2'},svg)});
+    S('circle',{cx:sx(cl(gx)),cy:sy(Math.min(13,Lf(gx))),r:8,fill:'var(--tail)',stroke:'var(--surface)','stroke-width':2},svg);
+    const sl=dL(gx);if(Math.abs(sl)>0.05&&Math.abs(gx)<6){const dx=-Math.sign(sl)*0.9;S('line',{x1:sx(gx),y1:sy(Lf(gx))-14,x2:sx(gx+dx),y2:sy(Lf(gx))-14,stroke:'var(--tail)','stroke-width':2.5},svg);S('text',{x:sx(gx+dx/2),y:sy(Lf(gx))-20,'text-anchor':'middle',cls:'tt sans',text:'−gradient'},svg)}});
+  function gmsg(){set('gd-msg',`w = ${nf(gx,2)}, error = ${nf(Lf(gx),2)}${Math.abs(gx)>40?' · diverging!':Math.abs(gx-1)<0.02?' · reached the valley':glr>1&&trail.length>1?' · overshooting: bouncing across the valley':''}`)}
+  function step(){if(!trail.length)trail.push(gx);gx=gx-glr*dL(gx);trail.push(gx);gmsg();g()}
+  $('#gd-step').onclick=step;$('#gd-run').onclick=()=>{for(let i=0;i<10;i++)step()};$('#gd-reset').onclick=()=>{gx=-3.5;trail=[];gmsg();g()};
+  range('gd-lr',v=>{glr=v;gx=-3.5;trail=[];gmsg();g()},v=>nf(v,2)).go();
+})();
+
+/* ---------- 19 least squares by table ---------- */
+(function(){
+  const D={estriol:{X:[1,2,3,4,5],Y:[1,1,2,2,4],xn:'Estriol (mg/24h)',yn:'Birthweight (g/1000)',xs:'estriol',ys:'birthweight',u:'units',xu:'unit',pos:true},
+           milk:{X:[4,6,10,12],Y:[3,5.5,6.5,9],xn:'Food intake (lb)',yn:'Milk yield (lb)',xs:'food intake',ys:'milk yield',u:'lb',xu:'lb',pos:true}};
+  let k='estriol',px=3;const T=$('#lt-table');
+  function build(){const d=D[k];T.innerHTML=`<tr><th>X · ${d.xn}</th><th>Y · ${d.yn}</th><th>X²</th><th>Y²</th><th>XY</th></tr>`+d.X.map((x,i)=>`<tr><td class="n"><input class="inp" type="number" step="any" value="${x}" data-c="X" data-i="${i}" style="width:7ch;text-align:right" aria-label="X ${i+1}"></td><td class="n"><input class="inp" type="number" step="any" value="${d.Y[i]}" data-c="Y" data-i="${i}" style="width:7ch;text-align:right" aria-label="Y ${i+1}"></td><td class="n" id="lt-x2${i}"></td><td class="n" id="lt-y2${i}"></td><td class="n" id="lt-xy${i}"></td></tr>`).join('')+'<tr><td class="n" id="lt-sx"></td><td class="n" id="lt-sy"></td><td class="n" id="lt-sxx"></td><td class="n" id="lt-syy"></td><td class="n" id="lt-sxy"></td></tr>';
+    upd()}
+  T.addEventListener('input',upd);
+  function upd(){const d=D[k],X=[...T.querySelectorAll('input[data-c="X"]')].map(i=>parseFloat(i.value)),Y=[...T.querySelectorAll('input[data-c="Y"]')].map(i=>parseFloat(i.value));
+    if(X.concat(Y).some(v=>!isFinite(v)))return;const n=X.length;
+    X.forEach((x,i)=>{set('lt-x2'+i,nf(x*x,2));set('lt-y2'+i,nf(Y[i]**2,2));set('lt-xy'+i,nf(x*Y[i],2))});
+    const SX=X.reduce((a,b)=>a+b,0),SY=Y.reduce((a,b)=>a+b,0),SXX=X.reduce((a,b)=>a+b*b,0),SYY=Y.reduce((a,b)=>a+b*b,0),SXY=X.reduce((a,x,i)=>a+x*Y[i],0);
+    set('lt-sx','<b>ΣX = '+nf(SX,2)+'</b>');set('lt-sy','<b>ΣY = '+nf(SY,2)+'</b>');set('lt-sxx','<b>ΣX² = '+nf(SXX,2)+'</b>');set('lt-syy','<b>ΣY² = '+nf(SYY,2)+'</b>');set('lt-sxy','<b>ΣXY = '+nf(SXY,2)+'</b>');
+    const ssxy=SXY-SX*SY/n,ssxx=SXX-SX*SX/n;if(Math.abs(ssxx)<1e-12){set('lt-steps','<li><span class="k">!</span><div><b>All X values are equal</b><p>SSxx = 0, so the slope can\'t be computed.</p></div></li>');return}
+    const b1=ssxy/ssxx,xm=SX/n,ym=SY/n,b0=ym-b1*xm;
+    set('lt-steps',`<li><span class="k">1</span><div><b>SSxy = ΣXY − (ΣX)(ΣY)/n</b><p>${nf(SXY,3)} − (${nf(SX,3)})(${nf(SY,3)})/${n} = <span class="v">${nf(ssxy,4)}</span></p></div></li>
+      <li><span class="k">2</span><div><b>SSxx = ΣX² − (ΣX)²/n</b><p>${nf(SXX,3)} − (${nf(SX,3)})²/${n} = <span class="v">${nf(ssxx,4)}</span></p></div></li>
+      <li><span class="k">3</span><div><b>β̂₁ = SSxy / SSxx</b><p>${nf(ssxy,4)} / ${nf(ssxx,4)} = <span class="v">${nf(b1,4)}</span></p></div></li>
+      <li><span class="k">4</span><div><b>β̂₀ = ȳ − β̂₁x̄</b><p>${nf(ym,4)} − (${nf(b1,4)})(${nf(xm,4)}) = <span class="v">${nf(b0,4)}</span></p></div></li>`);
+    set('lt-eq',`Ŷ = ${nf(b0,3)} ${b1<0?'−':'+'} ${nf(Math.abs(b1),3)}X`);
+    const xmin=Math.min(...X),xmax=Math.max(...X),zeroOut=xmin>0||xmax<0;
+    set('lt-int',`<b>Slope:</b> ${d.ys[0].toUpperCase()+d.ys.slice(1)} is expected to ${b1>=0?'increase':'decrease'} by ${nf(Math.abs(b1),3)} ${d.u} for each 1 ${d.xu} increase in ${d.xs}. <b>Intercept:</b> average ${d.ys} is ${nf(b0,3)} ${d.u} when ${d.xs} is 0${zeroOut?`, but X = 0 is outside the data (${nf(xmin,2)}–${nf(xmax,2)})${b0<0&&d.pos?', and a negative '+d.ys+' is impossible, so this intercept is hard to interpret':', so treat it with caution'}`:''}.`);
+    const p=b0+b1*px;set('lt-x-o',nf(px,1));set('lt-pred',`Ŷ = ${nf(b0,3)} ${b1<0?'−':'+'} ${nf(Math.abs(b1),3)} × ${nf(px,1)} = <b>${nf(p,3)}</b>${px<xmin||px>xmax?` · <span style="color:var(--tail)">X is outside the data range, so this is extrapolation</span>`:''}${Math.abs(px-xm)<1e-9?' · at x̄ the line predicts exactly ȳ':''}`)}
+  range('lt-x',v=>{px=v;upd()},v=>nf(v,1));
+  seg($('#lt-pick'),v=>{k=v;const r=$('#lt-x');r.value=k==='milk'?8:3;px=+r.value;build()});build();
+})();
+
+/* ---------- 20 images: eye + color spaces ---------- */
+(function(){
+  orderGame($('#eye-order'),'eye-msg',$('#eye-reset'),[['Pigment spot','"Is there light here?" Basic light detection.'],['Pigment cup','"Light is coming from that direction." Directional sensitivity.'],['Simple optic cup','A pinhole: "There is something over there." A crude image.'],['Primitive lens','Refractive focusing: "I can see it more clearly."'],['Complex eye','Cornea, iris, lens, retina: detailed visual images, like a camera.']],'Which stage came first?');
+  let r=36,g=80,b=200;
+  function hsv(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0;if(d){if(mx===r)h=60*(((g-b)/d)%6);else if(mx===g)h=60*((b-r)/d+2);else h=60*((r-g)/d+4)}if(h<0)h+=360;return[h,mx?d/mx:0,mx]}
+  function lab(r,g,b){const L=c=>{c/=255;return c<=0.04045?c/12.92:((c+0.055)/1.055)**2.4};const R=L(r),G=L(g),B=L(b);
+    const X=(0.4124564*R+0.3575761*G+0.1804375*B)/0.95047,Y=0.2126729*R+0.7151522*G+0.0721750*B,Z=(0.0193339*R+0.1191920*G+0.9503041*B)/1.08883;
+    const f=t=>t>216/24389?Math.cbrt(t):(24389/27*t+16)/116;return[116*f(Y)-16,500*(f(X)-f(Y)),200*(f(Y)-f(Z))]}
+  function upd(){const[h,s,v]=hsv(r,g,b),[L,A,B]=lab(r,g,b),y=Math.round(0.299*r+0.587*g+0.114*b);
+    $('#cs-sw').style.background=`rgb(${r},${g},${b})`;$('#cs-gray').style.background=`rgb(${y},${y},${y})`;
+    set('cs-rgb',`(${r}, ${g}, ${b})`);set('cs-hsv',`(${Math.round(h)}°, ${nf(s,2)}, ${nf(v,2)})`);set('cs-lab',`(${nf(L,1)}, ${nf(A,1)}, ${nf(B,1)})`);set('cs-y',`${y} of 255`)}
+  range('cs-r',v=>{r=v;upd()}).go();range('cs-g',v=>{g=v;upd()}).go();range('cs-b',v=>{b=v;upd()}).go();
+})();
+
+/* ---------- 21 convolution + mean/median ---------- */
+(function(){
+  const IN=[[4,5,7,6,6],[3,2,8,0,7],[6,7,7,1,5],[3,0,1,1,1],[4,3,2,1,7]];
+  const K={lec:{m:[[0,0,0],[1,0,1],[0,0,0]],l:null,c:'Each output is the left neighbor plus the right neighbor of the center pixel. The highlighted cell is the lecture\'s example: 7 + 5 = 12.'},
+    mean:{m:[[1,1,1],[1,1,1],[1,1,1]].map(r=>r.map(v=>v/9)),l:()=>'1/9',c:'Mean blur replaces each pixel with the plain average of its 3 × 3 neighborhood.'},
+    gauss:{m:[[1,2,1],[2,4,2],[1,2,1]].map(r=>r.map(v=>v/16)),l:v=>({0.0625:'1/16',0.125:'1/8',0.25:'1/4'})[v],c:'Gaussian blur weights the center most (1/4), then edges (1/8), then corners (1/16), like a lens focusing.'},
+    sobel:{m:[[1,0,-1],[2,0,-2],[1,0,-1]],l:null,c:'Sobel compares the left column with the right column, so it responds strongly where brightness changes from left to right: a vertical edge.'}};
+  let kk='lec',sel=[1,2];
+  const out=(i,j)=>{let s=0;for(let u=0;u<3;u++)for(let v=0;v<3;v++)s+=K[kk].m[u][v]*IN[i+u][j+v];return s};
+  function paint(){const k=K[kk],lab=v=>k.l?k.l(v):String(v);
+    set('cv-in',mxHTML(IN,(i,j)=>i>=sel[0]&&i<sel[0]+3&&j>=sel[1]&&j<sel[1]+3?'on':''));
+    set('cv-ker',mxHTML(k.m.map(r=>r.map(lab))));
+    $('#cv-out').innerHTML=`<div class="mx" style="grid-template-columns:repeat(3,auto)">${[0,1,2].map(i=>[0,1,2].map(j=>`<button class="${i===sel[0]&&j===sel[1]?'sel':''}" data-i="${i}" data-j="${j}" aria-label="output row ${i+1} column ${j+1}">${nf(out(i,j),2)}</button>`).join('')).join('')}</div>`;
+    const terms=[];for(let u=0;u<3;u++)for(let v=0;v<3;v++){const w=k.m[u][v];if(w)terms.push(`${lab(w)}×${IN[sel[0]+u][sel[1]+v]}`)}
+    set('cv-math',`g = ${terms.join(' + ').replace(/\+ -/g,'− ').replace(/×/g,'·')} = <b>${nf(out(sel[0],sel[1]),3)}</b>`);
+    set('cv-cap',k.c+' This page multiplies the kernel as shown without flipping it, as CNN libraries do; for symmetric kernels that makes no difference.')}
+  $('#cv-out').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;sel=[+b.dataset.i,+b.dataset.j];paint()});
+  seg($('#cv-k'),v=>{kk=v;paint()});paint();
+  const BASE=[52,55,61,59,58,62,57,60,63];let P=[...BASE];
+  function mm(){const s=[...P].sort((a,b)=>a-b);set('mm-nb',mxHTML([P.slice(0,3),P.slice(3,6),P.slice(6,9)],(i,j)=>{const v=P[i*3+j];return v===255||v===0?'salt':''}));
+    set('mm-mean',`${nf(mean(P),1)}`);set('mm-med',`${s[4]} <small style="font-weight:400;color:var(--muted)">sorted: ${s.join(', ')}</small>`)}
+  const spot=()=>{const free=[4,0,8,2,6,1,3,5,7].filter(i=>P[i]!==255&&P[i]!==0);return free.length?free[0]:null};
+  $('#mm-salt').onclick=()=>{const i=spot();if(i!=null)P[i]=255;mm()};$('#mm-pep').onclick=()=>{const i=spot();if(i!=null)P[i]=0;mm()};$('#mm-reset').onclick=()=>{P=[...BASE];mm()};
+  P[4]=255;mm();
+})();
+
+/* ---------- 22 CNN building blocks ---------- */
+(function(){
+  let n=32,k=5,s=1,p=0;
+  function upd(){const num=n+2*p-k;if(num<0){set('os-out','—');set('os-why','The kernel is bigger than the padded input.');return}
+    const o=Math.floor(num/s)+1;set('os-out',`${o} × ${o}`);
+    set('os-why',`(${n} + 2·${p} − ${k}) / ${s} + 1 = ${num}/${s} + 1 = ${num%s?nf(num/s,2)+' → rounds down → ':''}${o}. A 2 × 2 pool after it would give ${Math.floor(o/2)} × ${Math.floor(o/2)}.`)}
+  const R={n:range('os-n',v=>{n=v;upd()}),k:range('os-k',v=>{k=v;upd()}),s:range('os-s',v=>{s=v;upd()}),p:range('os-p',v=>{p=v;upd()})};Object.values(R).forEach(r=>r.go());
+  $('#os-pre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const[a,c,d,f]=b.dataset.v.split(',').map(Number);R.n.set(a);R.k.set(c);R.s.set(d);R.p.set(f)});
+  const IN=[[12,20,30,0],[8,12,2,0],[34,70,37,4],[112,100,25,12]],Q=(i,j)=>(i<2?0:2)+(j<2?0:1);let q=2;
+  const blk=t=>{const r=t>>1,c=t&1;return[IN[2*r][2*c],IN[2*r][2*c+1],IN[2*r+1][2*c],IN[2*r+1][2*c+1]]};
+  function mp(){set('mp-in',mxHTML(IN,(i,j)=>`q${Q(i,j)+1}${Q(i,j)===q&&IN[i][j]===Math.max(...blk(q))?' max':''}`).replace(/<span/g,'<button').replace(/<\/span>/g,'</button>').replace(/<button class="(q(\d)[^"]*)"/g,(m,c,d)=>`<button class="${c}" data-q="${d-1}"`));
+    $('#mp-out').innerHTML=`<div class="mx" style="grid-template-columns:repeat(2,auto)">${[0,1,2,3].map(t=>`<button class="q${t+1}${t===q?' max':''}" data-q="${t}">${Math.max(...blk(t))}</button>`).join('')}</div>`;
+    set('mp-note',`max(${blk(q).join(', ')}) = <b>${Math.max(...blk(q))}</b>`)}
+  ['#mp-in','#mp-out'].forEach(id=>$(id).addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.q==null)return;q=+b.dataset.q;mp()}));mp();
+})();
+
+/* ---------- 23 ImageNet / AlexNet / dropout ---------- */
+(function(){
+  const P=[['cat, tabby cat',0.61],['Egyptian cat',0.22],['red fox',0.11],['Abyssinian cat',0.10]],opts=[...P.map(p=>p[0]),'Persian cat (not guessed)'];
+  const sel=$('#t5-true');sel.innerHTML=opts.map(o=>`<option${o==='Abyssinian cat'?' selected':''}>${o}</option>`).join('');
+  function upd(){const t=sel.value,r=P.findIndex(p=>p[0]===t);set('t5-list',P.map((p,i)=>`<div class="${p[0]===t?'y':''}"><b>${i+1}</b><span>${p[0]} (${p[1].toFixed(2)})${p[0]===t?'  ← true label':''}</span></div>`).join(''));
+    set('t5-1',r===0?'0.0 <small style="font-weight:400;color:var(--muted)">first guess right</small>':'1.0 <small style="font-weight:400;color:var(--muted)">first guess wrong</small>');
+    set('t5-5',r>=0&&r<5?`0.0 <small style="font-weight:400;color:var(--muted)">true label ranked ${r+1}</small>`:'1.0 <small style="font-weight:400;color:var(--muted)">not in the top 5</small>')}
+  sel.addEventListener('change',upd);upd();
+  const B=[['Sparse coding',28.2,'var(--muted)'],['SIFT + Fisher vectors (best traditional)',25.7,'var(--muted)'],['CNN · AlexNet (2012)',17.0,'var(--accent)']];
+  chart($('#an-bars'),150,(svg,W,H)=>{const m={l:8,r:52,t:8,b:8},bh=30,sx=lin(0,30,m.l,W-m.r);
+    B.forEach(([l,v,c],i)=>{const y=m.t+i*(bh+16);S('rect',{x:m.l,y:y+12,width:sx(v)-m.l,height:bh-12,rx:4,fill:c,'fill-opacity':i===2?1:.5},svg);S('text',{x:m.l,y:y+8,cls:'sans'+(i===2?' ta b':''),text:l},svg);S('text',{x:sx(v)+6,y:y+bh-3,cls:'b'+(i===2?' ta':' ti'),text:v.toFixed(1)+'%'},svg)})});
+  let drop=null;
+  const net=chart($('#do-net'),200,(svg,W,H)=>{const L=[3,5,5,2],xs=L.map((_,i)=>lin(0,3,40,W-40)(i)),pos=L.map((n,i)=>Array.from({length:n},(_,j)=>[xs[i],lin(-1,n,14,H-14)(j)]));
+    const off=(i,j)=>drop&&drop[i]&&drop[i][j];
+    for(let i=0;i<3;i++)pos[i].forEach((a,j)=>pos[i+1].forEach((b,k)=>{if(!off(i,j)&&!off(i+1,k))S('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--line)','stroke-width':1.2},svg)}));
+    pos.forEach((col,i)=>col.forEach(([x,y],j)=>{const o=off(i,j);S('circle',{cx:x,cy:y,r:11,fill:o?'var(--surface)':i===0?'var(--accent-soft)':i===3?'var(--good-soft)':'var(--surface)',stroke:o?'var(--line)':'var(--ink)','stroke-width':1.5,'stroke-dasharray':o?'3 3':''},svg);
+      if(o){S('line',{x1:x-6,y1:y-6,x2:x+6,y2:y+6,stroke:'var(--tail)','stroke-width':2},svg);S('line',{x1:x+6,y1:y-6,x2:x-6,y2:y+6,stroke:'var(--tail)','stroke-width':2},svg)}}))});
+  $('#do-step').onclick=()=>{drop={1:{},2:{}};[1,2].forEach(l=>{const idx=[0,1,2,3,4].sort(()=>Math.random()-0.5).slice(0,2+Math.round(Math.random()));idx.forEach(j=>drop[l][j]=1)});net()};
+  $('#do-off').onclick=()=>{drop=null;net()};
+})();
+
+/* ---------- 24 self-supervised speech ---------- */
+(function(){
+  const W={g:'Reconstructs masked or future audio; L1 / MSE loss.',c:'Picks the true sample out of negatives; InfoNCE loss.',p:'Predicts discrete targets from a teacher or k-means clusters; cross-entropy loss.'};
+  sortGame($('#ss-list'),'ss-score','ss-tot',[['HuBERT','p',W.p],['APC','g',W.g],['wav2vec 2.0','c',W.c],['Mockingjay','g',W.g],['data2vec','p',W.p],['CPC','c',W.c],['TERA','g',W.g],['WavLM','p',W.p],['vq-wav2vec','c',W.c]],
+    [['g','Generative','generative'],['c','Contrastive','contrastive'],['p','Predictive','predictive']]);
+  const T={spk:[1,6,'<b>Early layers (≈1–6): acoustics and speaker identity.</b> They stay close to the raw input, which makes them the strongest signal for speaker verification.'],
+    asr:[10,19,'<b>Middle layers (≈10–19): the sweet spot.</b> The model has abstracted away noise and holds phonetic and word information. For ASR, freeze the network and take features from here, not from the final layer.'],
+    rec:[21,24,'<b>Final layers (≈21–24): reconstruction.</b> The network drifts back toward acoustic detail to solve its pre-training pretext task; SSL models behave like autoencoders.']};
+  function show(v){const[a,b,n]=T[v];set('ly-bar',Array.from({length:24},(_,i)=>`<span class="${i+1>=a&&i+1<=b?'on':''}">${i+1}</span>`).join(''));set('ly-note',n)}
+  seg($('#ly-task'),show);show('asr');
+})();
+
+/* ---------- 25 ethics + bias ---------- */
+(function(){
+  const C=[['WORLD','A hiring pipeline that historically favored men.'],['DATA','Years of past résumés and hiring decisions, mostly men hired.'],['ML MODEL','Learns that résumés containing the word "women\'s" go with rejection.'],['ACTION','Penalizes female applicants, so even fewer women are hired.']];let k=0;
+  function paint(){set('ba-cycle',C.map(([h,t],i)=>`<div class="${i===k?'on':''}"><b>${i+1} · ${h}</b>${t}</div>`).join(''));
+    set('ba-note',k===3?'…and those decisions become tomorrow\'s training data, so the loop closes and the bias grows. Amazon scrapped the tool in 2018. The model didn\'t just reflect the bias; it amplified it.':['The world already contains the bias.','The bias is written into the historical data.','The model learns the pattern exactly as trained: that is the problem.'][k]);
+    set('ba-next',k===3?'Go around again ↻':'Next ▶')}
+  $('#ba-next').onclick=()=>{k=(k+1)%4;paint()};paint();
+  const D=[['Labeled higher risk, but didn\'t re-offend',23.5,44.9],['Labeled lower risk, yet did re-offend',47.7,28.0]];
+  chart($('#cp-bars'),190,(svg,W,H)=>{const m={l:8,r:56,t:6,b:6},sx=lin(0,60,m.l,W-m.r);
+    D.forEach(([l,w,b],i)=>{const y=m.t+i*92;S('text',{x:m.l,y:y+12,cls:'sans ti b',text:l},svg);
+      [['White',w,'var(--c2)'],['African American',b,'var(--c1)']].forEach(([g,v,c],j)=>{const yy=y+20+j*32;S('rect',{x:m.l,y:yy,width:sx(v)-m.l,height:22,rx:4,fill:c},svg);S('text',{x:sx(v)+6,y:yy+16,cls:'ti b',text:v.toFixed(1)+'%'},svg);S('text',{x:m.l+6,y:yy+15,cls:'sans',style:'fill:var(--surface);font-weight:600',text:g},svg)})})});
+  sortGame($('#et-list'),'et-score','et-tot',[
+    ['Maximize total happiness; judge actions by net positive outcomes','u','Its criticism: how do you accurately measure utility?'],
+    ['Follow your duty and categorical rules, whatever the outcome','d','Its criticism: unacceptably inflexible in edge cases.'],
+    ['Act from good character and grow human capacity','v','Its criticism: evidence suggests fixed character is an illusion.'],
+    ['Choose the rules from behind a "veil of ignorance", not knowing your own place in society','r','A social contract; its criticism is that costs and friction come second.'],
+    ['"How could anyone put a number on everyone\'s happiness?"','u','That is the main objection to utilitarianism.'],
+    ['"Never lie, even to save a life" seems too rigid','d','Rigid rules in edge cases are deontology\'s weak spot.']],
+    [['u','Utilitarian','utilitarianism'],['d','Deontology','deontology'],['v','Virtue','virtue ethics'],['r','Rawls','Rawlsian justice']]);
+})();
+
+/* ---------- 26 fairness simulator + equality/equity/justice ---------- */
+(function(){
+  const r=mulberry32(110),G={};
+  [['blue',60],['orange',45]].forEach(([g,mu])=>{G[g]=[];for(let i=0;i<120;i++){const s=Math.max(2,Math.min(98,Math.round(mu+15*gauss(r))));G[g].push({s,y:r()<s/100?1:0})}});
+  let tb=50,to=50;
+  function stats(g,t){const P=G[g],pos=P.filter(p=>p.y),neg=P.filter(p=>!p.y),ap=P.filter(p=>p.s>=t),tp=pos.filter(p=>p.s>=t).length,fp=neg.filter(p=>p.s>=t).length;
+    return{base:pos.length/P.length,app:ap.length/P.length,tpr:tp/pos.length,fpr:fp/neg.length,fnr:1-tp/pos.length,profit:500*tp-500*fp}}
+  const draw=chart($('#fa-chart'),170,(svg,W,H)=>{const m={l:60,r:14,t:10,b:28},sx=lin(0,100,m.l,W-m.r);xAxis(svg,sx,[0,20,40,60,80,100],H-m.b,String,m.l,W-m.r);S('text',{x:W-m.r,y:H-4,'text-anchor':'end',cls:'sans',text:'credit score'},svg);
+    [['blue',40,'var(--c1)',tb],['orange',96,'var(--c2)',to]].forEach(([g,y,c,t])=>{S('text',{x:4,y:y+4,cls:'sans b',style:`fill:${c}`,text:g[0].toUpperCase()+g.slice(1)},svg);
+      S('rect',{x:sx(t),y:y-26,width:W-m.r-sx(t),height:52,fill:c,'fill-opacity':.08},svg);S('line',{x1:sx(t),x2:sx(t),y1:y-28,y2:y+28,stroke:c,'stroke-width':2.5},svg);
+      G[g].forEach((p,i)=>S('circle',{cx:sx(p.s),cy:y+((i*37)%41-20),r:3.2,fill:p.y?c:'var(--surface)',stroke:c,'stroke-width':1.2},svg))})});
+  const pc=v=>Math.round(v*100)+'%';
+  function upd(note){const B=stats('blue',tb),O=stats('orange',to);
+    set('fa-table',`<tr><th>Group</th><th>Base rate (repay)</th><th>Approval rate</th><th>True positive rate</th><th>False positive rate</th><th>False negative rate</th><th>Profit</th></tr>`+
+      [['Blue',B,'var(--c1)'],['Orange',O,'var(--c2)']].map(([n,s,c])=>`<tr><td class="fa-g" style="color:${c}">${n}</td><td class="n">${pc(s.base)}</td><td class="n">${pc(s.app)}</td><td class="n">${pc(s.tpr)}</td><td class="n">${pc(s.fpr)}</td><td class="n">${pc(s.fnr)}</td><td class="n">${s.profit.toLocaleString()}</td></tr>`).join('')+
+      `<tr><th colspan="6">Total profit (+500 per repaid loan, −500 per default)</th><td class="n"><b>${(B.profit+O.profit).toLocaleString()}</b></td></tr>`);
+    const gap=(a,b)=>Math.round(Math.abs(a-b)*100);
+    set('fa-note',(note?note+' ':'')+`Gaps between groups: approval ${gap(B.app,O.app)} pts, true positive rate ${gap(B.tpr,O.tpr)} pts, false positive rate ${gap(B.fpr,O.fpr)} pts, false negative rate ${gap(B.fnr,O.fnr)} pts. Because the base rates differ (${pc(B.base)} vs ${pc(O.base)}), no pair of thresholds makes every gap zero.`);draw()}
+  const RB=range('fa-tb',v=>{tb=v;upd()}),RO=range('fa-to',v=>{to=v;upd()});
+  function best(cond){let bestv=null;for(let a=20;a<=80;a++)for(let c=20;c<=80;c++){const d=cond(a,c);if(d==null)continue;const p=stats('blue',a).profit+stats('orange',c).profit;if(!bestv||d<bestv.d-1e-9||(Math.abs(d-bestv.d)<1e-9&&p>bestv.p))bestv={a,c,d,p}}return bestv}
+  $('#fa-pre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;let s,n;
+    if(b.dataset.v==='blind'){s=best((a,c)=>a===c?0:null);n='<b>Blind:</b> one threshold for everyone, chosen for maximum profit.'}
+    else if(b.dataset.v==='dp'){s=best((a,c)=>Math.max(0,Math.abs(stats('blue',a).app-stats('orange',c).app)-0.02));n='<b>Demographic parity:</b> thresholds chosen so both groups get approved at about the same rate.'}
+    else{s=best((a,c)=>Math.max(0,Math.abs(stats('blue',a).tpr-stats('orange',c).tpr)-0.02));n='<b>Equal opportunity:</b> thresholds chosen so people who would repay are approved at about the same rate in both groups.'}
+    RB.el.value=s.a;RO.el.value=s.c;tb=s.a;to=s.c;set('fa-tb-o',s.a);set('fa-to-o',s.c);upd(n)});
+  RB.go();RO.go();
+  const E={equality:{c:[1,1,1],fence:'solid',n:'<b>Equality:</b> everyone gets the same support, one box each. The shortest person still can\'t see. <b>In an algorithm:</b> "blindness", treating every group identically, which fails because of the impossibility theorem.'},
+    equity:{c:[0,1,2],fence:'solid',n:'<b>Equity:</b> supports go to whoever needs them (the lecture compares this to affirmative action), so all three can see. <b>In an algorithm:</b> adjust thresholds per group. It reduces harm but costs utility.'},
+    justice:{c:[0,0,0],fence:'mesh',n:'<b>Justice:</b> the barrier is replaced with a see-through fence, so nobody needs a box: the cause of the inequity is gone. <b>In an algorithm:</b> fix the base rate, the data-generating process itself. The lecture calls this the only mathematically sound solution.'}};
+  let mode='equality';
+  const ej=chart($('#ej-chart'),220,(svg,W,H)=>{const e=E[mode],gy=H-16,fh=96,bx=26,ppl=[[150,'var(--c1)'],[118,'var(--c3)'],[84,'var(--c2)']],cx=[W*0.22,W*0.5,W*0.78];
+    S('line',{x1:0,x2:W,y1:gy,y2:gy,stroke:'var(--muted)','stroke-width':2},svg);
+    const fy=gy-fh;
+    ppl.forEach(([h,c],i)=>{const n=e.c[i];for(let k=0;k<n;k++)S('rect',{x:cx[i]-bx/1.2,y:gy-(k+1)*bx,width:bx*1.66,height:bx-2,rx:3,fill:'var(--amber-soft)',stroke:'var(--amber)'},svg);
+      const base=gy-n*bx,top=base-h,sees=top+14<fy;S('rect',{x:cx[i]-12,y:top+22,width:24,height:h-22,rx:10,fill:c},svg);S('circle',{cx:cx[i],cy:top+11,r:11,fill:c},svg);
+      S('text',{x:cx[i],y:top-6,'text-anchor':'middle',cls:'b sans',style:`fill:${sees||mode==='justice'?'var(--good)':'var(--tail)'}`,text:sees||mode==='justice'?'can see':'can\'t see'},svg)});
+    if(e.fence==='solid')S('rect',{x:0,y:fy,width:W,height:fh,fill:'var(--amber)','fill-opacity':.55},svg);
+    else{S('rect',{x:0,y:fy,width:W,height:fh,fill:'none',stroke:'var(--muted)'},svg);for(let x=0;x<W;x+=14){S('line',{x1:x,y1:fy,x2:x+fh*0.5,y2:gy,stroke:'var(--muted)','stroke-opacity':.45},svg);S('line',{x1:x+fh*0.5,y1:fy,x2:x,y2:gy,stroke:'var(--muted)','stroke-opacity':.45},svg)}}
+    S('text',{x:6,y:gy-8,cls:'sans ti',text:e.fence==='solid'?'the barrier (fence)':'see-through fence: barrier removed'},svg)});
+  seg($('#ej-mode'),v=>{mode=v;set('ej-note',E[v].n);ej()});set('ej-note',E.equality.n);ej();
+})();
+
+/* ---------- Part 4 check questions ---------- */
+const Q2={
+  'ai-def':[
+    ['A program decides with <code>if inputs &gt; 5: output = 1</code>, written by a developer. Which approach is it?',['Machine learning','Rules-based AI (GOFAI)','Deep learning'],1,'A human wrote the readable rule. In GOFAI the code is the blueprint.'],
+    ['In machine learning, what does the programmer provide, and what comes out?',['Code in, answers out','Data plus known answers (labels) in, the model out','Only answers in, data out'],1,'ML takes examples with their answers and produces the instructions: the model.']],
+  workflow:[
+    ['In a table of houses with size, age and sale price, where price is what you predict, sale price is the…',['feature','label','example'],1,'The label is the target the model learns to predict; size and age are features.'],
+    ['Which step of the workflow checks the model on unseen data?',['Train','Test','Serve'],1,'Testing is the "exam": data the model never saw during training.']],
+  trees:[
+    ['A tree scores 99% on training data but 60% on test data. What happened?',['Underfitting','Overfitting: it memorized the training data','Perfect generalization'],1,'A large gap between practice and exam scores is the signature of overfitting.'],
+    ['Which of these is the most explainable?',['A neural network','A random forest','A decision tree'],2,'Rule-based models and decision trees sit at the top of the explainability scale; neural networks are black boxes.']],
+  confusion:[
+    ['A photo of a cat is classified as a dog. In a dog detector this is a…',['False negative (Type II)','False positive (Type I)','True negative'],1,'Predicted positive (dog) but actually negative (cat): a false positive, Type I.'],
+    ['TP = 40, TN = 45, FP = 5, FN = 10. What is the accuracy?',['80%','85%','90%','40%'],1,'(40 + 45) / (40 + 45 + 5 + 10) = 85 / 100 = 85%.']],
+  training:[
+    ['In the biology-to-math mapping, synapses correspond to…',['inputs','weights','the activation function'],1,'Synapses set the strength of each connection: the weights. Dendrites are the inputs.'],
+    ['What is the correct order of the training loop?',['Update → Predict → Propagate → Measure','Predict → Measure error → Propagate error → Update','Measure → Predict → Update → Propagate'],1,'Forward pass, compute loss, send the error backward, then refine the weights.']],
+  lsqtable:[
+    ['n = 4, ΣX = 20, ΣY = 30, ΣXY = 170, ΣX² = 120. What is β̂₁?',['0.5','1','1.5','2'],1,'SSxy = 170 − (20)(30)/4 = 20; SSxx = 120 − 20²/4 = 20; β̂₁ = 20/20 = 1. (Then β̂₀ = 7.5 − 1 × 5 = 2.5.)'],
+    ['A regression with 3 explanatory variables and a straight-line form is…',['simple linear','multiple linear','multiple non-linear'],1,'Two or more explanatory variables make it multiple; a straight-line form makes it linear.']],
+  images:[
+    ['Which photoreceptors work at night and give grayscale vision?',['Cones','Rods'],1,'Rods are highly sensitive (night vision, grayscale); cones need bright light and give color.'],
+    ['Which color space is perceptually uniform?',['RGB','HSV','L*a*b*'],2,'In L*a*b*, numeric distance matches how different two colors look to people.']],
+  convolution:[
+    ['Apply the kernel [0 0 0; 1 0 1; 0 0 0] (no flipping) to the window [1 2 3; 4 5 6; 7 8 9]. Output?',['5','10','15','45'],1,'Only the left and right neighbors of the center count: 4 + 6 = 10.'],
+    ['Which filter best removes salt-and-pepper noise?',['Mean filter','Median filter','Sobel filter'],1,'The median ignores extreme outliers; the mean gets dragged by them.']],
+  cnnblocks:[
+    ['A 224 × 224 × 64 feature map goes through 2 × 2 max pooling. What comes out?',['112 × 112 × 32','112 × 112 × 64','224 × 224 × 16'],1,'Pooling halves height and width; the number of channels stays the same.'],
+    ['In <code>nn.Conv2d(3, 16, 5)</code>, what does 16 mean?',['The input depth','The number of filters (output channels)','The kernel size'],1,'Arguments are in_channels, out_channels, kernel_size: 3 input channels, 16 filters, 5 × 5 kernels.']],
+  alexnet:[
+    ['The true label is ranked 3rd among the model\'s guesses. Top-1 and top-5 error?',['Top-1 0, top-5 0','Top-1 1, top-5 0','Top-1 1, top-5 1'],1,'The first guess was wrong (top-1 = 1), but the answer is in the top 5 (top-5 = 0).'],
+    ['Why did AlexNet use ReLU instead of sigmoid or tanh?',['It uses less memory','It avoids vanishing gradients and trains faster','It makes the network shallower'],1,'ReLU = max(0, x) keeps gradients alive for positive inputs, which sped up training.']],
+  ssl:[
+    ['wav2vec 2.0 trains by picking the true quantized target out of negatives. Which family and loss?',['Generative, L1','Contrastive, InfoNCE','Predictive, cross-entropy'],1,'Telling the positive apart from distractors is contrastive learning with the InfoNCE loss.'],
+    ['Which layers of a pre-trained speech model give the best features for ASR?',['The first layers','The middle layers','The final layer'],1,'Middle layers hold phonetic and word information; final layers drift back to acoustics for the pretext task.']],
+  ethics:[
+    ['COMPAS excluded race from its inputs. What happened?',['Its error rates became equal across groups','Its errors were still asymmetric: Black defendants got far more false "high risk" labels','It stopped working'],1,'44.9% vs 23.5% wrongly labeled high-risk. Removing the attribute did not remove the bias.'],
+    ['What does the paperclip maximizer illustrate?',['That AI can\'t do manufacturing','How small misalignments between an objective and human values compound at scale','That rules beat learning'],1,'An AI given only "make paperclips" pursues it to absurd extremes: objective misalignment.']],
+  fairness:[
+    ['As stated in the lecture, the Chouldechova impossibility theorem says that when base rates differ between groups…',['you can always equalize every metric','you can\'t have equal false positive and false negative rates at the same time','accuracy must be below 50%'],1,'With different base rates, equal FPR and equal FNR can\'t both hold, so trade-offs are required.'],
+    ['In the equality / equity / justice picture, what is "justice" for an algorithm?',['Use one threshold for everyone','Shift thresholds per group','Fix the base rate: the data-generating process itself'],2,'Justice removes the systemic barrier instead of compensating for it.']]};
+
 /* ---------- predict-the-output drill ---------- */
 (function(){
   const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -1554,7 +2541,58 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
   seg($('#dr-topic'),v=>{topic=v;next()});tally();next();
 })();
 
-/* ---------- exam review deck (spaced repeats within a round) ---------- */
+/* ---------- review decks (spaced repeats within a round) ---------- */
+const DECKS=[];let lastDeck=null;
+document.addEventListener('keydown',ev=>{if(ev.target.closest&&ev.target.closest('textarea,input,select'))return;if(ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  const vis=DECKS.filter(d=>{const r=d.card.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});if(!vis.length)return;
+  const d=vis.includes(lastDeck)?lastDeck:vis[0];d.key(ev)});
+function makeDeck(P,KEY,EX,orderName){
+  const N=EX.length,GAP={again:3,almost:6},TOPIC=i=>document.getElementById(EX[i].to)?.dataset.t||'';
+  const $p=id=>document.getElementById(P+'-'+id),setp=(id,v)=>{$p(id).innerHTML=v};
+  let shuffle=true,S=null;
+  function fresh(ids){const q=[...ids];if(shuffle)for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}return{queue:q,deck:[...ids],got:[],lapses:{},reviews:0,shown:false,drafts:{}}}
+  try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.queue)&&v.deck.every(i=>i<N)){S=v;shuffle=v.shuffle!==false}}catch(_){}
+  if(!S)S=fresh(EX.map((_,i)=>i));S.drafts=S.drafts||{};
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({...S,shuffle}))}catch(_){}};
+  const card=$p('card'),toast=t=>setp('toast',t);
+  const norm=t=>t.replace(/\r/g,'').split('\n').map(l=>l.trim().replace(/^(['"])(.*)\1$/,'$2')).filter(Boolean);
+  const tok=t=>t.toLowerCase().replace(/×/g,'x').replace(/[\[\](),;]/g,' ').replace(/(\d)\s*x\s*(\d)/g,'$1x$2').split(/\s+/).filter(Boolean).join(' ');
+  function matches(u,x){return x.split('|').some(x=>{const ul=norm(u),xl=x.split('\n');if(ul.join('\n')===xl.join('\n'))return true;if(ul.length===1&&xl.length>1&&ul[0].split(/\s+/).join('\n')===xl.join('\n'))return true;return tok(u)===tok(x)})}
+  function status(){const cur=S.queue[0],back=new Set(S.queue.filter(i=>S.lapses[i]));
+    setp('counts',`<span class="pill neu">Left in round ${S.queue.length}</span><span class="pill rej">Coming back ${back.size}</span><span class="pill keep">Got it ${S.got.length} / ${S.deck.length}</span><span class="pill" style="background:var(--paper);color:var(--muted)">Reviews ${S.reviews}</span>`);
+    setp('strip',EX.map((_,i)=>{let c='';if(!S.deck.includes(i))c='out';else if(i===cur&&S.queue.length)c='now';else if(S.got.includes(i))c='got';else if(back.has(i))c='back';return`<a class="${c}" href="#${EX[i].to}" title="Card ${i+1}: review the concept">${i+1}</a>`}).join(''));
+    const o=$p('order');o.textContent=shuffle?'Shuffled':orderName;o.setAttribute('aria-pressed',shuffle)}
+  function render(){status();if(!S.queue.length)return summary();
+    const i=S.queue[0],e=EX[i],d=S.drafts[i]||'',lap=S.lapses[i]||0,isCode=!!(e.code||e.mono||/^Write a Python/.test(e.q));
+    card.innerHTML=`<div class="ex-h"><b>${e.lab||'Q'}${i+1}${lap?`<span class="seen">seen ${lap+1}×</span>`:''}</b><a href="#${e.to}">${esc(TOPIC(i))} · review the concept →</a></div>
+      <div class="qq">${e.q}</div>${e.code?codeBlock(e.code,'num'):''}${e.pre||''}
+      ${S.shown?answer(i):`<textarea class="inp" id="${P}-ans" rows="3" spellcheck="${isCode?'false':'true'}" style="${isCode?'font-family:var(--f-mono)':''}" placeholder="${e.x?(e.code?'Type exactly what Python prints, one line per printed line…':'Type your answer…'):'Answer from memory first…'}" aria-label="Your answer to card ${i+1}">${esc(d)}</textarea>`}
+      ${S.shown?`<div class="dk-rate"><button class="a" data-r="again"><b>Again</b><small>back in ${GAP.again} cards</small></button><button class="m" data-r="almost"><b>Almost</b><small>back in ${GAP.almost} cards</small></button><button class="g" data-r="got"><b>Got it</b><small>done this round</small></button></div>`:`<button class="show" id="${P}-show">Show answer</button>`}`;
+    const ta=$p('ans');if(ta){ta.addEventListener('input',()=>{S.drafts[i]=ta.value;save()});ta.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&(ev.ctrlKey||ev.metaKey)){ev.preventDefault();reveal()}})}
+    const sh=$p('show');if(sh)sh.onclick=reveal;card.querySelectorAll('.dk-rate button').forEach(b=>b.onclick=()=>rate(b.dataset.r))}
+  function answer(i){const e=EX[i],u=S.drafts[i]||'';const badge=e.x&&u.trim()?(matches(u,e.x)?`<span class="match y">${e.code?'Matches the output':'Matches'}</span>`:`<span class="match n">Doesn't match</span>`):'';
+    return`<div class="lab2">Your answer ${badge}</div><div class="yours${u.trim()?'':' empty'}">${u.trim()?esc(u):'You didn\'t write anything this time.'}</div><div class="model"><h4>Model answer</h4>${e.a}</div>`}
+  function reveal(){S.shown=true;save();render();toast('');card.querySelector('.dk-rate .g')?.focus({preventScroll:true})}
+  const nm=i=>(EX[i].lab||'Q')+(i+1);
+  function rate(r){const i=S.queue.shift();S.reviews++;S.shown=false;
+    if(r==='got'){S.got.push(i);delete S.drafts[i];toast(`${nm(i)} done for this round.`)}
+    else{S.lapses[i]=(S.lapses[i]||0)+1;const pos=Math.min(GAP[r],S.queue.length);S.queue.splice(pos,0,i);S.drafts[i]='';
+      toast(pos===0?`${nm(i)} again right away (it's the last card left).`:`${nm(i)} comes back after ${pos} more card${pos>1?'s':''}.`)}
+    save();render();const top=card.getBoundingClientRect().top;if(top<0||top>innerHeight*0.6)card.scrollIntoView({block:'start',behavior:'smooth'})}
+  function summary(){const missed=S.deck.filter(i=>S.lapses[i]),first=S.deck.length-missed.length;
+    card.innerHTML=`<div class="ex-h"><b>ROUND DONE</b><span style="font-size:13px;color:var(--muted)">${S.reviews} reviews</span></div>
+      <div class="qq" style="font-family:var(--f-display);font-size:24px">${missed.length?`${first} of ${S.deck.length} right the first time.`:`All ${S.deck.length} right the first time.`}</div>
+      ${missed.length?`<p>These took more than one try. Practice them next:</p><div class="dk-list">${missed.sort((a,b)=>S.lapses[b]-S.lapses[a]).map(i=>`<div><span class="n">${nm(i)}</span><span>${EX[i].q}${EX[i].code?' <code>'+esc(EX[i].code.split('\n').pop())+'</code>':''}</span><span class="c">${S.lapses[i]+1} tries</span></div>`).join('')}</div>`:'<p>Nothing came back this round. Run it again tomorrow to make it stick.</p>'}
+      <div class="row"><button class="btn pri" id="${P}-missed" ${missed.length?'':'disabled'}>Practice the ${missed.length||''} I missed</button><button class="btn" id="${P}-all">Start all ${N} again</button></div>`;
+    $p('missed').onclick=()=>{S=fresh(missed);save();render()};$p('all').onclick=()=>{S=fresh(EX.map((_,i)=>i));save();render()}}
+  const me={card,key(ev){if(!S.queue.length)return;
+    if(!S.shown&&(ev.key===' '||ev.key==='Enter')){if(ev.target.closest&&ev.target.closest('button,a'))return;ev.preventDefault();reveal()}
+    else if(S.shown&&['1','2','3'].includes(ev.key)){ev.preventDefault();rate(['again','almost','got'][+ev.key-1])}}};
+  DECKS.push(me);card.closest('section').addEventListener('pointerdown',()=>{lastDeck=me});card.closest('section').addEventListener('focusin',()=>{lastDeck=me});
+  $p('order').onclick=()=>{shuffle=!shuffle;save();status();toast(shuffle?'New rounds will start shuffled.':`New rounds will follow the ${orderName.toLowerCase()}.`)};
+  $p('restart').onclick=()=>{$p('confirm').hidden=false};$p('no').onclick=()=>{$p('confirm').hidden=true};
+  $p('yes').onclick=()=>{$p('confirm').hidden=true;S=fresh(EX.map((_,i)=>i));save();render();toast(`Fresh round with all ${N} cards.`)};
+  render()}
 (function(){
   const EX=[
     {q:'What is the purpose of a class in Python?',to:'classes',a:'<p>A class is a <b>blueprint for creating objects</b>. It bundles data (attributes) and the functions that work on that data (methods) into one reusable template. Each object made from it is an instance with its own attribute values. <code>__init__</code> sets those starting values, and <code>self</code> refers to the specific object.</p>'},
@@ -1569,53 +2607,11 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
     {q:'What is the output of the following code?',code:'s = "123456789"\nprint(s[1:5:2])',x:'24',to:'slicing',a:codeBlock('24','')+'<p>Indexes 1 and 3 ("2" and "4"); index 5 is excluded.</p>'},
     {q:'What is the difference between deterministic and probabilistic models in the context of regression analysis?',to:'models',a:'<p>A <b>deterministic</b> model, y = β₀ + β₁x, assumes y is exactly determined by x, with no error. A <b>probabilistic</b> model, y = β₀ + β₁x + ε, adds a random error term ε for the variation x doesn\'t explain. Regression uses probabilistic models because real data scatter around the line.</p>'},
     {q:'Explain the least squares method and how it is used to estimate the regression slope and intercept.',to:'lsq',a:'<p>Least squares chooses the slope and intercept that <b>minimize the sum of squared residuals</b> (SSE), where a residual is observed y minus predicted ŷ. Squaring keeps positive and negative errors from canceling and penalizes big misses more.</p><ul><li>Slope: b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</li><li>Intercept: b₀ = ȳ − b₁x̄</li><li>The line always passes through (x̄, ȳ).</li></ul>'},
-    {q:'What are the four steps involved in regression modeling, and what is the purpose of each step?',to:'steps4',a:'<ol><li><b>Specify the model</b>: choose its form, e.g. y = β₀ + β₁x + ε.</li><li><b>Estimate the parameters</b>: use sample data (least squares) to find b₀ and b₁.</li><li><b>Evaluate the model</b>: check fit and usefulness with residuals, R², and significance tests.</li><li><b>Use the model</b>: predict y for new x values or estimate the mean of y.</li></ol><p style="font-size:13px;color:var(--muted)">Check the wording against your lecture slides; courses phrase these steps differently.</p>'},
+    {q:'What are the four steps involved in regression modeling, and what is the purpose of each step?',to:'steps4',a:'<ol><li><b>Hypothesize the deterministic component</b>: choose the variables and the form, e.g. y = β₀ + β₁x, then <b>estimate the unknown parameters</b> b₀ and b₁ from the sample with least squares.</li><li><b>Specify the probability distribution of the random error term ε</b> and <b>estimate its standard deviation</b> (how far points typically fall from the line).</li><li><b>Evaluate the fitted model</b>: is it useful and does it fit (residuals, R², significance of the slope)?</li><li><b>Use the model for prediction and estimation</b>: predict y for new x values inside the data range.</li></ol><p style="font-size:13px;color:var(--muted)">This is the lecture\'s wording (Regression slides, "Regression Modeling Steps").</p>'},
     {q:'What are the key differences between the symbolic and connectionist approaches to AI?',to:'approaches',a:'<ul><li><b>Symbolic AI</b> represents knowledge as explicit symbols and hand-written rules/logic (e.g. expert systems). Interpretable and precise, but brittle; struggles with ambiguity and messy input.</li><li><b>Connectionist AI</b> uses neural networks that learn patterns from data by adjusting connection weights (e.g. image recognition, LLMs). Handles noisy data well, but needs lots of data and compute and is hard to interpret.</li><li><b>Core difference</b>: symbolic knowledge is explicit and programmed; connectionist knowledge is learned and spread across weights.</li></ul>'},
     {q:'How does the Turing Test evaluate artificial intelligence, and what are its limitations?',to:'turing',a:'<p>Proposed by Alan Turing in 1950 as the "imitation game". A human judge has text conversations with a hidden human and a hidden machine; if the judge can\'t reliably tell which is the machine, it passes.</p><ul><li>It measures imitation of human behavior, not understanding (Searle\'s Chinese Room).</li><li>It can be gamed with tricks or evasive answers.</li><li>Results depend heavily on the judge.</li><li>It tests only conversation, and human-like is not the same as intelligent.</li></ul>'},
     {q:'What is the role of weights and biases in a single artificial neuron?',to:'neuron',a:'<p>A neuron computes output = activation(w₁x₁ + … + wₙxₙ + b).</p><ul><li><b>Weights</b> scale each input, setting how much influence it has on the output (and in which direction).</li><li><b>The bias</b> shifts the weighted sum, moving the activation threshold, so the neuron can output something even when all inputs are 0 (like a regression intercept).</li><li>Both are learned during training by adjusting them to reduce error.</li></ul>'}];
-  const N=EX.length,GAP={again:3,almost:6},KEY='ds110-deck-v1',TOPIC=i=>document.getElementById(EX[i].to)?.dataset.t||'';
-  let shuffle=true,S=null;
-  function fresh(ids){const q=[...ids];if(shuffle)for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}return{queue:q,deck:[...ids],got:[],lapses:{},reviews:0,shown:false,drafts:{}}}
-  try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.queue)){S=v;shuffle=v.shuffle!==false}}catch(_){}
-  if(!S)S=fresh(EX.map((_,i)=>i));S.drafts=S.drafts||{};
-  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({...S,shuffle}))}catch(_){}};
-  const card=$('#dk-card'),toast=t=>set('dk-toast',t);
-  const norm=t=>t.replace(/\r/g,'').split('\n').map(l=>l.trim().replace(/^(['"])(.*)\1$/,'$2')).filter(Boolean);
-  function matches(u,x){const ul=norm(u),xl=x.split('\n');if(ul.join('\n')===xl.join('\n'))return true;return ul.length===1&&xl.length>1&&ul[0].split(/\s+/).join('\n')===xl.join('\n')}
-  function status(){const cur=S.queue[0],back=new Set(S.queue.filter(i=>S.lapses[i]));
-    set('dk-counts',`<span class="pill neu">Left in round ${S.queue.length}</span><span class="pill rej">Coming back ${back.size}</span><span class="pill keep">Got it ${S.got.length} / ${S.deck.length}</span><span class="pill" style="background:var(--paper);color:var(--muted)">Reviews ${S.reviews}</span>`);
-    set('dk-strip',EX.map((_,i)=>{let c='';if(!S.deck.includes(i))c='out';else if(i===cur&&S.queue.length)c='now';else if(S.got.includes(i))c='got';else if(back.has(i))c='back';return`<a class="${c}" href="#${EX[i].to}" title="Q${i+1}: review the concept">${i+1}</a>`}).join(''));
-    const o=$('#dk-order');o.textContent=shuffle?'Shuffled':'Exam order';o.setAttribute('aria-pressed',shuffle)}
-  function render(){status();if(!S.queue.length)return summary();
-    const i=S.queue[0],e=EX[i],d=S.drafts[i]||'',lap=S.lapses[i]||0,isCode=!!(e.code||/^Write a Python/.test(e.q));
-    card.innerHTML=`<div class="ex-h"><b>Q${i+1}${lap?`<span class="seen">seen ${lap+1}×</span>`:''}</b><a href="#${e.to}">${esc(TOPIC(i))} · review the concept →</a></div>
-      <div class="qq">${e.q}</div>${e.code?codeBlock(e.code,'num'):''}
-      ${S.shown?answer(i):`<textarea class="inp" id="dk-ans" rows="3" spellcheck="${isCode?'false':'true'}" style="${isCode?'font-family:var(--f-mono)':''}" placeholder="${e.x?'Type exactly what Python prints, one line per printed line…':'Answer from memory first…'}" aria-label="Your answer to question ${i+1}">${esc(d)}</textarea>`}
-      ${S.shown?`<div class="dk-rate"><button class="a" data-r="again"><b>Again</b><small>back in ${GAP.again} cards</small></button><button class="m" data-r="almost"><b>Almost</b><small>back in ${GAP.almost} cards</small></button><button class="g" data-r="got"><b>Got it</b><small>done this round</small></button></div>`:'<button class="show" id="dk-show">Show answer</button>'}`;
-    const ta=$('#dk-ans');if(ta){ta.addEventListener('input',()=>{S.drafts[i]=ta.value;save()});ta.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&(ev.ctrlKey||ev.metaKey)){ev.preventDefault();reveal()}})}
-    const sh=$('#dk-show');if(sh)sh.onclick=reveal;card.querySelectorAll('.dk-rate button').forEach(b=>b.onclick=()=>rate(b.dataset.r))}
-  function answer(i){const e=EX[i],u=S.drafts[i]||'';const badge=e.x&&u.trim()?(matches(u,e.x)?'<span class="match y">Matches the output</span>':'<span class="match n">Doesn\'t match</span>'):'';
-    return`<div class="lab2">Your answer ${badge}</div><div class="yours${u.trim()?'':' empty'}">${u.trim()?esc(u):'You didn\'t write anything this time.'}</div><div class="model"><h4>Model answer</h4>${e.a}</div>`}
-  function reveal(){S.shown=true;save();render();toast('');card.querySelector('.dk-rate .g')?.focus({preventScroll:true})}
-  function rate(r){const i=S.queue.shift();S.reviews++;S.shown=false;
-    if(r==='got'){S.got.push(i);delete S.drafts[i];toast(`Q${i+1} done for this round.`)}
-    else{S.lapses[i]=(S.lapses[i]||0)+1;const pos=Math.min(GAP[r],S.queue.length);S.queue.splice(pos,0,i);S.drafts[i]='';
-      toast(pos===0?`Q${i+1} again right away (it's the last card left).`:`Q${i+1} comes back after ${pos} more card${pos>1?'s':''}.`)}
-    save();render();const top=card.getBoundingClientRect().top;if(top<0||top>innerHeight*0.6)card.scrollIntoView({block:'start',behavior:'smooth'})}
-  function summary(){const missed=S.deck.filter(i=>S.lapses[i]),first=S.deck.length-missed.length;
-    card.innerHTML=`<div class="ex-h"><b>ROUND DONE</b><span style="font-size:13px;color:var(--muted)">${S.reviews} reviews</span></div>
-      <div class="qq" style="font-family:var(--f-display);font-size:24px">${missed.length?`${first} of ${S.deck.length} right the first time.`:`All ${S.deck.length} right the first time.`}</div>
-      ${missed.length?`<p>These took more than one try. Practice them next:</p><div class="dk-list">${missed.sort((a,b)=>S.lapses[b]-S.lapses[a]).map(i=>`<div><span class="n">Q${i+1}</span><span>${EX[i].q}${EX[i].code?' <code>'+esc(EX[i].code.split('\n').pop())+'</code>':''}</span><span class="c">${S.lapses[i]+1} tries</span></div>`).join('')}</div>`:'<p>Nothing came back this round. Run it again tomorrow to make it stick.</p>'}
-      <div class="row"><button class="btn pri" id="dk-missed" ${missed.length?'':'disabled'}>Practice the ${missed.length||''} I missed</button><button class="btn" id="dk-all">Start all 16 again</button></div>`;
-    $('#dk-missed').onclick=()=>{S=fresh(missed);save();render()};$('#dk-all').onclick=()=>{S=fresh(EX.map((_,i)=>i));save();render()}}
-  document.addEventListener('keydown',ev=>{if(ev.target.closest&&ev.target.closest('textarea,input,select'))return;if(ev.metaKey||ev.ctrlKey||ev.altKey||!S.queue.length)return;
-    const r=card.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
-    if(!S.shown&&(ev.key===' '||ev.key==='Enter')){if(ev.target.closest&&ev.target.closest('button,a'))return;ev.preventDefault();reveal()}
-    else if(S.shown&&['1','2','3'].includes(ev.key)){ev.preventDefault();rate(['again','almost','got'][+ev.key-1])}});
-  $('#dk-order').onclick=()=>{shuffle=!shuffle;save();status();toast(shuffle?'New rounds will start shuffled.':'New rounds will follow the exam order.')};
-  $('#dk-restart').onclick=()=>{$('#dk-confirm').hidden=false};$('#dk-no').onclick=()=>{$('#dk-confirm').hidden=true};
-  $('#dk-yes').onclick=()=>{$('#dk-confirm').hidden=true;S=fresh(EX.map((_,i)=>i));save();render();toast('Fresh round with all 16 cards.')};
-  render();
+  makeDeck('dk','ds110-deck-v1',EX,'Exam order');
 })();
 
 /* ---------- cheat sheet ---------- */
@@ -1631,7 +2627,7 @@ function axisLabels(svg,m,w,h,xl,yl){S('text',{x:w-m.r,y:h-4,'text-anchor':'end'
     ['Exam outputs','Q5 → 18, 0 · Q7 → ello · Q8 → Hello, Universe! · Q9 → 13579 · Q10 → 24 · <code>-3 % 2</code> → 1 · <code>12 / 4</code> → 3.0'],
     ['Det. vs prob.','Deterministic: y = β₀ + β₁x (exact, no error). Probabilistic: y = β₀ + β₁x + ε (random error for what x doesn\'t explain). Regression is probabilistic.'],
     ['Least squares','Minimize SSE = Σ(y − ŷ)². b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)². b₀ = ȳ − b₁x̄. Line passes through (x̄, ȳ). Square so errors don\'t cancel.'],
-    ['4 steps','1 Specify the model form · 2 Estimate b₀, b₁ (least squares) · 3 Evaluate (residuals, R², slope test) · 4 Use to predict (don\'t extrapolate).'],
+    ['4 steps','1 Hypothesize the deterministic component + estimate b₀, b₁ (least squares) · 2 Specify the distribution of ε + estimate its SD · 3 Evaluate the fitted model (residuals, R², slope test) · 4 Use for prediction &amp; estimation (don\'t extrapolate).'],
     ['Symbolic vs connectionist','Symbolic: hand-written rules/logic; explainable; brittle (expert systems). Connectionist: neural nets learn weights from data; robust; needs data/compute; black box (LLMs).'],
     ['Turing Test','Turing 1950. Judge texts a hidden human + machine; can\'t tell → pass. Limits: behavior ≠ understanding (Chinese Room), judge-dependent, gameable (ELIZA, Eugene Goostman), language only.'],
     ['Neuron','output = f(w₁x₁ + w₂x₂ + b). Weights: importance and direction of each input. Bias: shifts the threshold (like an intercept). Both learned in training. One neuron = one straight line (no XOR).']];
@@ -1681,7 +2677,7 @@ const Q={
   neuron:[
     ['Inputs x = (1, 0), weights w = (2, −1), bias = −1.5, step activation (fires if the sum ≥ 0). What is the output?',['0','1','0.5'],1,'Weighted sum: 2(1) + (−1)(0) − 1.5 = 0.5 ≥ 0, so it fires: 1.'],
     ['You raise the bias b and leave the weights alone. The neuron now…',['fires more easily (for more inputs)','fires less easily','ignores its inputs'],0,'A larger b adds to every weighted sum, so more inputs push it past the threshold.']]};
-document.querySelectorAll('.check').forEach(el=>{const qs=Q[el.dataset.q];
+document.querySelectorAll('.check').forEach(el=>{const qs=Q[el.dataset.q]||Q2[el.dataset.q];
   el.innerHTML=qs.map(([q,o,,,c],k)=>`<div class="cq"><div class="q"><small>Check ${k+1} of ${qs.length}</small>${q}${c?codeBlock(c):''}</div><div class="opts">${o.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div><p class="fb" hidden></p></div>`).join('');
   el.querySelectorAll('.cq').forEach((cq,k)=>{const [,,a,why]=qs[k];cq.querySelector('.opts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,bs=cq.querySelectorAll('.opts button');bs.forEach(x=>x.classList.remove('right','wrong'));b.classList.add(i===a?'right':'wrong');if(i!==a)bs[a].classList.add('right');
     const fb=cq.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===a?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--tail)">Not quite.</b> ')+why})})});
@@ -1702,6 +2698,56 @@ document.querySelectorAll('.check').forEach(el=>{const qs=Q[el.dataset.q];
 
 /* fill any slider readouts that haven't been written yet */
 document.querySelectorAll('input[type=range]').forEach(i=>{const o=document.getElementById(i.id+'-o');if(o&&!o.textContent){const d=(i.step.split('.')[1]||'').length;o.textContent=nf(+i.value,d)}});
+
+/* ---------- lecture review deck (Part 4 topics only) ---------- */
+(function(){
+  const M=(rows)=>`<pre class="code sm">${rows.map(r=>r.join('  ')).join('\n')}</pre>`;
+  const L=[
+    {to:'ai-def',q:'What is the lecture\'s working definition of AI, and why don\'t a calculator or a dog count?',a:'<p>AI is <b>a human-made system that may sense, predict, generate, plan, or act</b>. A calculator follows fixed, hard-coded rules and can\'t learn or adapt. A dog learns from examples, but it isn\'t human-made. A self-driving car fits: it senses, finds patterns and acts on its own.</p>'},
+    {to:'ai-def',q:'Compare rules-based AI (GOFAI) with machine learning: what goes in, what comes out, and what does the programmer do?',a:'<ul><li><b>GOFAI</b>: Data + Code → Answers. The programmer writes strict, readable instructions. "Code is the blueprint."</li><li><b>ML</b>: Data + Known answers (labels) → the model (the instructions). The programmer provides examples; a gradient-descent loop adjusts weights. "Data is the blueprint."</li></ul>'},
+    {to:'ai-def',q:'How do AI, machine learning and deep learning relate? Give the lecture\'s timeline.',a:'<p>They nest: <b>AI ⊃ ML ⊃ DL</b>. AI mimics human intelligence (including GOFAI); ML is trained on data to find patterns and predict on new data; DL uses multi-layered networks for sophisticated tasks.</p><p>Timeline: 1950 Turing Test · 1997 Deep Blue (massive search) · 2012 AlexNet · now generative AI / ChatGPT.</p>'},
+    {to:'workflow',q:'List the six steps of the ML workflow in order.',a:'<ol><li><b>Ask</b>: define the question and target</li><li><b>Collect &amp; Process</b>: gather data, make it usable</li><li><b>Train</b>: build the model by practicing on data</li><li><b>Test</b>: validate on unseen data (the "exam")</li><li><b>Improve</b>: tune parameters using accuracy metrics</li><li><b>Serve</b>: deploy for real-world predictions, then loop back</li></ol>'},
+    {to:'workflow',q:'In a dataset, what are examples, features and the label? Use the house-price table.',a:'<p><b>Examples</b> are the rows (each house). <b>Features</b> are the clues used to predict (size in sqft, age in years). The <b>label</b> is what we want to predict (sale price). A "*" marks a missing value to clean up.</p>'},
+    {to:'workflow',q:'What is the difference between supervised and unsupervised learning?',a:'<p><b>Supervised</b>: uses labeled data (answers provided); the goal is to map features to specific outputs, e.g. classify shapes or predict prices. <b>Unsupervised</b>: uses unlabeled data; the algorithm finds hidden patterns on its own, e.g. clustering.</p>'},
+    {to:'trees',q:'How does a decision tree choose its splits? Name the three kinds of node.',a:'<p>It doesn\'t "think": it searches for splits that make the resulting groups more consistent, <b>maximizing information gain</b> (separating mixed data into pure groups). <b>Root node</b> = first split, <b>decision node</b> = internal split, <b>leaf node</b> = final outcome.</p>'},
+    {to:'trees',q:'A model scores 99% on training data but 60% on test data. What is happening, and how does tree depth relate?',a:'<p><b>Overfitting</b>: the model memorized the training data instead of learning general rules. A big gap between training (practice) and test (exam) accuracy is the clue. Depth 1 is too simple (underfits); depth 3 captures the core rules; depth 8 overfits with a complex, brittle tree.</p>'},
+    {to:'trees',q:'Explain the explainability–accuracy trade-off and what XAI is.',a:'<p>As models get more accurate and complex, they get harder to explain. Order: rule-based &amp; decision trees (most explainable) → random forest &amp; SVM → neural networks (highly accurate on images and text, but a "black box"). <b>XAI</b> (explainable AI) adds an explanation interface so people can see how a model decided.</p>'},
+    {to:'confusion',q:'Define TP, FP, FN and TN for a dog detector, and say which errors are Type I and Type II.',a:'<ul><li><b>TP</b>: dog correctly identified</li><li><b>FP (Type I)</b>: cat called a dog (predicted positive, actually negative)</li><li><b>FN (Type II)</b>: dog missed (predicted negative, actually positive)</li><li><b>TN</b>: cat correctly ignored</li></ul><p>Which error matters more depends on context: in a medical diagnosis a false negative can be far more dangerous.</p>'},
+    {to:'confusion',q:'A classifier has TP = 40, TN = 45, FP = 5, FN = 10. What is its accuracy?',x:'85%|85|0.85',a:'<p><b>85%</b>. Accuracy = (TP + TN) / all = (40 + 45) / 100 = 0.85.</p>'},
+    {to:'training',q:'Map the biological neuron to the artificial neuron: dendrites, synapses, soma, axon.',a:'<ul><li>Dendrites → <b>inputs</b> (x): the raw data entering</li><li>Synapses → <b>weights</b> (w): the strength of each connection</li><li>Soma (cell body) → <b>activation function</b>: the threshold that decides the output</li><li>Axon → <b>output</b> (y): the transmitted signal</li></ul>'},
+    {to:'training',q:'Describe the four-step training loop and the three kinds of layer.',a:'<p>Layers: <b>input</b> (raw features) → <b>hidden</b> (extract patterns through weighted connections) → <b>output</b> (final prediction).</p><ol><li><b>Predict</b>: forward pass, data moves left to right</li><li><b>Measure error</b>: compute the loss at the output</li><li><b>Propagate error</b>: backward pass, send the error back</li><li><b>Update</b>: refine the weights</li></ol>'},
+    {to:'training',q:'For the graph x → z → p → Loss, write the backpropagation (chain rule) steps. What is a gradient?',a:'<p>Δp = ∂Loss/∂p → Δz = Δp · ∂p/∂z → ΔW = Δz · ∂z/∂W and Δb = Δz · ∂z/∂b.</p><p>A <b>gradient</b> is the rate of change of the error with respect to a weight; it tells each weight which way, and how much, to change.</p>'},
+    {to:'training',q:'What is stochastic gradient descent (SGD)?',a:'<p>Deep networks have hundreds of millions of weights ("knobs"). SGD finds a good setting by repeatedly stepping in the direction of the <b>negative gradient</b> (steepest descent) across the "landscape of error", toward the valley where average error is lowest. (Step size matters: too large and it overshoots the valley.)</p>'},
+    {to:'lsqtable',q:'Using the table method, compute β̂₁ and β̂₀ for X = 1, 2, 3, 4, 5 and Y = 1, 1, 2, 2, 4 (the estriol example).',a:'<p>ΣX = 15, ΣY = 10, ΣX² = 55, ΣXY = 37, n = 5.</p><p>SSxy = 37 − (15)(10)/5 = 7 · SSxx = 55 − 15²/5 = 10</p><p><b>β̂₁ = 7/10 = 0.70</b> · <b>β̂₀ = 2 − 0.70 × 3 = −0.10</b> · Ŷ = −0.10 + 0.70X</p>'},
+    {to:'lsqtable',q:'For milk yield (lb) vs food intake (lb), β̂₁ = 0.65 and β̂₀ = 0.80. Interpret both.',a:'<p><b>Slope</b>: milk yield is expected to increase by 0.65 lb for each 1 lb increase in food intake. <b>Intercept</b>: average milk yield is expected to be 0.8 lb when food intake is 0. (In the estriol example the intercept was −0.10, impossible for a birthweight, so intercepts outside the data can be meaningless.)</p>'},
+    {to:'lsqtable',q:'What is the difference between β₁ and β̂₁, and between ε and ε̂? What makes a regression simple vs multiple?',a:'<p>β₀, β₁ and ε belong to the <b>population</b> model and are unknown; β̂₀, β̂₁ are <b>estimates</b> from a sample, and ε̂ is the residual (observed − fitted). The population line E(Y) = β₀ + β₁X is the mean of Y at each X. <b>Simple</b> = one explanatory variable; <b>multiple</b> = two or more. The response must be numerical.</p>'},
+    {to:'models',q:'Classify and explain: BMI = weight(kg) / height(m)², and newborn SBP = 6 × age(days) + ε.',a:'<p><b>BMI is deterministic</b>: an exact formula with no error term. <b>SBP is probabilistic</b>: a deterministic part (6 × age in days) plus random error ε for everything age doesn\'t explain, such as birthweight. Deterministic: Output = f(Inputs). Probabilistic: Output = f(Inputs) + ε.</p>'},
+    {to:'images',q:'How is an image represented to a computer? Give the grayscale function and the shape of a color image.',a:'<p>A grayscale image is a 2D function <b>z = f(x, y)</b>: x and y are discrete pixel coordinates (0 to width, 0 to height) and z is an intensity integer. A color image is a tensor of shape <b>Channels × Height × Width</b>, by default the three RGB channels.</p>'},
+    {to:'images',q:'Compare RGB, HSV and L*a*b*.',a:'<ul><li><b>RGB</b>: the default digital space; channels strongly correlated; doesn\'t match human perception.</li><li><b>HSV</b>: separates color (hue, saturation) from lighting (value); intuitive for choosing colors.</li><li><b>L*a*b*</b>: L = luminance, a = green–red, b = blue–yellow; <b>perceptually uniform</b>.</li></ul><p>Structure lives mostly in intensity, so vision systems often drop color.</p>'},
+    {to:'images',q:'Rods vs cones; eye vs camera; Lambertian vs specular reflection.',a:'<ul><li><b>Rods</b>: very sensitive, night, grayscale. <b>Cones</b>: bright light, color.</li><li>Iris = aperture, pupil = shutter/opening, retina = sensor.</li><li><b>Lambertian</b>: diffuse, looks the same from any angle (chalk, paper). <b>Specular</b>: mirror-like, depends on viewer position (metal, glass).</li></ul>'},
+    {to:'convolution',q:'Apply this kernel to this window, multiplying element by element without flipping. What is the output value?',pre:'<div class="mxrow" style="margin-top:4px"><div><div class="mxlab">Window</div><div class="mx" style="grid-template-columns:repeat(3,auto)"><span>8</span><span>0</span><span>7</span><span>7</span><span>1</span><span>5</span><span>1</span><span>1</span><span>1</span></div></div><div class="mxop">∗</div><div><div class="mxlab">Kernel</div><div class="mx" style="grid-template-columns:repeat(3,auto)"><span>0</span><span>0</span><span>0</span><span>1</span><span>0</span><span>1</span><span>0</span><span>0</span><span>0</span></div></div></div>',x:'12',mono:true,a:'<p><b>12</b>. Only the middle row\'s left and right weights are 1: 7 × 1 + 5 × 1 = 12. This is the lecture\'s highlighted example.</p>'},
+    {to:'convolution',q:'Mean vs median filter: how does each work, and which removes salt-and-pepper noise better?',a:'<p><b>Mean</b>: replaces a pixel with the average of its 3 × 3 neighborhood (blurs, and outliers drag it). <b>Median</b>: sorts the neighborhood and takes the middle value. The <b>median</b> removes salt-and-pepper noise better because extreme specks don\'t affect the middle value, and edges stay sharper.</p>'},
+    {to:'convolution',q:'Identify each kernel: (a) all entries 1/9; (b) 1/4 center, 1/8 edges, 1/16 corners; (c) [1 0 −1; 2 0 −2; 1 0 −1].',a:'<p>(a) <b>Mean blur</b>: uniform averaging. (b) <b>Gaussian blur</b>: weighted toward the center, mimics lens focus. (c) <b>Sobel</b>: edge detection by discrete differentiation (left vs right, so vertical edges).</p>'},
+    {to:'cnnblocks',q:'A 32 × 32 input goes through a 5 × 5 convolution (stride 1, no padding), then 2 × 2 max pooling. What is the height × width?',x:'14 x 14|14x14|14',mono:true,a:'<p><b>14 × 14</b>. Convolution: 32 − 5 + 1 = 28. Pooling halves it: 14. (This is LeNet\'s first stage; the depth would be the number of filters, 6.)</p>'},
+    {to:'cnnblocks',q:'Apply 2 × 2 max pooling to this 4 × 4 input.',pre:M([[12,20,30,0],[8,12,2,0],[34,70,37,4],[112,100,25,12]]),x:'20 30\n112 37',mono:true,a:'<pre class="code sm">20   30\n112  37</pre><p>Each 2 × 2 block keeps its maximum: max(12, 20, 8, 12) = 20, max(30, 0, 2, 0) = 30, max(34, 70, 112, 100) = 112, max(37, 4, 25, 12) = 37.</p>'},
+    {to:'cnnblocks',q:'What do Conv2d\'s in_channels, out_channels and kernel_size mean, and what does im2col do?',a:'<p><code>Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)</code>: in_channels matches the input depth; out_channels is the number of filters; kernel_size is the window size (e.g. 3 × 3).</p><p><b>im2col</b> flattens every input patch into rows of one big matrix, so the whole convolution becomes a single matrix multiplication (GEMM) that GPUs run in parallel.</p>'},
+    {to:'cnnblocks',q:'How did traditional computer vision differ from CNNs?',a:'<p>Traditional: <b>hand-engineered features</b>, a pipeline of SIFT feature extraction → Fisher vector encoding → SVM classification. CNNs learn their own feature representations <b>end to end, directly from pixels</b>, by alternating convolution (pattern matching) and pooling (downsampling).</p>'},
+    {to:'alexnet',q:'What were AlexNet\'s key innovations, and what error did it reach compared with the best traditional method?',a:'<p>AlexNet (2012; Krizhevsky, Sutskever, Hinton): <b>GPU</b> training, <b>ReLU</b> instead of sigmoid/tanh (fixes vanishing gradients, faster), <b>momentum &amp; weight decay</b>, <b>data augmentation</b> (random 224 × 224 crops of 256 × 256 images), and <b>dropout</b>. Error: <b>17.0%</b> vs 25.7% for SIFT + Fisher vectors (sparse coding 28.2%), about a 10% drop.</p>'},
+    {to:'alexnet',q:'Define top-1 and top-5 error with the lecture\'s "Abyssinian cat" example.',a:'<p>Top-1 error counts only the first guess; top-5 counts as correct if the true label is anywhere in the top 5. The model guessed tabby cat (0.61), Egyptian cat (0.22), red fox (0.11), Abyssinian cat (0.10). The true label was 4th, so <b>top-1 error = 1.0, top-5 error = 0.0</b>. ImageNet: 1,000 classes, ~1M training images, 50,000 validation.</p>'},
+    {to:'alexnet',q:'What is dropout and what problem does it fix? What did VGG change?',a:'<p><b>Dropout</b> randomly sets unit outputs to zero during training, so nodes can\'t <b>co-adapt</b> (over-rely on specific neighbors); it forces robust, redundant features and reduces overfitting.</p><p><b>VGG</b> (2014, Simonyan &amp; Zisserman) dropped large filters like AlexNet\'s 11 × 11 and used only small 3 × 3 convolutions stacked deeply: simpler, deeper, lower error. Timeline: LeNet 1998 → AlexNet 2012 → VGG 2014.</p>'},
+    {to:'ssl',q:'Explain the two-phase paradigm of self-supervised speech learning, and why it\'s needed.',a:'<p>Labeled speech is scarce (100–1,000 hours of transcription), but unlabeled audio is nearly unlimited. <b>Phase 1 (upstream)</b>: pre-train on unlabeled audio by solving a pretext task, learning task-agnostic representations. <b>Phase 2 (downstream)</b>: train small task models (ASR, speaker ID) on little labeled data. Result: near-zero error with 10 minutes to 1 hour of labels, vs 960 hours for a supervised baseline.</p>'},
+    {to:'ssl',q:'Name the three pretext-task families with their loss and example models.',a:'<ul><li><b>Generative</b>: reconstruct masked or future input; L1 / MSE; APC, Mockingjay, TERA.</li><li><b>Contrastive</b>: pick the true sample out of negatives; InfoNCE; wav2vec 2.0, vq-wav2vec, CPC.</li><li><b>Predictive</b>: predict discrete targets from a teacher or k-means; cross-entropy; HuBERT, data2vec, WavLM.</li></ul>'},
+    {to:'ssl',q:'Why is speech harder than text, and which layers of a pre-trained model suit ASR vs speaker verification?',a:'<p>Speech challenges: <b>sequence length</b> (thousands of frames per second), <b>boundary ambiguity</b> (no spaces between words), <b>feature entanglement</b> (content, speaker, emotion, noise in one signal).</p><p>Layers: <b>early</b> = acoustics and speaker ID (speaker verification); <b>middle</b> = phonetic/word "sweet spot" (ASR); <b>final</b> = reconstruction for the pretext task.</p>'},
+    {to:'ethics',q:'Explain the bias amplification loop with the Amazon recruiting example.',a:'<p>World (a hiring pipeline that favored men) → Data (historical résumés) → ML model (learned to penalize résumés containing "women\'s") → Action (rejected more women) → back to the World, making future data more biased. ML doesn\'t just reflect historical bias, it <b>amplifies</b> it. Amazon scrapped the tool in 2018.</p>'},
+    {to:'ethics',q:'COMPAS excluded race from its inputs. Why were its outcomes still unequal? Give the error rates.',a:'<p>Its scores matched overall probabilities, but the <b>errors were asymmetric</b>. Labeled higher risk but didn\'t re-offend: <b>44.9%</b> of Black defendants vs <b>23.5%</b> of white. Labeled lower risk yet re-offended: <b>47.7%</b> white vs <b>28.0%</b> Black. Being "blind" to race didn\'t make it fair: other features and differing base rates carry the bias.</p>'},
+    {to:'ethics',q:'Name the four ethical theories in the lecture\'s matrix, with each one\'s core directive and main criticism.',a:'<ul><li><b>Utilitarianism</b>: maximize total happiness; how do you quantify utility?</li><li><b>Deontology</b>: follow categorical duties; inflexible in edge cases.</li><li><b>Virtue ethics</b>: uphold character; fixed character may be illusory.</li><li><b>Rawlsian justice</b>: rules chosen behind a veil of ignorance; costs and friction treated as secondary.</li></ul><p>Philosophers are split (≈26% deontology, 24% consequentialism, 18% virtue): there\'s no single ground truth.</p>'},
+    {to:'ethics',q:'What do the "water" metaphor, the paperclip maximizer and "a prediction is not a decision" each teach?',a:'<ul><li><b>Water</b>: ML ethics means seeing the invisible structural environment an algorithm operates in.</li><li><b>Paperclip maximizer</b>: an AI told only to make paperclips converts everything into paperclips; small objective misalignments compound at scale.</li><li><b>Prediction ≠ decision</b>: models learn historical bias (image generators showing CEOs as men, cashiers as women); humans must decide. Responsible deployment = evidence + context + human policy + human review.</li></ul>'},
+    {to:'fairness',q:'State the Chouldechova impossibility theorem as the lecture gives it, and why fairness is a multi-stakeholder problem.',a:'<p>If the base rate of an outcome differs between two groups, an algorithm <b>cannot have equal false positive rates and equal false negative rates at the same time</b>. There are 21+ definitions of fairness: a decision-maker wants accurate positives, a defendant wants few false positives, society wants demographic parity, and you can\'t satisfy all three at once.</p>'},
+    {to:'fairness',q:'Equality vs equity vs justice: what does each mean, and what does each correspond to in an algorithm?',a:'<ul><li><b>Equality</b>: same support for everyone → algorithmic blindness; fails (impossibility theorem).</li><li><b>Equity</b>: support based on need → adjust thresholds per group; reduces harm but costs utility.</li><li><b>Justice</b>: remove the barrier → fix the base rate / data-generating process; the only structural fix.</li></ul>'},
+    {to:'fairness',q:'Define demographic parity and equal opportunity. What did the lecture\'s loan simulation show?',a:'<p><b>Demographic parity</b>: equal approval rates across groups. <b>Equal opportunity</b>: equal true positive rates. Loan simulation: Max profit 32,400; demographic parity ~28,000; equal opportunity ~26,000. Every fairness criterion costs some utility.</p>'}];
+  L.forEach(c=>c.lab='L');
+  makeDeck('lk','ds110-lecdeck-v1',L,'Lecture order');
+})();
 </script>
 
 </body>

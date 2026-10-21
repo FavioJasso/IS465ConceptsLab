@@ -13,12 +13,13 @@ Content is based on lecture slides by Mark Cartwright (NJIT).
 
 ## DS 110 · `ds110.html`
 
-Introduction to AI, midterm review. Thirteen concepts mapped to the 16 midterm questions:
+Introduction to AI, midterm review. Thirteen concepts mapped to the 16 midterm questions, plus thirteen from the lecture slides:
 
 - **Part 1 · Python**: classes and objects, global vs local namespaces (with a step-through of the exam's scope question), try/except, writing `count_odds`, `while True` / `break`, slicing, and string methods.
 - **Part 2 · Regression**: deterministic vs probabilistic models, least squares (drag the line, then work it by hand), and the four steps of regression modeling.
 - **Part 3 · AI concepts**: symbolic vs connectionist AI, the Turing Test and its limits, and weights and biases in a single neuron (tune it, then train it).
-- **Practice**: an endless predict-the-output drill, a review deck of all 16 exam questions (write your answer, reveal, rate yourself; cards you miss come back a few cards later, and you can drill only the ones you missed), and a printable one-page cheat sheet.
+- **Part 4 · Lecture slides**: thirteen more concepts from the course lectures that the midterm review doesn't cover: what counts as AI and GOFAI vs ML, the ML workflow and datasets, decision trees and overfitting, the confusion matrix, training a neural network (backprop, gradient descent), least squares by the table method, images and color spaces, filtering and convolution, CNN building blocks, ImageNet/AlexNet/VGG, self-supervised speech learning, ethics and bias, and fairness trade-offs.
+- **Practice**: an endless predict-the-output drill, a review deck of all 16 exam questions (write your answer, reveal, rate yourself; cards you miss come back a few cards later, and you can drill only the ones you missed), a second review deck for the Part 4 lecture topics, and a printable one-page cheat sheet.
 
 The code editor runs real Python in the browser with [Pyodide](https://pyodide.org), loaded on first use from jsDelivr.
 
