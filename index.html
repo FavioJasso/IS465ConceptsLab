@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Interactive study lab for NJIT IS 465 Lectures 4 and 5: inferential statistics and data visualization.">
+<meta name="description" content="Interactive study lab for NJIT IS 465 Lectures 4 to 7: inferential statistics, data visualization, data management, and data structures and algorithms.">
 <title>IS 465 Concept Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -225,6 +225,168 @@ table.t td.n{font-family:var(--f-mono);text-align:right;font-variant-numeric:tab
 .courses a:hover{border-color:var(--accent);color:var(--ink)}
 .courses a[aria-current="page"]{background:var(--surface);color:var(--ink);border-color:var(--ink)}
 .courses a[aria-current="page"] span{color:var(--accent)}
+/* ---------- Lectures 6 & 7 ---------- */
+.lead code,.keys code,.trap code,.cap code,.qq code,.model code,.q code,.fb code,.note code{font-size:.9em;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.code{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;overflow-x:auto;font:14px/1.6 var(--f-mono);white-space:pre;min-width:0}
+.code.sm{font-size:13px;padding:6px 12px}
+.code .kw{color:var(--accent);font-weight:600}.code .st{color:var(--good)}.code .nu{color:var(--amber)}.code .cm{color:var(--muted);font-style:italic}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.trio>div{display:grid;gap:4px;min-width:0}
+.trio .lab2,.lab2{font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.note{font-size:15px;padding:10px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line)}
+.note.ok{background:var(--good-soft);border-color:var(--good)}
+.note.bad{background:var(--tail-soft);border-color:var(--tail)}
+.note.amb{background:var(--amber-soft);border-color:var(--amber)}
+.inp{font:15px var(--f-mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 9px;min-width:0}
+.inp:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+textarea.inp{width:100%;resize:vertical;line-height:1.5;display:block}
+.btn:disabled{opacity:.45;cursor:default;border-color:var(--line)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:4px 10px;font-size:13px}
+.kbd{font:12px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface)}
+/* data tables */
+table.dt{border-collapse:collapse;font:13px/1.35 var(--f-mono);width:100%;font-variant-numeric:tabular-nums}
+table.dt caption{text-align:left;font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:6px}
+table.dt th,table.dt td{padding:5px 8px;border:1px solid var(--line);text-align:left;white-space:nowrap}
+table.dt th{background:var(--paper);font-weight:600;color:var(--ink)}
+table.dt th.pick{cursor:pointer;user-select:none}
+table.dt th.pick:hover{border-color:var(--accent)}
+table.dt th.on{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+table.dt td.r{text-align:right}
+table.dt .k{color:var(--accent);font-weight:600}
+table.dt tr.keep td{background:var(--good-soft)}
+table.dt tr.drop td{opacity:.35}
+table.dt td.dim,table.dt th.dim{opacity:.3}
+table.dt tr.dup td{background:var(--tail-soft)}
+table.dt td.bad{background:var(--tail-soft);color:var(--tail);font-weight:600}
+table.dt td.new{background:var(--accent-soft)}
+table.dt tr.gone td{text-decoration:line-through;color:var(--tail);background:var(--tail-soft)}
+table.dt td.grp{border-left:3px solid var(--accent)}
+.tbls{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;align-items:start}
+.arrow{font:600 13px var(--f-mono);color:var(--accent);text-align:center}
+/* storage strip */
+.mem{display:flex;flex-wrap:wrap;gap:3px}
+.mem span{font:11px var(--f-mono);padding:5px 6px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--muted);min-width:44px;text-align:center}
+.mem span.rd{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+.mem span.sep{border:0;background:transparent;min-width:6px;padding:0}
+.mem span.c1{border-top:3px solid var(--c1)}.mem span.c2{border-top:3px solid var(--c2)}.mem span.c3{border-top:3px solid var(--c3)}.mem span.c4{border-top:3px solid var(--c4)}
+/* tokens to classify */
+.tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.tok{border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:8px 10px;display:grid;gap:6px}
+.tok b{font:600 14px var(--f-mono)}
+.tok .seg button{font-size:12px;padding:4px 8px}
+.tok.right{border-color:var(--good);background:var(--good-soft)}
+.tok.wrong{border-color:var(--tail);background:var(--tail-soft)}
+.tok small{font-size:13px;color:var(--muted)}
+/* answerable list */
+.ans{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ans li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;font-size:15px}
+.ans li i{font-style:normal;font-weight:700}
+.ans li.y i{color:var(--good)}.ans li.n i{color:var(--tail)}
+.ans li.n span{color:var(--muted)}
+/* array / list cells */
+.cells2{display:flex;flex-wrap:wrap;gap:4px;align-items:stretch}
+.cells2 .c{display:grid;gap:2px;text-align:center;min-width:64px;padding:6px 6px 4px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font:13px var(--f-mono)}
+.cells2 .c small{font-size:10px;color:var(--muted)}
+.cells2 .c.empty{border-style:dashed;color:var(--muted)}
+.cells2 .c.hit{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.cells2 .c.hit small{color:var(--surface)}
+.cells2 .c.touch{background:var(--amber-soft);border-color:var(--amber)}
+.cells2 .c.out{opacity:.3}
+.cells2 .c.new{background:var(--good-soft);border-color:var(--good)}
+.cells2 .lk{align-self:center;color:var(--muted);font:13px var(--f-mono)}
+.cells2 .head{align-self:center;font:600 11px var(--f-mono);color:var(--accent)}
+/* buckets */
+.buckets{display:grid;gap:4px}
+.buckets>div{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;align-items:center}
+.buckets .i{font:12px var(--f-mono);color:var(--muted);text-align:right}
+.buckets .s{display:flex;gap:4px;flex-wrap:wrap;min-height:30px;padding:3px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.buckets .s span{font:13px var(--f-mono);padding:3px 8px;border-radius:4px;background:var(--paper);border:1px solid var(--line)}
+.buckets .s span.hit{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.buckets .s span.chk{background:var(--amber-soft);border-color:var(--amber)}
+.buckets>div.on .s{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+/* stack and queue */
+.sq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sq .box{display:grid;gap:8px;align-content:start}
+.sq .lane{display:flex;gap:4px;min-height:44px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--paper);align-items:center;flex-wrap:wrap}
+.sq .lane.v{flex-direction:column-reverse;align-items:stretch;min-height:200px;justify-content:flex-start}
+.sq .lane span{font:600 14px var(--f-mono);padding:6px 12px;border-radius:6px;background:var(--surface);border:1px solid var(--line);text-align:center}
+.sq .lane span.top{border-color:var(--accent);background:var(--accent-soft)}
+.sq .out{font:14px var(--f-mono);min-height:1.6em}
+/* graph traversal */
+.ds{display:flex;gap:4px;flex-wrap:wrap;min-height:34px;padding:4px;border:1px solid var(--line);border-radius:8px;background:var(--paper);align-items:center}
+.ds span{font:600 13px var(--f-mono);padding:4px 10px;border-radius:5px;background:var(--surface);border:1px solid var(--line)}
+.ds span.next{border-color:var(--accent);background:var(--accent-soft)}
+.ds em{font-style:normal;font-size:13px;color:var(--muted);padding:0 6px}
+svg.chart .nd circle{fill:var(--surface);stroke:var(--muted);stroke-width:1.5}
+svg.chart .nd.q circle{fill:var(--amber-soft);stroke:var(--amber)}
+svg.chart .nd.v circle{fill:var(--accent);stroke:var(--accent)}
+svg.chart .nd.v text{fill:var(--surface)}
+svg.chart .nd.cur circle{stroke:var(--tail);stroke-width:3}
+svg.chart .nd.path circle{fill:var(--good-soft);stroke:var(--good);stroke-width:2.5}
+svg.chart .nd.hit circle{fill:var(--good);stroke:var(--good)}
+svg.chart .nd.hit text{fill:var(--surface)}
+svg.chart .nd text{font:600 13px var(--f-mono);fill:var(--ink)}
+/* pivot */
+table.pv{border-collapse:collapse;font:13px/1.35 var(--f-mono);font-variant-numeric:tabular-nums;width:100%}
+table.pv th,table.pv td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.pv th:first-child,table.pv td:first-child{text-align:left}
+table.pv thead th{color:var(--muted);font-weight:600}
+table.pv tfoot td{font-weight:600;border-top:2px solid var(--ink)}
+table.pv td i{display:block;height:4px;border-radius:2px;background:var(--accent);opacity:.55;margin-top:3px;margin-left:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:12px var(--f-mono);padding:3px 9px;border-radius:99px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+.chip b{color:var(--ink)}
+.chip.f{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+/* pipeline */
+.pipe{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px}
+.pipe .st{flex:1 1 120px;border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:9px 11px;display:grid;gap:3px;align-content:start}
+.pipe .st b{font-size:14px}
+.pipe .st span{font-size:13px;color:var(--muted)}
+.pipe .st.wh{border-color:var(--accent);background:var(--accent-soft)}
+.pipe .st.tr{border-color:var(--amber);background:var(--amber-soft)}
+.pipe .ar{align-self:center;color:var(--muted);font:600 16px var(--f-mono)}
+.chk{display:flex;flex-wrap:wrap;gap:6px 14px}
+.chk label{display:flex;gap:6px;align-items:center;font-size:14px;cursor:pointer}
+.chk input{accent-color:var(--accent)}
+.url{font:13px/1.5 var(--f-mono);padding:10px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line);overflow-wrap:anywhere}
+.url b{color:var(--accent);font-weight:600}
+.sumt td.hl{background:var(--accent-soft)}
+table.t tr.hl td{background:var(--accent-soft)}
+/* review deck (same as DS 110) */
+.tally{display:flex;flex-wrap:wrap;gap:8px}
+.ex{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px;min-width:0}
+.ex-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ex-h b{font:600 13px var(--f-mono);color:var(--accent)}
+.ex-h a{font-size:13px;color:var(--muted)}
+.ex .qq{font-weight:600;font-size:16px}
+.ex .model{background:var(--good-soft);border-radius:10px;padding:12px 14px;font-size:15px;display:grid;gap:8px}
+.ex .model h4{margin:0;font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--good)}
+.ex .model ul,.ex .model ol{margin:0;padding-left:20px;display:grid;gap:4px}
+.dk-strip{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:4px}
+.dk-strip a{height:30px;border-radius:6px;display:grid;place-items:center;font:600 11px var(--f-mono);background:var(--surface);border:1px solid var(--line);color:var(--muted);text-decoration:none;font-variant-numeric:tabular-nums}
+.dk-strip a.out{opacity:.3;border-style:dashed}
+.dk-strip a.got{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.dk-strip a.back{background:var(--tail-soft);border-color:var(--tail);color:var(--tail)}
+.dk-strip a.now{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.dk .seen{font:600 12px var(--f-body);color:var(--tail);background:var(--tail-soft);padding:2px 8px;border-radius:99px;margin-left:8px}
+.dk .yours{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;padding:10px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line)}
+.dk .yours.empty{color:var(--muted);font-style:italic}
+.dk .show{width:100%;border:0;background:var(--accent);color:var(--surface);border-radius:8px;padding:12px;font-weight:600;font-size:16px}
+.dk-rate{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dk-rate button{border:1.5px solid;border-radius:8px;padding:9px 8px;display:grid;gap:2px;text-align:center;background:var(--surface)}
+.dk-rate b{font-size:16px}.dk-rate small{font-size:12px;color:var(--muted)}
+.dk-rate .a{border-color:var(--tail);color:var(--tail)}.dk-rate .a:hover{background:var(--tail-soft)}
+.dk-rate .m{border-color:var(--amber);color:var(--amber)}.dk-rate .m:hover{background:var(--amber-soft)}
+.dk-rate .g{border-color:var(--good);color:var(--good)}.dk-rate .g:hover{background:var(--good-soft)}
+.dk-toast{font-size:14px;color:var(--muted);min-height:1.5em;text-align:center}
+.dk-list{display:grid;gap:6px}
+.dk-list div{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 10px;border-radius:8px;background:var(--paper);font-size:15px}
+.dk-list .n{font:600 13px var(--f-mono);color:var(--accent)}.dk-list .c{font:600 13px var(--f-mono);color:var(--tail);white-space:nowrap}
+.match{display:inline-block;font:600 12px var(--f-body);padding:2px 9px;border-radius:99px;margin-left:6px;letter-spacing:0;text-transform:none}
+.match.y{background:var(--good-soft);color:var(--good)}.match.n{background:var(--tail-soft);color:var(--tail)}
+@media (max-width:880px){.trio,.sq{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.dk-strip{grid-template-columns:repeat(7,minmax(0,1fr))}.tokens{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 html{scroll-behavior:smooth}
 </style>
@@ -232,24 +394,27 @@ html{scroll-behavior:smooth}
 <body>
 
 <nav class="courses" aria-label="Courses">
-  <a href="index.html" aria-current="page">IS 465<span>Statistics &amp; visualization</span></a>
+  <a href="index.html" aria-current="page">IS 465<span>Stats, viz, data &amp; algorithms</span></a>
   <a href="ds110.html">DS 110<span>Intro to AI midterm</span></a>
 </nav>
 
 <div class="layout">
 <nav class="toc" aria-label="Concepts">
-  <div class="prog"><span><b id="prog-n">0</b> of 17 understood</span><div class="bar"><i id="prog-bar"></i></div></div>
+  <div class="prog"><span><b id="prog-n">0</b> of <span id="prog-tot">35</span> understood</span><div class="bar"><i id="prog-bar"></i></div></div>
   <div class="lists">
     <div><h4>Lecture 5 · Inference</h4><ol id="toc-5"></ol></div>
     <div><h4>Lecture 4 · Visualization</h4><ol id="toc-4"></ol></div>
+    <div><h4>Lecture 6 · Data management</h4><ol id="toc-6"></ol></div>
+    <div><h4>Lecture 7 · Data structures</h4><ol id="toc-7"></ol></div>
+    <div><h4>Practice</h4><ol id="toc-prac"></ol></div>
   </div>
 </nav>
 
 <main>
 <header class="hero">
-  <span class="eyebrow">IS 465 · Lectures 4 &amp; 5</span>
+  <span class="eyebrow">IS 465 · Lectures 4 to 7</span>
   <h1>Concept Lab</h1>
-  <p>Seventeen concepts in the order they build on each other. Each one gives you the idea in a few sentences, a picture you can change to see why it works, the mistake people usually make, and one check question.</p>
+  <p>Thirty-five concepts in the order they build on each other: statistics and visualization (Lectures 4 and 5), then data management and data structures (Lectures 6 and 7). Each one gives you the idea in a few sentences, something you can change to see why it works, the mistake people usually make, and two check questions. A review deck for Lectures 6 and 7 is at the end.</p>
   <div class="howto"><span><b>1</b>Read the idea</span><span><b>2</b>Move the sliders</span><span><b>3</b>Answer the check</span><span><b>4</b>Mark it understood</span></div>
 </header>
 
@@ -271,6 +436,15 @@ html{scroll-behavior:smooth}
     <div><dt>df</dt><dd>Degrees of freedom (n − 1 here)</dd><a href="#tstat">06</a></div>
     <div><dt>β <i>beta</i></dt><dd>Type II (false negative) rate; power = 1 − β</dd><a href="#errors">07</a></div>
     <div><dt>CI</dt><dd>Confidence interval</dd><a href="#ci">10</a></div>
+    <div><dt>PK, FK</dt><dd>Primary key, foreign key</dd><a href="#keys">18</a></div>
+    <div><dt>σ, π, γ <i>sigma, pi, gamma</i></dt><dd>Selection (rows), projection (columns), grouping</dd><a href="#algebra">19</a></div>
+    <div><dt>⋈</dt><dd>Join</dd><a href="#join">21</a></div>
+    <div><dt>OLTP, OLAP</dt><dd>Transaction vs analytical processing</dd><a href="#olap-store">22</a></div>
+    <div><dt>ETL, ELT</dt><dd>Extract, transform, load (and load first)</dd><a href="#etl">26</a></div>
+    <div><dt>O(·) <i>big-O</i></dt><dd>How cost grows with input size n</dd><a href="#bigo">29</a></div>
+    <div><dt>LIFO, FIFO</dt><dd>Stack order, queue order</dd><a href="#stackq">32</a></div>
+    <div><dt>BST</dt><dd>Binary search tree</dd><a href="#bst">33</a></div>
+    <div><dt>BFS, DFS</dt><dd>Breadth-first, depth-first search</dd><a href="#bfsdfs">34</a></div>
   </dl>
 </details>
 
@@ -817,7 +991,599 @@ html{scroll-behavior:smooth}
   <button class="done" data-id="rules" aria-pressed="false">Mark as understood</button>
 </section>
 
-<p class="foot">Built from IS 465 Lecture 4 (Visualization) and Lecture 5 (Inferential Statistics), Mark Cartwright, NJIT. Simulations use fresh random draws, so your numbers will differ slightly from the slides. Progress is saved in this browser only.</p>
+<div class="part"><span class="eyebrow">Part 3</span><h2>Data management</h2><p>How a business stores its records so they stay correct, and how it reshapes them into a warehouse so analysts can ask questions fast.</p></div>
+
+<!-- 18 -->
+<section class="concept" id="keys" data-lec="6" data-t="Tables & keys">
+  <header><span class="eyebrow">L6 · 18</span><h2>Relations, primary keys and foreign keys</h2></header>
+  <p class="lead">A <b>database management system</b> (DBMS) such as MySQL, PostgreSQL or SQLite enforces rules, handles many users at once and answers queries. In a relational database every table is a <em>relation</em>: each row is a <b>tuple</b>, each column an <b>attribute</b>, and the allowed values of a column are its <b>domain</b>. A <b>primary key</b> (PK) is the smallest set of columns that identifies every row. A <b>foreign key</b> (FK) is a column whose values must match a primary key in another table, and that is what links tables.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Find the primary key</h3><span class="hint">click column headers to add or remove them from your key</span></div>
+    <div class="seg" id="pk-tab"><button data-v="trials" aria-pressed="true">Usability trials (poll)</button><button data-v="orders" aria-pressed="false">Orders</button><button data-v="items" aria-pressed="false">OrderItems</button></div>
+    <div class="scroll"><table class="dt" id="pk-table"></table></div>
+    <div id="pk-out" class="note">Pick one or more columns.</div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Two rules for a primary key: <b>unique</b> (no two rows share it) and <b>minimal</b> (drop any column and it stops being unique).</li>
+      <li>A key can be one column (<code>order_id</code>) or a combination (<code>participant_id, method, trial</code>).</li>
+      <li>The DBMS rejects any INSERT that would duplicate a key. No two rows in a relation can be identical.</li>
+      <li>An FK is the PK of another table copied into this one: <code>OrderItems.order_id → Orders.order_id</code>. One order has many items.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Picking a column because it <i>happens</i> to be unique in the rows you can see. <code>time_seconds</code> has no repeats here, but two trials could take 8.33 s. A key comes from what a row <b>means</b> (one participant, one method, one trial), not from luck in the sample.</div>
+  </div>
+  <div class="check" data-q="keys"></div>
+  <button class="done" data-id="keys" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 19 -->
+<section class="concept" id="algebra" data-lec="6" data-t="Relational algebra">
+  <header><span class="eyebrow">L6 · 19</span><h2>Relational algebra: the operations behind SQL and pandas</h2></header>
+  <p class="lead">Relational algebra is algebra on tables. Each operator takes tables in and gives a table out (the <em>closure property</em>), so you can chain them. The six primitive operations are selection σ, projection π, union ∪, set difference −, Cartesian product × and rename ρ; together they can express any relational query. The five you will use most are <b>selection</b>, <b>projection</b>, <b>join</b>, <b>union</b> and <b>grouping with aggregation</b>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Run an operation on Books</h3><span class="hint">green rows are kept, faded columns are dropped</span></div>
+    <div class="seg" id="ra-op"></div>
+    <div class="tbls"><div class="scroll"><table class="dt" id="ra-in"></table></div><div class="scroll"><table class="dt" id="ra-out"></table></div></div>
+    <div class="trio" id="ra-code"></div>
+    <p class="cap" id="ra-cap"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>σ selection</b> filters <b>rows</b> (SQL <code>WHERE</code>, pandas <code>df[df.genre == 'Fiction']</code>). Columns stay the same.</li>
+      <li><b>π projection</b> keeps <b>columns</b> (SQL <code>SELECT title, genre</code>, pandas <code>df[['title','genre']]</code>) and, in algebra, removes duplicate rows.</li>
+      <li><b>γ grouping</b> collapses rows that share a value into one row per group, with COUNT, SUM or AVG. It is an extension: SQL, pandas and pivot tables add it to the original algebra.</li>
+      <li>A relation is a <b>set</b> of tuples: no duplicates and no order. SQL keeps duplicates unless you write <code>SELECT DISTINCT</code>.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Mixing up the Greek letters. <b>σ</b> (sigma, "s" for select) works on rows; <b>π</b> (pi, "p" for project) works on columns. In SQL the confusion is worse: the <code>SELECT</code> keyword is actually projection, and selection lives in <code>WHERE</code>.</div>
+  </div>
+  <div class="check" data-q="algebra"></div>
+  <button class="done" data-id="algebra" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 20 -->
+<section class="concept" id="normal-form" data-lec="6" data-t="Normalization & anomalies">
+  <header><span class="eyebrow">L6 · 20</span><h2>Redundancy, the three anomalies and normalization</h2></header>
+  <p class="lead">When one table stores facts about two things, like books <i>and</i> their authors, the author's details repeat on every book row. That redundancy causes three <em>anomalies</em>. <b>Normalization</b> splits the table so each table describes one entity and each fact is stored once, then links the tables with keys.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Break it, then fix it</h3><span class="hint">try each change on both designs</span></div>
+    <div class="row"><div class="seg" id="nf-design"><button data-v="flat" aria-pressed="true">One Books table</button><button data-v="norm" aria-pressed="false">Normalized: Authors + Books</button></div></div>
+    <div class="row" id="nf-act">
+      <button class="btn" data-a="update">Update Murakami's bio</button>
+      <button class="btn" data-a="insert">Add author Ocean Vuong (no book yet)</button>
+      <button class="btn" data-a="delete">Delete the book Runaway</button>
+      <button class="btn ghost" data-a="reset">Reset</button>
+    </div>
+    <div class="tbls" id="nf-tables"></div>
+    <div class="note" id="nf-out">Pick a change above.</div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Update anomaly</b>: one fact lives in many rows, so an update that misses a row leaves two different versions.</li>
+      <li><b>Insert anomaly</b>: you cannot store a fact (a new author) until an unrelated fact (a book) exists.</li>
+      <li><b>Delete anomaly</b>: deleting one fact (the only Munro book) erases another (Munro herself).</li>
+      <li>Normalization's payoffs: less redundancy, better integrity (change data in one place) and easier maintenance.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Thinking normalization loses information. Nothing is thrown away: <code>author_id</code> in Books points to the author row, and a join (next concept) rebuilds the wide table whenever you need it.</div>
+  </div>
+  <div class="check" data-q="normal-form"></div>
+  <button class="done" data-id="normal-form" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 21 -->
+<section class="concept" id="join" data-lec="6" data-t="Joins">
+  <header><span class="eyebrow">L6 · 21</span><h2>Joins: putting the tables back together</h2></header>
+  <p class="lead">Normalization splits tables so each fact is stored once. A <b>join</b> (⋈) puts them back together for analysis. A natural join matches rows where the shared attribute is equal, here where the foreign key <code>Books.author_id</code> meets the primary key <code>Authors.author_id</code>. A row with no match on the other side does not appear in the result.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Books ⋈ Authors on author_id</h3><span class="hint">add rows that have no partner</span></div>
+    <div class="row"><button class="btn" id="jn-book" aria-pressed="false">Add book 105 with author_id 9</button><button class="btn" id="jn-auth" aria-pressed="false">Add author 4 with no books</button></div>
+    <div class="tbls" id="jn-tables"></div>
+    <div class="read"><div class="stat"><span>Rows in Books</span><b id="jn-nb">–</b></div><div class="stat"><span>Rows in Authors</span><b id="jn-na">–</b></div><div class="stat hl"><span>Rows in the join</span><b id="jn-nj">–</b></div></div>
+    <pre class="code sm"><span class="kw">SELECT</span> b.title, a.author_name
+<span class="kw">FROM</span> Books b <span class="kw">JOIN</span> Authors a <span class="kw">ON</span> b.author_id = a.author_id;
+<span class="cm"># pandas</span>
+pd.merge(books, authors, on=<span class="st">'author_id'</span>)</pre>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Murakami's name appears twice in the output but is stored once. The joined output is what a denormalized table looks like.</li>
+      <li>One author with two books gives two output rows: a join can make rows repeat on the "one" side.</li>
+      <li>Joins use the derived operations: natural join ⋈ matches equal attributes, theta join ⋈θ uses any condition θ.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Expecting the join to have as many rows as Books. Book 105 points to author 9, who does not exist, so it drops out: Books ⋈ Authors still returns <b>4</b> rows (the lecture poll). A foreign key constraint would have stopped that row from being inserted at all.</div>
+  </div>
+  <div class="check" data-q="join"></div>
+  <button class="done" data-id="join" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 22 -->
+<section class="concept" id="olap-store" data-lec="6" data-t="OLTP vs OLAP storage">
+  <header><span class="eyebrow">L6 · 22</span><h2>OLTP vs OLAP, and why warehouses store columns</h2></header>
+  <p class="lead">Relational databases are tuned for <b>OLTP</b> (online transaction processing): many short reads and writes of single rows, such as placing an order or a bank transfer. Running big analytical queries on that same database scans tables the app is writing to and slows customers down. A <b>data warehouse</b> is a separate, read-optimized database tuned for <b>OLAP</b> (online analytical processing). It is <em>subject-oriented</em>, <em>integrated</em>, <em>non-volatile</em> (history is kept) and <em>time-variant</em> (every fact is timestamped), and it usually stores data <b>by column</b>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>What gets read from disk?</h3><span class="hint">blue cells are the values the query has to read</span></div>
+    <div class="seg" id="st-q"><button data-v="sum" aria-pressed="true">SELECT SUM(revenue)</button><button data-v="row" aria-pressed="false">Fetch the whole sale on row 3</button></div>
+    <div class="lab2">Row storage (OLTP database): each row's values sit together</div>
+    <div class="mem" id="st-row"></div>
+    <div class="lab2">Column storage (warehouse): each column's values sit together</div>
+    <div class="mem" id="st-col"></div>
+    <div class="read"><div class="stat"><span>Row store reads</span><b id="st-r">–</b></div><div class="stat"><span>Column store reads</span><b id="st-c">–</b></div><div class="stat hl"><span>Separate runs to visit (row / column)</span><b id="st-runs">–</b></div></div>
+    <div class="controls">
+      <div class="ctl"><label for="st-cols">Columns in a real fact table <output id="st-cols-o"></output></label><input type="range" id="st-cols" min="4" max="100" step="1" value="40"></div>
+      <div class="ctl"><label for="st-need">Columns the query uses <output id="st-need-o"></output></label><input type="range" id="st-need" min="1" max="10" step="1" value="2"></div>
+    </div>
+    <div class="note" id="st-scale"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>OLTP vs OLAP: the full picture</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th></th><th>OLTP workload</th><th>OLAP workload</th></tr>
+      <tr><td><b>Purpose</b></td><td>Record transactions reliably</td><td>Analyze trends, support decisions</td></tr>
+      <tr><td><b>Tool</b></td><td>Relational database (MySQL, PostgreSQL)</td><td>Cloud warehouse or lakehouse (Snowflake, BigQuery, Redshift, Databricks)</td></tr>
+      <tr><td><b>Storage</b></td><td>Row by row</td><td>Column by column</td></tr>
+      <tr><td><b>Schema</b></td><td>Normalized tables</td><td>Star schema, or one big table</td></tr>
+      <tr><td><b>Operations</b></td><td>INSERT, UPDATE, DELETE</td><td>SELECT with joins and GROUP BY</td></tr>
+      <tr><td><b>Query style</b></td><td>Small, fast, one row at a time</td><td>Few columns, millions of rows</td></tr>
+      <tr><td><b>Users</b></td><td>Clerks, apps, customers</td><td>Analysts, managers and BI tools</td></tr>
+      <tr><td><b>Freshness</b></td><td>Real time</td><td>Loaded in batches, or near real time</td></tr>
+    </table></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>A disk is read in long runs of neighboring values, and storage decides which values are neighbors.</li>
+      <li>Analytics touches a few columns of many rows, so column storage reads far less: often 10 to 100× less data. Runs of similar values also compress well.</li>
+      <li>Transactions insert or read one whole row, which is why OLTP databases keep each row together.</li>
+      <li>OLTP and OLAP are <b>workload patterns</b>. Databases and warehouses are the tools optimized for each.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Calling a warehouse "just a bigger database." It is a separate copy, loaded from the production systems, that never deletes history and is shaped for reading. Analysts query it so they don't slow down the app the customers use.</div>
+  </div>
+  <div class="check" data-q="olap-store"></div>
+  <button class="done" data-id="olap-store" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 23 -->
+<section class="concept" id="star" data-lec="6" data-t="Facts, dimensions, grain">
+  <header><span class="eyebrow">L6 · 23</span><h2>Star schema: fact tables, dimension tables and grain</h2></header>
+  <p class="lead">A <b>star schema</b> has one central <b>fact table</b> surrounded by <b>dimension tables</b>. The fact table holds the numbers you analyze (revenue, qty) plus a foreign key to each dimension. Dimensions hold the labels you filter and group by (title, genre, city, month). The <em>grain</em> is what one row of the fact table represents. Here it is one book in one order.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Where does each column go?</h3><span class="hint">click a destination for each column</span></div>
+    <div class="tokens" id="sc-tok"></div>
+    <p class="cap" id="sc-score"></p>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Choose the grain of FACT_SALES</h3><span class="hint">coarser grain = fewer rows, fewer answers</span></div>
+    <div class="seg" id="gr-pick"><button data-v="line" aria-pressed="true">One book in one order</button><button data-v="daybook" aria-pressed="false">One book per day</button><button data-v="month" aria-pressed="false">One genre per month</button></div>
+    <div class="scroll"><table class="dt" id="gr-table"></table></div>
+    <ul class="ans" id="gr-ans"></ul>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Fact table: one row per <b>event</b>, numeric measures + foreign keys, tall and narrow, grows with every event.</li>
+      <li>Dimension table: one row per <b>thing</b> (book, customer, day), descriptive attributes, short and wide, <b>denormalized on purpose</b> (author_name is copied into DIM_BOOK).</li>
+      <li>Each dimension's key is its finest-detail attribute (the day, <code>date_id</code>), and that key is the FK in the fact table.</li>
+      <li>Store the finest (atomic) grain you can: you can always roll up later, but you can never split a coarse row back apart.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Putting a book's <b>list price</b> in the fact table. It describes the book, so it belongs in DIM_BOOK. The fact is <code>revenue</code>, what the customer actually paid on that line (qty × price). And the fact table's PK is <code>item_id</code>: (date_id, book_id, cust_id) is unique in the sample, but one customer can buy the same book twice in a day in two orders.</div>
+  </div>
+  <div class="check" data-q="star"></div>
+  <button class="done" data-id="star" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 24 -->
+<section class="concept" id="shapes" data-lec="6" data-t="Star, snowflake, one big table">
+  <header><span class="eyebrow">L6 · 24</span><h2>Star, snowflake, or one big table</h2></header>
+  <p class="lead">There are three common ways to model data for analysis. A <b>star</b> keeps flat, denormalized dimensions. A <b>snowflake</b> normalizes the dimensions into sub-dimensions (DIM_BOOK → DIM_AUTHOR). <b>One big table</b> pre-joins everything into a single wide table. They trade joins against repeated data.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Question: revenue by author and customer city</h3><span class="hint">switch the model</span></div>
+    <div class="seg" id="sh-pick"><button data-v="star" aria-pressed="true">Star schema</button><button data-v="snow" aria-pressed="false">Snowflake schema</button><button data-v="obt" aria-pressed="false">One big table</button></div>
+    <div class="plot" id="sh-chart"></div>
+    <pre class="code sm" id="sh-sql"></pre>
+    <div class="read"><div class="stat hl"><span>Joins in this query</span><b id="sh-j">–</b></div><div class="stat"><span>Repeated data</span><b id="sh-rep">–</b></div></div>
+    <div class="two"><div class="note ok" id="sh-plus"></div><div class="note bad" id="sh-minus"></div></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Why denormalize dimensions in a warehouse: analysts mostly read, so update anomalies matter less; fewer joins mean simpler, faster queries with fewer mistakes; column storage compresses the repeated labels.</li>
+      <li>Star: the clear, standard shape (Power BI's own guidance recommends it). Snowflake: least repetition, easier to maintain a large or shared dimension. One big table: simplest to query, cheap with column storage.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Thinking the star schema breaks normalization everywhere. Only the <b>dimensions</b> are denormalized. The fact table stays highly normalized: just keys and measures, no descriptive text.</div>
+  </div>
+  <div class="check" data-q="shapes"></div>
+  <button class="done" data-id="shapes" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 25 -->
+<section class="concept" id="cube" data-lec="6" data-t="OLAP cube operations">
+  <header><span class="eyebrow">L6 · 25</span><h2>The OLAP cube: slice, dice, drill down, roll up, pivot</h2></header>
+  <p class="lead">An <b>OLAP cube</b> is how analysts picture the data: measures (revenue) sit at the crossing of dimensions (book, customer city, time). It is figurative: a cube can have many more than three dimensions, and physically the data still lives in the star schema. Dimensions have <em>attribute hierarchies</em>, such as Year → Quarter → Month → Day, or Genre → Title, and the OLAP operations move along them.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>BookDB revenue, Jan–Jun 2024</h3><span class="hint">every number is summed from 72 fact rows</span></div>
+    <div class="row" id="cb-ops">
+      <button class="btn" data-o="drillT">Drill down time</button><button class="btn" data-o="rollT">Roll up time</button>
+      <button class="btn" data-o="drillB">Drill down book</button><button class="btn" data-o="rollB">Roll up book</button>
+      <button class="btn" data-o="slice">Slice: Q1 only</button><button class="btn" data-o="dice">Dice: Q1 + Magic Realism</button>
+      <button class="btn" data-o="pivot">Pivot</button><button class="btn ghost" data-o="reset">Reset</button>
+    </div>
+    <div class="chips" id="cb-chips"></div>
+    <div class="scroll"><table class="pv" id="cb-table"></table></div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)" id="cb-tag">START</span><b id="cb-name">Genre × quarter</b><span id="cb-why"></span></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li><b>Slice</b>: fix <b>one</b> dimension to a value (time = Q1).</li>
+      <li><b>Dice</b>: fix <b>several</b> dimensions (Q1 and Magic Realism), giving a smaller sub-cube.</li>
+      <li><b>Drill down</b>: move to a finer level (quarter → month, genre → title). <b>Roll up</b>: move to a coarser level, aggregating.</li>
+      <li><b>Pivot</b>: swap what is on the rows and the columns. The numbers don't change, only the view.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Calling a click on "Newark" in a chart of waste by city a slice. You moved from city to the stations inside Newark, a finer level of the location hierarchy: that is a <b>drill down</b>. (It also filters to one city, but the defining move is down the hierarchy.)</div>
+  </div>
+  <div class="check" data-q="cube"></div>
+  <button class="done" data-id="cube" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 26 -->
+<section class="concept" id="etl" data-lec="6" data-t="ETL, ELT & OData">
+  <header><span class="eyebrow">L6 · 26</span><h2>Getting data in: ETL, ELT and OData</h2></header>
+  <p class="lead"><b>ETL</b> (extract, transform, load) is the classic pipeline that feeds a warehouse: pull raw data from the sources, clean and reshape it on a separate server, then load the result. <b>ELT</b> loads the raw data first and transforms it <em>inside</em> the warehouse, usually in SQL with a tool like dbt. ELT is now the default for cloud warehouses and lakehouses.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Where does the cleaning happen?</h3></div>
+    <div class="seg" id="et-pick"><button data-v="etl" aria-pressed="true">ETL</button><button data-v="elt" aria-pressed="false">ELT</button></div>
+    <div class="pipe" id="et-pipe"></div>
+    <div class="note" id="et-note"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Build an OData request</h3><span class="hint">apps publish an API instead of giving you the database</span></div>
+    <div class="chk" id="od-opts"></div>
+    <div class="url" id="od-url"></div>
+    <div class="scroll"><table class="t" id="od-map"></table></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>The modern data stack</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th>Concept</th><th>Tools</th><th>What it does</th></tr>
+      <tr><td><b>OLTP database</b></td><td>MySQL, PostgreSQL, Oracle</td><td>Handles the transactional workload for production apps</td></tr>
+      <tr><td><b>Data warehouse</b></td><td>Snowflake, BigQuery, Redshift</td><td>Stores historical analytical data at scale</td></tr>
+      <tr><td><b>Data lake</b></td><td>AWS S3, Google Cloud Storage</td><td>Cheap storage for raw, unprocessed files</td></tr>
+      <tr><td><b>ETL / ELT pipeline</b></td><td>dbt, Airflow, Fivetran</td><td>Moves and transforms data between systems</td></tr>
+      <tr><td><b>BI tool</b></td><td>Tableau, Looker, Power BI</td><td>Visual front end for slice, dice and drill down</td></tr>
+    </table></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>BookDB ETL: <b>extract</b> a nightly snapshot of Orders, OrderItems, Customers and Books from MySQL; <b>transform</b> by standardizing city names, removing test orders and computing revenue; <b>load</b> by appending to FACT_SALES and upserting the dimensions.</li>
+      <li>ELT keeps the raw data, so you can re-transform when the questions change. It usually works in layers: raw (as loaded, never edited) → cleaned → modeled (facts and dimensions), sometimes called bronze, silver, gold.</li>
+      <li>OData options map onto today's operations: <code>$filter</code> = selection, <code>$select</code> = projection, <code>$expand</code> = follow a foreign key, <code>$apply=groupby</code> = grouping.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Using OData for the analysis itself. It is for pulling data out, the E in ELT. Excel and Tableau can connect to an OData feed directly, but heavy analysis belongs in the warehouse.</div>
+  </div>
+  <div class="check" data-q="etl"></div>
+  <button class="done" data-id="etl" aria-pressed="false">Mark as understood</button>
+</section>
+
+<div class="part"><span class="eyebrow">Part 4</span><h2>Data structures and algorithms</h2><p>How the way you store data decides how fast you can search it, and how to predict whether your analysis will still run when the data is 100× bigger.</p></div>
+
+<!-- 27 -->
+<section class="concept" id="search" data-lec="7" data-t="Linear vs binary search">
+  <header><span class="eyebrow">L7 · 27</span><h2>Linear search vs binary search</h2></header>
+  <p class="lead"><b>Linear search</b> checks each element from the start until it finds the target or reaches the end. <b>Binary search</b> uses divide and conquer: look at the middle element; if it's the target you're done, if the target is smaller search the left half, if larger the right half, and repeat. Each check throws away half of what is left, so it needs about <em>log₂(N)</em> checks, but only on <b>sorted</b> data.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Find a number in the slide's array</h3><span class="hint">pick a target, then step through both</span></div>
+    <div class="qgroup"><span>Target</span><div class="seg" id="bs-t"></div></div>
+    <div class="row"><button class="btn pri" id="bs-step">Next check</button><button class="btn" id="bs-all">Run to the end</button><button class="btn ghost" id="bs-reset">Reset</button><button class="btn" id="bs-uns" aria-pressed="false">Unsorted array</button></div>
+    <div class="lab2">Linear search</div><div class="cells2" id="bs-lin"></div>
+    <div class="lab2">Binary search</div><div class="cells2" id="bs-bin"></div>
+    <div class="read"><div class="stat"><span>Linear checks</span><b id="bs-nl">0</b></div><div class="stat hl"><span>Binary checks</span><b id="bs-nb">0</b></div><div class="stat"><span>Binary search says</span><b id="bs-say" style="font-size:14px">–</b></div></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Checks needed in the worst case</h3></div>
+    <div class="scroll"><table class="t">
+      <tr><th></th><th>Linear search</th><th>Binary search</th></tr>
+      <tr><td><b>Requires sorting?</b></td><td>No</td><td>Yes (e.g. merge sort)</td></tr>
+      <tr><td><b>How it searches</b></td><td>Checks every element, one by one</td><td>Looks at the middle, eliminates half each time</td></tr>
+      <tr><td><b>100 items</b></td><td class="n">up to 100</td><td class="n">about 7</td></tr>
+      <tr><td><b>1,000,000 items</b></td><td class="n">up to 1,000,000</td><td class="n">about 20</td></tr>
+      <tr><td><b>Best for</b></td><td>Small lists, one-time searches</td><td>Large, stable, repeatedly searched data (or data that is already sorted)</td></tr>
+    </table></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Finding 45: linear needs 6 checks (index 5), binary needs 3 (33 → 51 → 45).</li>
+      <li>Linear search grows in proportion to the list. Binary search barely grows: doubling the data adds just one check.</li>
+      <li>Binary search's one requirement: the data must be sorted.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Running binary search on unsorted data. It doesn't crash: it confidently reports "not found" because it threw away the half the target was in. Turn on <b>Unsorted array</b> in the lab and search for 45.</div>
+  </div>
+  <div class="check" data-q="search"></div>
+  <button class="done" data-id="search" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 28 -->
+<section class="concept" id="sortonce" data-lec="7" data-t="Sort once, search many">
+  <header><span class="eyebrow">L7 · 28</span><h2>Sort once, search many</h2></header>
+  <p class="lead">Binary search is only fast after you pay to sort. Sorting with merge sort takes about <span class="mono">N log₂ N</span> steps, then each search takes <span class="mono">log₂ N</span>. With <b>k</b> searches on <b>N</b> items, binary wins when <span class="mono">k · N &gt; N log₂ N + k log₂ N</span>, that is <span class="mono">k &gt; N log₂ N / (N − log₂ N)</span>. For large N the rule of thumb is <em>k ≈ log₂ N</em>.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Total checks for k searches</h3><span class="hint">both sliders are on a log scale</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="so-n">Items N <output id="so-n-o"></output></label><input type="range" id="so-n" min="1" max="7" step="0.1" value="6"></div>
+      <div class="ctl"><label for="so-k">Searches k <output id="so-k-o"></output></label><input type="range" id="so-k" min="0" max="5" step="0.1" value="1.5"></div>
+    </div>
+    <div class="plot" id="so-chart"></div>
+    <div class="read"><div class="stat"><span>Linear: k × N</span><b id="so-lin">–</b></div><div class="stat"><span>Sort + binary: N log₂N + k log₂N</span><b id="so-bin">–</b></div><div class="stat hl"><span>Break-even k</span><b id="so-be">–</b></div><div class="stat"><span>Winner</span><b id="so-win">–</b></div></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Databases use exactly this: the index</h3></div>
+    <div class="two">
+      <p style="font-size:15px">An <b>index</b> is a sorted copy of one column kept beside the table, with a pointer to each row. <code>WHERE customer_id = 'C1042'</code> goes from scanning every row, O(n), to O(log n). Databases store it as a <b>B-tree</b>: binary search with many branches per node, so a billion rows need only a few steps. The cost: the index takes space and must be updated on every insert, so databases index only the columns queries search on.</p>
+      <pre class="code sm"><span class="cm">-- SQL (lecture 6)</span>
+<span class="kw">CREATE INDEX</span> idx_cust
+  <span class="kw">ON</span> Orders(customer_id);
+
+<span class="cm"># NumPy: binary search on a sorted array</span>
+ids.sort()
+i = np.searchsorted(ids, <span class="st">'C1042'</span>)</pre>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>One search: linear is simpler and cheaper. Many searches on the same data: sort once, then binary search.</li>
+      <li>For N = 1,000,000, log₂ N ≈ 20: after about 20 searches, sorting first has paid for itself.</li>
+      <li>It depends on the circumstances: how many searches, how big the list, and whether it is already sorted.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Comparing only the search step. Binary search's log₂ N looks unbeatable, but if you sort just to search once you spend N log₂ N, which is more than the N checks linear search would have used.</div>
+  </div>
+  <div class="check" data-q="sortonce"></div>
+  <button class="done" data-id="sortonce" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 29 -->
+<section class="concept" id="bigo" data-lec="7" data-t="Big-O notation">
+  <header><span class="eyebrow">L7 · 29</span><h2>Big-O notation</h2></header>
+  <p class="lead"><b>Big-O</b> describes how an algorithm's running time (or memory) grows as the input size <b>n</b> grows. It is an upper bound: O(n²) means the cost grows no faster than n². In this course it describes the <em>worst case</em>. To find it, keep the dominant term and drop the constants: for large n the biggest term swamps the rest.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>How the common classes grow</h3><span class="hint">log scale on the y-axis</span></div>
+    <div class="ctl"><label for="bo-n">Input size n <output id="bo-n-o"></output></label><input type="range" id="bo-n" min="1" max="6" step="0.05" value="4"></div>
+    <div class="plot" id="bo-chart"></div>
+    <div class="scroll"><table class="t" id="bo-table"></table></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Drop the constants</h3><span class="hint">the lecture's practice questions, plus more</span></div>
+    <div id="bo-drill" class="qgrid"></div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Fastest to slowest: <b>O(1)</b> read by index · <b>O(log n)</b> binary search · <b>O(n)</b> linear search · <b>O(n log n)</b> merge sort · <b>O(n²)</b> nested loops · <b>O(2ⁿ)</b> brute-force subsets.</li>
+      <li>O(1) and O(log n) are excellent; O(n) and O(n log n) are fine for most tasks; O(n²) gets painful past n ≈ 10,000; O(2ⁿ) works only for very small n.</li>
+      <li>Big-O says how cost <b>grows</b>, not how big it is. Summing a million doubled numbers is O(n) both ways, but a Python loop takes ≈ 30 ms and NumPy ≈ 1 ms, because NumPy runs the loop in compiled code over a contiguous array. In pandas, use column operations instead of row loops or <code>.apply</code>.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Thinking a constant means "fast." A function that always takes 100 steps is O(1): constant, just slow. And <code>3n² + 100n + 50</code> is O(n²) even though 100n is bigger when n is small. Big-O is about what happens as n gets large.</div>
+  </div>
+  <div class="check" data-q="bigo"></div>
+  <button class="done" data-id="bigo" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 30 -->
+<section class="concept" id="arrays" data-lec="7" data-t="Arrays vs linked lists">
+  <header><span class="eyebrow">L7 · 30</span><h2>Arrays vs linked lists</h2></header>
+  <p class="lead">An <b>array</b> is a fixed-length, ordered sequence stored in one contiguous block of memory. Every element is the same size, so the address of index i is <span class="mono">base + i × size</span> and any index can be read in O(1), like going straight to locker #96. A <b>linked list</b> is a chain of nodes scattered in memory, each holding data and a pointer to the next; the last points to null. You can't jump to node i: you follow pointers from the head, like a scavenger hunt.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Same operation, two structures</h3><span class="hint">orange = touched, blue = the answer, green = new</span></div>
+    <div class="controls">
+      <div class="ctl"><label for="ar-i">Position i <output id="ar-i-o"></output></label><input type="range" id="ar-i" min="0" max="4" step="1" value="2"></div>
+      <div class="qgroup"><span>Operation</span><div class="seg" id="ar-op"><button data-v="read" aria-pressed="true">Read index i</button><button data-v="find" aria-pressed="false">Find "Lemon"</button><button data-v="ins" aria-pressed="false">Insert "Cake" at i</button><button data-v="del" aria-pressed="false">Delete at i</button></div></div>
+    </div>
+    <div class="lab2">Array (capacity 6, contiguous)</div><div class="cells2" id="ar-a"></div>
+    <div class="note" id="ar-an"></div>
+    <div class="lab2">Singly linked list</div><div class="cells2" id="ar-l"></div>
+    <div class="note" id="ar-ln"></div>
+  </div>
+  <div class="lab">
+    <div class="scroll"><table class="t">
+      <tr><th>Operation</th><th>Array</th><th>Linked list</th></tr>
+      <tr><td>Read by index</td><td class="mono">O(1) ✓</td><td class="mono">O(n): traverse from head</td></tr>
+      <tr><td>Search by value</td><td class="mono">O(n)</td><td class="mono">O(n)</td></tr>
+      <tr><td>Insert / delete in the middle</td><td class="mono">O(n): shift elements</td><td class="mono">O(1) once you are there ✓, O(n) to get there</td></tr>
+      <tr><td>Insert at end</td><td class="mono">O(1)* if a slot is free</td><td class="mono">O(1) with a tail pointer</td></tr>
+      <tr><td>Memory layout</td><td>Contiguous</td><td>Scattered</td></tr>
+      <tr><td>Size</td><td>Fixed</td><td>Dynamic ✓</td></tr>
+    </table></div>
+    <p class="cap">* A full fixed-size array must be copied into a bigger one, which is O(n).</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Use an <b>array</b> for lots of reads by position and a known size: Python <code>list</code>, <code>np.array</code>, a pandas column.</li>
+      <li>Use a <b>linked list</b> for frequent inserts and deletes at positions you already hold, a size that changes, and no need for random access.</li>
+      <li>Doubly linked lists point both to the next and the previous node.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Saying "linked lists insert in O(1)" without the condition. Updating two pointers is O(1) only once you have the node. Inserting at position i still means walking i nodes from the head: O(n) to get there.</div>
+  </div>
+  <div class="check" data-q="arrays"></div>
+  <button class="done" data-id="arrays" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 31 -->
+<section class="concept" id="hash" data-lec="7" data-t="Hash tables">
+  <header><span class="eyebrow">L7 · 31</span><h2>Hash tables</h2></header>
+  <p class="lead">A <b>hash table</b> turns the value itself into an array index. A <em>hash function</em> maps the key to a slot, and reading a slot by index is O(1), so a lookup is O(1) on average with no scanning. Two keys can land in the same slot, a <b>collision</b>; with spare room and a good hash function collisions are rare, but in the worst case a lookup is O(n).</p>
+  <div class="lab">
+    <div class="lab-h"><h3>A toy hash table with 8 slots</h3><span class="hint">hash = sum of character codes mod 8 (real hash functions mix much better)</span></div>
+    <div class="row"><input class="inp" id="hs-key" value="Tesla" maxlength="14" aria-label="Key" style="width:150px"><button class="btn pri" id="hs-ins">Insert</button><button class="btn" id="hs-find">Look up</button><button class="btn ghost" id="hs-reset">Reset</button></div>
+    <div class="note mono" id="hs-math" style="font-size:13px"></div>
+    <div class="buckets" id="hs-b"></div>
+    <div class="read"><div class="stat hl"><span>Hash table: comparisons</span><b id="hs-c">–</b></div><div class="stat"><span>Unsorted list: comparisons</span><b id="hs-l">–</b></div></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Back to the first poll</h3><span class="hint">1,000 new IDs checked against 1,000,000 known IDs</span></div>
+    <div class="two">
+      <pre class="code sm"><span class="cm"># list: x in ids scans the list</span>
+found = [x <span class="kw">in</span> ids <span class="kw">for</span> x <span class="kw">in</span> new_ids]
+
+<span class="cm"># set: hash once, then O(1) lookups</span>
+ids_set = set(ids)          <span class="cm"># O(n), once</span>
+found = [x <span class="kw">in</span> ids_set <span class="kw">for</span> x <span class="kw">in</span> new_ids]</pre>
+      <div class="scroll"><table class="t"><tr><th></th><th>list</th><th>set</th></tr><tr><td>Work</td><td class="mono">1,000 × 1,000,000 = 1,000,000,000</td><td class="mono">1,000,000 to build + ~1 per lookup</td></tr><tr><td>Measured</td><td class="mono">≈ 4 s</td><td class="mono">≈ 0.04 s</td></tr></table></div>
+    </div>
+    <p class="cap">The same trick turns the O(n²) duplicate finder (<code>ids.count(a)</code> inside a loop) into O(n): <code>Counter(ids)</code> counts every ID in one pass. On 20,000 IDs: 2.8 s with <code>ids.count</code>, 1 ms with <code>Counter</code>.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>You use hash tables constantly: <code>dict</code> and <code>set</code>, <code>x in my_set</code>, <code>Counter</code>, <code>df.groupby('city')</code>, <code>pd.merge</code> (a hash join), <code>value_counts</code>, <code>isin</code>, <code>drop_duplicates</code>.</li>
+      <li>Costs: extra memory, and <b>no sorted order</b>. "All IDs between 100 and 200" still needs a sorted array or a tree.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Writing <code>if x in ids</code> on a list inside a loop. It reads like one step, but on a list it is a hidden linear scan, so the loop becomes O(n × m). Convert to a set once and the same line is O(1).</div>
+  </div>
+  <div class="check" data-q="hash"></div>
+  <button class="done" data-id="hash" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 32 -->
+<section class="concept" id="stackq" data-lec="7" data-t="Stacks & queues">
+  <header><span class="eyebrow">L7 · 32</span><h2>Stacks and queues</h2></header>
+  <p class="lead">Both are lists with restricted access. A <b>stack</b> inserts (<em>push</em>) and deletes (<em>pop</em>) at the same end: last in, first out (<b>LIFO</b>), like a stack of plates. A <b>queue</b> inserts (<em>enqueue</em>) at one end and deletes (<em>dequeue</em>) at the other: first in, first out (<b>FIFO</b>), like a checkout line. Because you only ever touch an end, every operation is O(1).</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Send the same items into both</h3></div>
+    <div class="row"><button class="btn pri" id="sq-add">Add next item</button><button class="btn" id="sq-rem">Remove one from each</button><button class="btn ghost" id="sq-reset">Reset</button></div>
+    <div class="sq">
+      <div class="box"><div class="lab2">Stack · push / pop at the top</div><div class="lane v" id="sq-s"></div><div class="out" id="sq-so">Popped: –</div></div>
+      <div class="box"><div class="lab2">Queue · enqueue at the back, dequeue at the front</div><div class="lane" id="sq-q"></div><div class="out" id="sq-qo">Dequeued: –</div></div>
+    </div>
+    <p class="cap" id="sq-cap">Add A, B and C, then remove one from each.</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Stack: push O(1), pop O(1). Implement with a linked list and a pointer to the top, or a Python <code>list</code> (<code>append</code> / <code>pop</code>). Used for <b>DFS</b> and undo.</li>
+      <li>Queue: enqueue O(1), dequeue O(1). Implement with pointers to the first and last nodes, or <code>collections.deque</code> (<code>append</code> / <code>popleft</code>). Used for <b>BFS</b> and scheduling.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Using a Python list as a queue with <code>list.pop(0)</code>. Removing the front of an array shifts every other element, so each dequeue is O(n). <code>deque.popleft()</code> is O(1).</div>
+  </div>
+  <div class="check" data-q="stackq"></div>
+  <button class="done" data-id="stackq" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 33 -->
+<section class="concept" id="bst" data-lec="7" data-t="Trees & BSTs">
+  <header><span class="eyebrow">L7 · 33</span><h2>Trees and binary search trees</h2></header>
+  <p class="lead">A <b>tree</b> is a hierarchy of nodes connected by edges: a connected graph with no cycles and n − 1 edges for n nodes. The <b>root</b> has no parent, a <b>leaf</b> has no children, <b>depth</b> is the distance from the root and <b>height</b> is the longest path to a leaf. In a <b>binary search tree</b> (BST) each node has at most two children, every value in the left subtree is smaller and every value in the right subtree is larger. A balanced BST is <em>binary search stored as a tree</em>: the root plays the middle element, and each step down throws away half of what's left.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Insert the same values in a different order</h3><span class="hint">then find a value</span></div>
+    <div class="qgroup"><span>Insertion order</span><div class="seg" id="bt-o"><button data-v="0" aria-pressed="true">30, 20, 40, 10, 50</button><button data-v="1" aria-pressed="false">10, 20, 30, 40, 50</button><button data-v="2" aria-pressed="false">5, 3, 7, 1, 4</button><button data-v="3" aria-pressed="false">1–15, balanced order</button><button data-v="4" aria-pressed="false">1–15, sorted order</button></div></div>
+    <div class="qgroup"><span>Find</span><div class="seg" id="bt-f"></div></div>
+    <div class="plot" id="bt-chart"></div>
+    <div class="read"><div class="stat"><span>Nodes n</span><b id="bt-n">–</b></div><div class="stat"><span>Height</span><b id="bt-h">–</b></div><div class="stat"><span>log₂(n)</span><b id="bt-l">–</b></div><div class="stat hl"><span>Checks to find</span><b id="bt-c">–</b></div></div>
+    <p class="cap" id="bt-cap"></p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Full binary tree: every node has 0 or 2 children. Complete binary tree: every level filled except possibly the last. For n nodes the height is about log₂(n).</li>
+      <li>Search, insert and delete are O(log n) <b>only if the tree is balanced</b>. Balanced trees (AVL, red-black, the B-trees in database indexes) rebalance on insert to keep height ≈ log₂(n).</li>
+      <li>Trees model natural hierarchies: file systems, org charts, the HTML DOM.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Assuming every BST is O(log n). Insert already-sorted data into a plain BST and every node goes right: height n − 1, which is just a linked list, and search is O(n). Also, a <b>decision tree</b> (week 10) reuses root, node, leaf and depth, but it splits on feature tests; it is not a binary search tree.</div>
+  </div>
+  <div class="check" data-q="bst"></div>
+  <button class="done" data-id="bst" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 34 -->
+<section class="concept" id="bfsdfs" data-lec="7" data-t="BFS & DFS">
+  <header><span class="eyebrow">L7 · 34</span><h2>Breadth-first and depth-first search</h2></header>
+  <p class="lead">Traversal means visiting every node in a defined order. <b>BFS</b> visits all nodes at depth 1, then depth 2, and so on, using a <em>queue</em>. <b>DFS</b> dives as deep as it can down one branch before backtracking, using a <em>stack</em>. The data structure decides the order. Both work on trees and on general graphs, which can have cycles and directed edges; on a graph you must mark nodes as explored so you don't loop forever.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>Step through the algorithm</h3><span class="hint">neighbors are taken in alphabetical / numeric order</span></div>
+    <div class="row"><div class="seg" id="tv-g"><button data-v="g" aria-pressed="true">Practice graph (A–H)</button><button data-v="t" aria-pressed="false">Tree (1–12)</button></div><div class="seg" id="tv-a"><button data-v="bfs" aria-pressed="true">BFS · queue</button><button data-v="dfs" aria-pressed="false">DFS · stack</button></div></div>
+    <div class="row"><button class="btn pri" id="tv-step">Next step</button><button class="btn" id="tv-run">Run to the end</button><button class="btn ghost" id="tv-reset">Reset</button></div>
+    <div class="plot" id="tv-chart"></div>
+    <div class="legend"><span><i style="background:var(--surface);border:1px solid var(--muted)"></i>Not reached</span><span><i style="background:var(--amber-soft);border:1px solid var(--amber)"></i>Waiting in the queue / stack</span><span><i style="background:var(--accent)"></i>Visited</span><span><i style="border:3px solid var(--tail)"></i>Just visited</span></div>
+    <div class="lab2" id="tv-dsl">Queue (front → back)</div><div class="ds" id="tv-ds"></div>
+    <div class="lab2">Visit order</div><div class="ds" id="tv-ord"></div>
+    <p class="cap" id="tv-cap"></p>
+  </div>
+  <div class="lab">
+    <div class="two">
+      <div><div class="lab2">BFS (mark on enqueue)</div><pre class="code sm"><span class="kw">procedure</span> BFS(G, root):
+    let Q be a queue
+    label root as explored
+    Q.enqueue(root)
+    <span class="kw">while</span> Q is not empty:
+        v = Q.dequeue()
+        <span class="kw">for</span> w <span class="kw">in</span> G.neighbors(v):
+            <span class="kw">if</span> w is not explored:
+                label w as explored
+                Q.enqueue(w)</pre></div>
+      <div><div class="lab2">DFS (push neighbors in reverse)</div><pre class="code sm"><span class="kw">procedure</span> DFS(G, root):
+    let S be a stack
+    S.push(root)
+    <span class="kw">while</span> S is not empty:
+        v = S.pop()
+        <span class="kw">if</span> v is not explored:
+            label v as explored
+            <span class="kw">for</span> w <span class="kw">in</span> reversed(G.neighbors(v)):
+                <span class="kw">if</span> w is not explored:
+                    S.push(w)</pre></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Practice graph from A: <b>BFS = A, B, D, C, E, G, H, F</b>. <b>DFS = A, B, C, E, H, F, G, D</b>.</li>
+      <li>BFS needs no reversing: a FIFO queue lets the first neighbor out first. In Python, <code>collections.deque</code> with <code>popleft()</code>.</li>
+      <li>DFS pushes neighbors in reverse so the first one ends up on top of the LIFO stack and is explored first.</li>
+      <li>BFS gives hop counts in network data: social, citation and transit networks.</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Forgetting the reverse in DFS. Without it, the stack pops the last neighbor first and the practice graph gives A, D, C, B, … instead of A, B, C, E, H, F, G, D. Both are valid depth-first orders, but only the reversed one matches "alphabetical first."</div>
+  </div>
+  <div class="check" data-q="bfsdfs"></div>
+  <button class="done" data-id="bfsdfs" aria-pressed="false">Mark as understood</button>
+</section>
+
+<!-- 35 -->
+<section class="concept" id="choose-ds" data-lec="7" data-t="Choosing a structure">
+  <header><span class="eyebrow">L7 · 35</span><h2>Choosing a structure for the job</h2></header>
+  <p class="lead">Different structures optimize different operations. Pick the one that makes your <em>most frequent</em> operation cheap.</p>
+  <div class="lab">
+    <div class="lab-h"><h3>What will you do most often?</h3></div>
+    <div class="seg" id="cd-pick"></div>
+    <div class="result"><span class="mono" style="font-size:12px;color:var(--accent)">USE</span><b id="cd-name">–</b><span id="cd-why"></span></div>
+    <div class="scroll"><table class="t sumt" id="cd-table"></table></div>
+  </div>
+  <div class="lab">
+    <div class="lab-h"><h3>Nearest neighbors at scale</h3><span class="hint">sklearn NearestNeighbors, 5 neighbors, one core</span></div>
+    <p style="font-size:15px">Brute-force k-NN compares every query point with every training point: O(queries × n × features). A <b>k-d tree</b> splits space like a BST, one feature at a time, and skips regions that can't hold a neighbor.</p>
+    <div class="scroll"><table class="t"><tr><th>Training points n</th><th>Features</th><th>Brute force</th><th>k-d tree</th></tr>
+      <tr><td class="n">10,000</td><td class="n">3</td><td class="n">0.15 s</td><td class="n">0.03 s</td></tr>
+      <tr><td class="n">100,000</td><td class="n">3</td><td class="n">1.48 s</td><td class="n">0.05 s</td></tr>
+      <tr class="hl"><td class="n">100,000</td><td class="n">50</td><td class="n">0.52 s</td><td class="n">18 s</td></tr></table></div>
+    <p class="cap">10,000 queries in the first two rows, 2,000 in the last. 10× more data makes brute force 10× slower while the tree barely notices. With 50 features the tree is 35× slower than brute force: in high dimensions it can't rule regions out, so it checks nearly everything plus its own overhead. sklearn picks for you (<code>algorithm='auto'</code>).</p>
+  </div>
+  <div class="notes">
+    <div class="keys"><h3>Remember</h3><ul>
+      <li>Hash tables → pandas <code>groupby</code>, <code>merge</code>, <code>value_counts</code>, and the joins from lecture 6.</li>
+      <li>Arrays and vectorizing → NumPy and pandas columns; avoid row loops.</li>
+      <li>Sort + binary search → database indexes. Balanced trees → sorted order and range queries.</li>
+      <li>Big-O → "will this still run when my data is 100× bigger?"</li>
+    </ul></div>
+    <div class="trap"><h3>Common mistake</h3>Choosing a hash table for range questions. "Orders between Jan 1 and Jan 31" needs sorted order; a hash table scatters keys on purpose, so it would have to check every entry. Use a sorted array or a balanced tree (a B-tree index).</div>
+  </div>
+  <div class="check" data-q="choose-ds"></div>
+  <button class="done" data-id="choose-ds" aria-pressed="false">Mark as understood</button>
+</section>
+
+
+<!-- review deck -->
+<section class="concept" id="review67" data-lec="prac" data-t="Review deck: L6 & L7">
+  <header><span class="eyebrow">Practice</span><h2>Review deck: Lectures 6 and 7</h2></header>
+  <p class="lead">Answer each card from memory, then reveal the model answer and rate yourself. <b>Again</b> brings the card back after 3 more cards, <b>Almost</b> after 6, and <b>Got it</b> retires it for this round. When the round ends, drill only the ones you missed. Your place is saved in this browser.</p>
+  <div class="lab">
+    <div class="row" style="justify-content:space-between">
+      <div class="tally" id="rv-counts"></div>
+      <div class="row"><button class="btn" id="rv-order" aria-pressed="true">Shuffled</button><button class="btn ghost" id="rv-restart">Restart the deck</button></div>
+    </div>
+    <div class="row" id="rv-confirm" hidden><span style="font-size:14px;color:var(--muted)">Start over with every card? This clears the current round.</span><button class="btn" id="rv-yes">Yes, restart</button><button class="btn ghost" id="rv-no">Keep going</button></div>
+    <div class="dk-strip" id="rv-strip"></div>
+  </div>
+  <article class="ex dk" id="rv-card" aria-live="polite"></article>
+  <p class="dk-toast" id="rv-toast" aria-live="polite"></p>
+  <p class="cap">Keys: <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> shows the answer while typing, or <span class="kbd">Space</span> when you're not typing. Then <span class="kbd">1</span> Again · <span class="kbd">2</span> Almost · <span class="kbd">3</span> Got it.</p>
+</section>
+
+<p class="foot">Built from IS 465 Lecture 4 (Visualization), Lecture 5 (Inferential Statistics), Lecture 6 (Data Management) and Lecture 7 (Data Structures and Algorithms), Mark Cartwright, NJIT. Simulations use fresh random draws, so your numbers will differ slightly from the slides. Progress is saved in this browser only.</p>
 </main>
 </div>
 
@@ -1264,6 +2030,479 @@ const set=(id,v)=>{document.getElementById(id).innerHTML=v};
   seg($('#tk-pick'),v=>{mode=v;render()});
 })();
 
+/* ---------- shared helpers for Lectures 6 & 7 ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money=v=>'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+function tbl(cap,cols,rows,o={}){/* o.rowCls(i), o.colCls(j), o.cellCls(i,j), o.th(j) extra attrs */
+  return`${cap?`<caption>${cap}</caption>`:''}<tr>${cols.map((c,j)=>`<th class="${o.colCls?o.colCls(j):''}" ${o.th?o.th(j):''}>${c}</th>`).join('')}</tr>`+
+    rows.map((r,i)=>`<tr class="${o.rowCls?o.rowCls(i):''}">${r.map((v,j)=>`<td class="${[typeof v==='number'?'r':'',o.colCls?o.colCls(j):'',o.cellCls?o.cellCls(i,j):''].join(' ')}">${v===''||v==null?'&nbsp;':esc(typeof v==='number'&&!Number.isInteger(v)?v.toFixed(2):v)}</td>`).join('')}</tr>`).join('')}
+const BOOKS=[[101,'Runaway',1,'Short Stories',24.95],[102,'Kafka on the Shore',2,'Magic Realism',19.95],[103,'Half of a Yellow Sun',3,'Hist. Fiction',18.95],[104,'1Q84',2,'Magic Realism',29.95]];
+const BCOLS=['book_id','title','author_id','genre','price'];
+const AUTH=[[1,'Alice Munro','Canadian short story writer, Nobel 2013'],[2,'Haruki Murakami','Japanese novelist, magical realism'],[3,'C.N. Adichie','Nigerian writer, novels & feminism']];
+
+/* ---------- 18 keys ---------- */
+(function(){
+  const T={
+    trials:{cols:['participant_id','gender','age','method','trial','time_seconds'],rows:[[1,'Male',22,'A',1,35.37],[1,'Male',22,'A',2,27.52],[1,'Male',22,'A',3,30.18],[1,'Male',22,'B',1,8.33],[2,'Female',21,'A',1,37.07],[2,'Female',21,'A',2,31.51]],
+      key:[0,3,4],why:'Each row is one participant trying one method once: participant_id + method + trial.',
+      luck:j=>j===5?'<code>time_seconds</code> is a measurement. It is unique in these six rows only by luck; the next trial could take 35.37 s too.':(j===1||j===2)?'<code>gender</code> and <code>age</code> describe the participant, not the row. They look like they tell participants apart here only because participants 1 and 2 differ; add a third 22-year-old man and the key breaks.':''},
+    orders:{cols:['order_id','customer_id','order_date'],rows:[[1001,'C01','2024-01-15'],[1002,'C03','2024-01-15'],[1003,'C01','2024-01-16']],
+      key:[0],why:'order_id is unique per order. customer_id can\'t be the key: the same customer places many orders.',
+      luck:j=>j===2?'Two orders were placed on 2024-01-15, and many more will be.':''},
+    items:{cols:['item_id','order_id','book_id','qty','price'],rows:[[1,1001,'B101',1,14.99],[2,1001,'B205',1,12.99],[3,1002,'B205',2,12.99],[4,1003,'B102',1,15.99]],
+      key:[0],why:'item_id is unique per line item. order_id alone fails: order 1001 has two items.',
+      luck:j=>j===4?'<code>price</code> is a measurement; two lines can easily cost the same.':j===3?'<code>qty</code> is a measurement, not an identifier.':''}};
+  const FK={orders:{1:'FK → Customers'},items:{1:'FK → Orders',2:'FK → Books'}};
+  let tab='trials',sel=new Set();
+  const uniq=(rows,cs)=>{const seen=new Map(),d=[];rows.forEach((r,i)=>{const k=JSON.stringify(cs.map(c=>r[c]));if(seen.has(k))d.push(seen.get(k),i);else seen.set(k,i)});return d};
+  function draw(){const t=T[tab],cs=[...sel].sort((a,b)=>a-b),dups=cs.length?new Set(uniq(t.rows,cs)):new Set();
+    $('#pk-table').innerHTML=tbl('',t.cols.map((c,j)=>c+(FK[tab]&&FK[tab][j]?` <small style="font-weight:400;opacity:.75">${FK[tab][j]}</small>`:'')),t.rows,{
+      th:j=>`data-j="${j}" tabindex="0" role="button" aria-pressed="${sel.has(j)}"`,colCls:j=>'pick-'+j,rowCls:i=>dups.has(i)?'dup':'',cellCls:(i,j)=>sel.has(j)&&!dups.has(i)?'k':''});
+    $('#pk-table').querySelectorAll('th').forEach(th=>{th.classList.add('pick');if(sel.has(+th.dataset.j))th.classList.add('on')});
+    const out=$('#pk-out');
+    if(!cs.length){out.className='note';out.innerHTML='Pick one or more columns.';return}
+    const names=cs.map(j=>`<code>${t.cols[j]}</code>`).join(' + ');
+    if(dups.size){out.className='note bad';out.innerHTML=`<b>Not unique.</b> ${names} repeats in the red rows, so it can't tell them apart. Add another column.`;return}
+    const extra=cs.filter(j=>!uniq(t.rows,cs.filter(c=>c!==j)).length&&cs.length>1);
+    if(extra.length){out.className='note amb';out.innerHTML=`<b>Unique, but not minimal.</b> You can drop ${extra.map(j=>`<code>${t.cols[j]}</code>`).join(' or ')} and it still identifies every row. A primary key is the smallest such set.`;return}
+    const same=cs.length===t.key.length&&cs.every((c,i)=>c===t.key[i]);
+    if(same){out.className='note ok';out.innerHTML=`<b>Primary key.</b> ${names} is unique and minimal, and it is unique by design. ${t.why}`;return}
+    const lucky=cs.map(t.luck).filter(Boolean);
+    out.className='note amb';out.innerHTML=`<b>Unique in these rows, but only by luck.</b> ${lucky.join(' ')||'Nothing about what a row means guarantees this.'} Look for the columns that define what one row is.`}
+  $('#pk-table').addEventListener('click',e=>{const th=e.target.closest('th');if(!th)return;const j=+th.dataset.j;sel.has(j)?sel.delete(j):sel.add(j);draw()});
+  $('#pk-table').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('th')){e.preventDefault();e.target.click();const j=e.target.dataset.j;$('#pk-table').querySelector(`th[data-j="${j}"]`)?.focus()}});
+  seg($('#pk-tab'),v=>{tab=v;sel=new Set();draw()});draw();
+})();
+
+/* ---------- 19 relational algebra ---------- */
+(function(){
+  const OPS=[
+    {k:'sel',b:'σ genre = Magic Realism',alg:"σ<sub>genre = 'Magic Realism'</sub>(Books)",sql:"SELECT * FROM Books\nWHERE genre = 'Magic Realism';",pd:"books[books.genre == 'Magic Realism']",
+      keep:r=>r[3]==='Magic Realism',cols:[0,1,2,3,4],cap:'Selection keeps the rows that satisfy the condition. The schema (columns) stays the same: 4 rows in, 2 out.'},
+    {k:'sel2',b:'σ price > 20 AND genre ≠ Magic Realism',alg:"σ<sub>price &gt; 20 ∧ genre ≠ 'Magic Realism'</sub>(Books)",sql:"SELECT * FROM Books\nWHERE price > 20\n  AND genre <> 'Magic Realism';",pd:"books[(books.price > 20) &\n      (books.genre != 'Magic Realism')]",
+      keep:r=>r[4]>20&&r[3]!=='Magic Realism',cols:[0,1,2,3,4],cap:'Predicates can combine AND, OR, NOT and comparisons. 1Q84 costs more than 20 but is Magic Realism, so only Runaway survives.'},
+    {k:'proj',b:'π title, genre',alg:'π<sub>title, genre</sub>(Books)',sql:'SELECT DISTINCT title, genre\nFROM Books;',pd:"books[['title', 'genre']]",
+      keep:()=>true,cols:[1,3],cap:'Projection keeps only the listed columns. Every (title, genre) pair is different, so all 4 rows stay.'},
+    {k:'proj2',b:'π genre',alg:'π<sub>genre</sub>(Books)',sql:'SELECT DISTINCT genre\nFROM Books;',pd:"books[['genre']].drop_duplicates()",
+      keep:()=>true,cols:[3],dedupe:true,cap:'4 rows in, 3 out. Murakami\'s two books share a genre, and a relation is a set, so the duplicate row is removed. Plain SQL SELECT would keep it; you need DISTINCT.'},
+    {k:'grp',b:'γ genre: COUNT, AVG(price)',alg:'γ<sub>genre; COUNT(*), AVG(price)</sub>(Books)',sql:'SELECT genre, COUNT(*) AS books,\n       AVG(price) AS avg_price\nFROM Books GROUP BY genre;',pd:"books.groupby('genre')\n     .price.agg(['count', 'mean'])",
+      keep:()=>true,cols:[3,4],group:true,cap:'The two Murakami rows collapse into one: COUNT = 2, AVG = (19.95 + 29.95) / 2 = 24.95. One output row per genre.'},
+    {k:'chain',b:'π title (σ price > 20)',alg:'π<sub>title</sub>(σ<sub>price &gt; 20</sub>(Books))',sql:'SELECT title FROM Books\nWHERE price > 20;',pd:"books[books.price > 20]['title']",
+      keep:r=>r[4]>20,cols:[1],cap:'Closure in action: the output of σ is a table, so π can run on it. Read it inside out: filter the rows first, then keep the title column.'}];
+  $('#ra-op').innerHTML=OPS.map((o,i)=>`<button data-v="${i}" aria-pressed="${!i}">${o.b}</button>`).join('');
+  function draw(i){const o=OPS[i];
+    $('#ra-in').innerHTML=tbl('Input: Books',BCOLS,BOOKS,{rowCls:r=>o.keep(BOOKS[r])?'keep':'drop',colCls:j=>o.cols.includes(j)?'':'dim'});
+    let out=BOOKS.filter(o.keep).map(r=>o.cols.map(j=>r[j])),oc=o.cols.map(j=>BCOLS[j]);
+    if(o.dedupe){const s=new Set();out=out.filter(r=>{const k=r.join('|');if(s.has(k))return false;s.add(k);return true})}
+    if(o.group){const g=new Map();BOOKS.forEach(r=>{if(!g.has(r[3]))g.set(r[3],[]);g.get(r[3]).push(r[4])});out=[...g].map(([k,v])=>[k,v.length,Math.round(v.reduce((a,b)=>a+b,0)/v.length*100)/100]);oc=['genre','books','avg_price']}
+    $('#ra-out').innerHTML=tbl(`Output: ${out.length} row${out.length>1?'s':''}`,oc,out);
+    $('#ra-code').innerHTML=`<div><span class="lab2">Algebra</span><div class="code sm" style="white-space:normal">${o.alg}</div></div><div><span class="lab2">SQL</span><pre class="code sm">${esc(o.sql)}</pre></div><div><span class="lab2">pandas</span><pre class="code sm">${esc(o.pd)}</pre></div>`;
+    $('#ra-cap').textContent=o.cap}
+  seg($('#ra-op'),v=>draw(+v));draw(0);
+})();
+
+/* ---------- 20 normalization ---------- */
+(function(){
+  let design='flat',act=null;
+  const NEWBIO='Japanese novelist; Jerusalem Prize 2006';
+  function flatRows(){return BOOKS.map(b=>{const a=AUTH[b[2]-1];return[b[0],b[1],a[1],a[2],b[3],b[4]]})}
+  function draw(){const host=$('#nf-tables'),out=$('#nf-out');
+    if(design==='flat'){let rows=flatRows(),cls=()=>'',cell=()=>'';
+      if(act==='update'){rows[1][3]=NEWBIO;cell=(i,j)=>j===3&&(i===1||i===3)?(i===1?'new':'bad'):''}
+      if(act==='insert'){rows.push(['?','?','Ocean Vuong','Vietnamese-American poet and novelist','?','?']);cell=(i,j)=>i===4&&[0,1,4,5].includes(j)?'bad':i===4?'new':''}
+      if(act==='delete'){cls=i=>i===0?'gone':''}
+      host.innerHTML=`<div class="scroll"><table class="dt">${tbl('Books (one table)',['book_id','title','author_name','author_bio','genre','price'],rows,{rowCls:cls,cellCls:cell})}</table></div>`;
+      const M={update:['bad','<b>Update anomaly.</b> The clerk changed the bio on book 102, but the same fact also lives on book 104. Now the table holds two different bios for one author, and nothing says which is right.'],
+        insert:['bad','<b>Insert anomaly.</b> Author details only exist inside book rows. Ocean Vuong has no book yet, so there is no book_id to use as the key: the row can\'t be stored without inventing a fake book.'],
+        delete:['bad','<b>Delete anomaly.</b> Runaway was the only Alice Munro book. Deleting it also deletes everything we knew about Munro: her name and bio existed nowhere else.']};
+      out.className='note '+(act?M[act][0]:'');out.innerHTML=act?M[act][1]:'Murakami\'s name and bio are stored twice. Pick a change above to see what that costs.';return}
+    let A=AUTH.map(a=>[...a]),B=BOOKS.map(b=>[...b]),ac=()=>'',bc=()=>'',acell=()=>'';
+    if(act==='update'){A[1][2]=NEWBIO;acell=(i,j)=>i===1&&j===2?'new':''}
+    if(act==='insert'){A.push([4,'Ocean Vuong','Vietnamese-American poet and novelist']);ac=i=>i===3?'keep':''}
+    if(act==='delete'){bc=i=>i===0?'gone':''}
+    host.innerHTML=`<div class="scroll"><table class="dt">${tbl('Authors',['author_id','author_name','author_bio'],A,{rowCls:ac,cellCls:acell})}</table></div><div class="scroll"><table class="dt">${tbl('Books',['book_id','title','author_id','genre','price'],B,{rowCls:bc,cellCls:(i,j)=>j===2?'k':''})}</table></div>`;
+    const M={update:'<b>Fixed.</b> The bio lives in one row of Authors. Change it once and every book that points to author 2 sees the new value.',
+      insert:'<b>Fixed.</b> Ocean Vuong gets his own row in Authors with author_id 4. Books can point to him later.',
+      delete:'<b>Fixed.</b> Deleting book 101 removes a row from Books only. Alice Munro is still in Authors.'};
+    out.className='note '+(act?'ok':'');out.innerHTML=act?M[act]:'Each fact is stored once. <code>author_id</code> in Books is a foreign key to Authors. Pick a change above.'}
+  seg($('#nf-design'),v=>{design=v;draw()});
+  $('#nf-act').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;act=b.dataset.a==='reset'?null:b.dataset.a;$('#nf-act').querySelectorAll('button').forEach(x=>x.classList.toggle('pri',x===b&&act));draw()});
+  draw();
+})();
+
+/* ---------- 21 join ---------- */
+(function(){
+  let addB=false,addA=false;
+  function draw(){const B=BOOKS.map(b=>[b[0],b[1],b[2]]),A=AUTH.map(a=>[a[0],a[1]]);
+    if(addB)B.push([105,'Night Sky with Exit Wounds',9]);if(addA)A.push([4,'Ocean Vuong']);
+    const ids=new Set(A.map(a=>a[0])),used=new Set(B.map(b=>b[2]));
+    const J=B.filter(b=>ids.has(b[2])).map(b=>[b[1],A.find(a=>a[0]===b[2])[1]]);
+    $('#jn-tables').innerHTML=`<div class="scroll"><table class="dt">${tbl('Books',['book_id','title','author_id'],B,{rowCls:i=>ids.has(B[i][2])?'keep':'drop',cellCls:(i,j)=>j===2?'k':''})}</table></div>`+
+      `<div class="scroll"><table class="dt">${tbl('Authors',['author_id','author_name'],A,{rowCls:i=>used.has(A[i][0])?'keep':'drop',cellCls:(i,j)=>j===0?'k':''})}</table></div>`+
+      `<div class="scroll"><table class="dt">${tbl(`Books ⋈ Authors: ${J.length} rows`,['title','author_name'],J,{cellCls:(i,j)=>j===1&&J[i][1]==='Haruki Murakami'?'new':''})}</table></div>`;
+    set('jn-nb',B.length);set('jn-na',A.length);set('jn-nj',J.length);
+    $('#jn-book').setAttribute('aria-pressed',addB);$('#jn-auth').setAttribute('aria-pressed',addA);
+    $('#jn-book').classList.toggle('pri',addB);$('#jn-auth').classList.toggle('pri',addA)}
+  $('#jn-book').onclick=()=>{addB=!addB;draw()};$('#jn-auth').onclick=()=>{addA=!addA;draw()};draw();
+})();
+
+/* ---------- 22 storage ---------- */
+(function(){
+  const F=[[20240115,101,'C01',14.99],[20240115,103,'C01',12.99],[20240115,103,'C03',25.98],[20240116,102,'C01',15.99]],C=['date_id','book_id','cust_id','revenue'];
+  let q='sum';
+  const rd=(r,c)=>q==='sum'?c===3:r===2;
+  function draw(){
+    $('#st-row').innerHTML=F.map((row,r)=>row.map((v,c)=>`<span class="c${c+1} ${q==='sum'?'rd':rd(r,c)?'rd':''}" title="row ${r+1}, ${C[c]}">${v}</span>`).join('')+(r<3?'<span class="sep"></span>':'')).join('');
+    $('#st-col').innerHTML=C.map((_,c)=>F.map((row,r)=>`<span class="c${c+1} ${rd(r,c)?'rd':''}" title="row ${r+1}, ${C[c]}">${row[c]}</span>`).join('')+(c<3?'<span class="sep"></span>':'')).join('');
+    if(q==='sum'){set('st-r','16 values');set('st-c','4 values');set('st-runs','1 / 1')}
+    else{set('st-r','4 values');set('st-c','4 values');set('st-runs','1 / 4')}}
+  seg($('#st-q'),v=>{q=v;draw()});draw();
+  let cols=40,need=2;
+  const upd=()=>{need=Math.min(need,cols);const x=cols/need;$('#st-scale').innerHTML=`A query that sums ${need} of ${cols} columns reads <b>${need}/${cols}</b> of the table in a column store: <b>${x>=10?Math.round(x):x.toFixed(1)}× less data</b> than a row store, which must read every column of every row. For "fetch one whole row" the row store wins: one run instead of ${cols} scattered ones.`};
+  const a=range('st-cols',v=>{cols=v;upd()}),b=range('st-need',v=>{need=v;upd()});a.go();b.go();
+})();
+
+/* ---------- 23 star schema ---------- */
+(function(){
+  const DEST=['FACT measure','FACT key','DIM_BOOK','DIM_TIME','DIM_CUSTOMER'];
+  const TK=[['revenue',0,'What the customer paid on that line (qty × price): a numeric, additive measure.'],['qty',0,'How many copies: numeric and additive, so it is a measure.'],
+    ['book_id',1,'A foreign key in FACT_SALES (and the primary key of DIM_BOOK).'],['date_id',1,'The finest-detail time attribute, so it is the FK in the fact table and the PK of DIM_TIME.'],
+    ['genre',2,'Describes the book: a label you group by.'],['author_name',2,'Copied into DIM_BOOK on purpose (denormalized): it is Books ⋈ Authors, stored.'],
+    ['list price',2,'Describes the book, so it is a dimension attribute. The fact is revenue, what was actually paid.'],['quarter',3,'Part of the time hierarchy day → month → quarter → year.'],['city',4,'Describes the customer.']];
+  const ans={};
+  function draw(){$('#sc-tok').innerHTML=TK.map(([n,a,why],i)=>{const g=ans[i];return`<div class="tok ${g==null?'':g===a?'right':'wrong'}" data-i="${i}"><b>${n}</b><div class="seg">${DEST.map((d,j)=>`<button data-v="${j}" aria-pressed="${g===j}">${d}</button>`).join('')}</div>${g==null?'':`<small>${g===a?'Right.':'It goes in '+DEST[a]+'.'} ${why}</small>`}</div>`}).join('');
+    const k=Object.keys(ans).length,r=Object.entries(ans).filter(([i,g])=>TK[i][1]===g).length;$('#sc-score').textContent=k?`${r} of ${k} placed correctly${k<TK.length?` · ${TK.length-k} to go`:''}.`:'Fact tables get measures and keys; everything descriptive goes in a dimension.'}
+  $('#sc-tok').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.closest('.tok').dataset.i;ans[i]=+b.dataset.v;draw()});draw();
+  const LINES=[[1,20240115,101,'C01',1,14.99],[2,20240115,103,'C01',1,12.99],[3,20240115,103,'C03',2,25.98],[4,20240116,102,'C01',1,15.99]];
+  const G={line:{cols:['item_id','date_id','book_id','cust_id','qty','revenue'],rows:LINES,
+      a:[[1,'Revenue by customer city'],[1,'Revenue by book per day'],[1,'Average order line size'],[1,'Revenue per month by genre (roll up)']]},
+    daybook:{cols:['date_id','book_id','qty','revenue'],rows:[[20240115,101,1,14.99],[20240115,103,3,38.97],[20240116,102,1,15.99]],
+      a:[[0,'Revenue by customer city: cust_id is gone (C01 and C03 merged into book 103\'s row)'],[1,'Revenue by book per day'],[0,'Average order line size: the separate lines are merged'],[1,'Revenue per month by genre (roll up)']]},
+    month:{cols:['month','genre','qty','revenue'],rows:[['2024-01','Short Stories',1,14.99],['2024-01','Hist. Fiction',3,38.97],['2024-01','Magic Realism',1,15.99]],
+      a:[[0,'Revenue by customer city: customers are gone'],[0,'Revenue by book per day: days and titles are gone'],[0,'Average order line size'],[1,'Revenue per month by genre']]}};
+  function grain(v){const g=G[v];$('#gr-table').innerHTML=tbl(`FACT_SALES · ${g.rows.length} rows`,g.cols,g.rows);
+    $('#gr-ans').innerHTML=g.a.map(([y,t])=>`<li class="${y?'y':'n'}"><i>${y?'✓':'✗'}</i><span>${t}</span></li>`).join('')}
+  seg($('#gr-pick'),grain);grain('line');
+})();
+
+/* ---------- 24 star / snowflake / one big table ---------- */
+(function(){
+  const M={
+    star:{t:[['FACT_SALES',.5,.5,'item_id · date_id · book_id\ncust_id · qty · revenue',1],['DIM_BOOK',.82,.22,'book_id · title\nauthor_name · genre'],['DIM_TIME',.18,.22,'date_id · day · month\nquarter · year'],['DIM_CUSTOMER',.5,.86,'cust_id · name · city']],e:[[0,1],[0,2],[0,3]],
+      sql:"SELECT b.author_name, c.city, SUM(f.revenue)\nFROM FACT_SALES f\n  JOIN DIM_BOOK b     ON f.book_id = b.book_id\n  JOIN DIM_CUSTOMER c ON f.cust_id = c.cust_id\nGROUP BY b.author_name, c.city;",j:'2',rep:'Some (labels in dimensions)',plus:'<b>Strength:</b> clear and standard. Each dimension is one join away; Power BI\'s own guidance recommends this shape.',minus:'<b>Weakness:</b> joins still happen at query time, one per dimension you use.'},
+    snow:{t:[['FACT_SALES',.5,.5,'item_id · date_id · book_id\ncust_id · qty · revenue',1],['DIM_BOOK',.8,.22,'book_id · title\nauthor_id · genre'],['DIM_AUTHOR',.8,.86,'author_id · author_name\nauthor_bio'],['DIM_TIME',.18,.22,'date_id · day · month\nquarter · year'],['DIM_CUSTOMER',.2,.86,'cust_id · name · city']],e:[[0,1],[1,2],[0,3],[0,4]],
+      sql:"SELECT a.author_name, c.city, SUM(f.revenue)\nFROM FACT_SALES f\n  JOIN DIM_BOOK b     ON f.book_id = b.book_id\n  JOIN DIM_AUTHOR a   ON b.author_id = a.author_id\n  JOIN DIM_CUSTOMER c ON f.cust_id = c.cust_id\nGROUP BY a.author_name, c.city;",j:'3',rep:'Least',plus:'<b>Strength:</b> least repetition. Easier to maintain a large dimension, or one shared by several fact tables.',minus:'<b>Weakness:</b> more joins, harder for analysts and BI tools.'},
+    obt:{t:[['SALES_WIDE',.5,.5,'item_id · date · month · quarter · title\nauthor_name · genre · cust_name · city\nqty · revenue',1]],e:[],
+      sql:"SELECT author_name, city, SUM(revenue)\nFROM SALES_WIDE\nGROUP BY author_name, city;",j:'0',rep:'Most (every label on every row)',plus:'<b>Strength:</b> simplest to query, and cheap with column storage, which compresses the repeated labels.',minus:'<b>Weakness:</b> changing a label (a corrected author name) rewrites many rows, and you often end up with one table per question.'}};
+  let cur='star';
+  const render=chart($('#sh-chart'),w=>cur==='obt'?130:w<560?300:260,(svg,w,h)=>{const m=M[cur],bw=Math.min(210,w*.36),bh=64,P=t=>[t[1]*w,t[2]*h];
+    m.e.forEach(([a,b])=>{const[p,q]=[P(m.t[a]),P(m.t[b])];S('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'var(--muted)','stroke-width':1.5},svg)});
+    m.t.forEach(t=>{const[x,y]=P(t),wide=cur==='obt'?Math.min(w-20,330):bw,hh=cur==='obt'?90:bh,g=S('g',{},svg);
+      S('rect',{x:x-wide/2,y:y-hh/2,width:wide,height:hh,rx:8,fill:t[4]?'var(--accent-soft)':'var(--surface)',stroke:t[4]?'var(--accent)':'var(--line)'},g);
+      S('text',{x,y:y-hh/2+18,'text-anchor':'middle',cls:'ti b',text:t[0]},g);
+      t[3].split('\n').forEach((l,i)=>S('text',{x,y:y-hh/2+36+i*14,'text-anchor':'middle',style:'font-size:10px',text:l},g))})});
+  function upd(){const m=M[cur];render();$('#sh-sql').innerHTML=esc(m.sql).replace(/\b(SELECT|FROM|JOIN|ON|GROUP BY|SUM)\b/g,'<span class="kw">$1</span>');set('sh-j',m.j);set('sh-rep',m.rep);set('sh-plus',m.plus);set('sh-minus',m.minus)}
+  seg($('#sh-pick'),v=>{cur=v;upd()});upd();
+})();
+
+/* ---------- 25 OLAP cube ---------- */
+(function(){
+  const TI=[['Runaway','Short Stories',24.95],['Kafka on the Shore','Magic Realism',19.95],['Half of a Yellow Sun','Hist. Fiction',18.95],['1Q84','Magic Realism',29.95]];
+  const CI=['Newark','Jersey City','Hoboken'],MO=['Jan','Feb','Mar','Apr','May','Jun'];
+  const U=[[[5,5,2,12,2,4],[5,14,10,14,13,12],[4,8,3,7,5,9]],[[5,5,4,10,11,8],[8,12,7,12,2,6],[4,8,10,7,12,12]],[[2,9,12,9,3,4],[11,9,13,12,9,14],[3,14,2,3,4,11]],[[6,10,12,4,11,5],[5,2,12,3,8,7],[4,4,7,4,11,10]]];
+  const FACT=[];TI.forEach((t,ti)=>CI.forEach((c,ci)=>MO.forEach((m,mi)=>FACT.push({title:t[0],genre:t[1],city:c,month:m,quarter:mi<3?'Q1':'Q2',rev:U[ti][ci][mi]*t[2]}))));
+  const LV={book:['genre','title'],time:['quarter','month'],city:['city']},ORD={genre:['Short Stories','Magic Realism','Hist. Fiction'],title:TI.map(t=>t[0]),quarter:['Q1','Q2'],month:MO,city:CI};
+  const base=()=>({rows:'book',cols:'time',lv:{book:0,time:0,city:0},f:{}});let S0=base();
+  const lab=d=>LV[d][S0.lv[d]];
+  const NAMES={genre:'Genre',title:'Title',quarter:'Quarter',month:'Month',city:'City'};
+  function draw(){const rl=lab(S0.rows),cl=S0.cols?lab(S0.cols):null,rows=ORD[rl].filter(v=>!Object.entries(S0.f).some(([k,x])=>k===rl&&x!==v)),cols=cl?ORD[cl].filter(v=>!Object.entries(S0.f).some(([k,x])=>k===cl&&x!==v)):['Revenue'];
+    const F=FACT.filter(r=>Object.entries(S0.f).every(([k,v])=>r[k]===v));
+    const cell=(rv,cv)=>F.filter(r=>r[rl]===rv&&(!cl||r[cl]===cv)).reduce((s,r)=>s+r.rev,0);
+    const M=rows.map(rv=>cols.map(cv=>cell(rv,cv))),mx=Math.max(...M.flat());
+    const fmt=v=>'$'+Math.round(v).toLocaleString();
+    $('#cb-table').innerHTML=`<thead><tr><th>${NAMES[rl]}${cl?' \\ '+NAMES[cl]:''}</th>${cols.map(c=>`<th>${c}</th>`).join('')}${cl?'<th>Total</th>':''}</tr></thead><tbody>${rows.map((rv,i)=>`<tr><td>${rv}</td>${M[i].map(v=>`<td>${fmt(v)}<i style="width:${(v/mx*100).toFixed(0)}%"></i></td>`).join('')}${cl?`<td>${fmt(M[i].reduce((a,b)=>a+b,0))}</td>`:''}</tr>`).join('')}</tbody><tfoot><tr><td>Total</td>${cols.map((_,j)=>`<td>${fmt(M.reduce((s,r)=>s+r[j],0))}</td>`).join('')}${cl?`<td>${fmt(M.flat().reduce((a,b)=>a+b,0))}</td>`:''}</tr></tfoot>`;
+    const dims=['book','time','city'];
+    $('#cb-chips').innerHTML=dims.map(d=>{const fk=Object.keys(S0.f).find(k=>LV[d].includes(k));if(fk)return`<span class="chip f">${d}: fixed to <b>${S0.f[fk]}</b></span>`;if(S0.rows===d)return`<span class="chip">rows: <b>${d} → ${lab(d)}</b></span>`;if(S0.cols===d)return`<span class="chip">columns: <b>${d} → ${lab(d)}</b></span>`;return`<span class="chip">${d}: summed over</span>`}).join('');
+    const can={drillT:S0.lv.time===0&&!S0.f.quarter&&(S0.rows==='time'||S0.cols==='time'),rollT:S0.lv.time===1&&(S0.rows==='time'||S0.cols==='time'),drillB:S0.lv.book===0&&!S0.f.genre&&(S0.rows==='book'||S0.cols==='book'),rollB:S0.lv.book===1&&(S0.rows==='book'||S0.cols==='book'),slice:!S0.f.quarter,dice:!(S0.f.quarter&&S0.f.genre),pivot:!!S0.cols,reset:true};
+    $('#cb-ops').querySelectorAll('button').forEach(b=>b.disabled=!can[b.dataset.o])}
+  const T={drillT:['DRILL DOWN','Quarter → month','Moved one level down the time hierarchy. Each quarter splits into its three months; the totals don\'t change.'],
+    rollT:['ROLL UP','Month → quarter','Moved up the time hierarchy, aggregating three months into each quarter. Same idea as daily → monthly → quarterly.'],
+    drillB:['DRILL DOWN','Genre → title','Moved down the book hierarchy. Magic Realism splits into Kafka on the Shore and 1Q84.'],
+    rollB:['ROLL UP','Title → genre','Moved up the book hierarchy, adding titles back into their genre.'],
+    slice:['SLICE','Time fixed to Q1','Fixed one dimension (time) to one value. Time leaves the axes, so customer city takes its place: all genres and cities, Q1 only.'],
+    dice:['DICE','Q1 + Magic Realism','Fixed two dimensions at once (time = Q1, genre = Magic Realism): a smaller sub-cube showing revenue by customer city.'],
+    pivot:['PIVOT','Rows ⇄ columns','Swapped the row and column dimensions. Every number is the same; only the layout changed.'],
+    reset:['START','Genre × quarter','Revenue by genre (rows) and quarter (columns), summed over all cities.']};
+  $('#cb-ops').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const o=b.dataset.o;
+    if(o==='reset')S0=base();
+    if(o==='drillT')S0.lv.time=1;if(o==='rollT')S0.lv.time=0;if(o==='drillB')S0.lv.book=1;if(o==='rollB')S0.lv.book=0;
+    if(o==='slice'){S0.lv.time=0;S0.f.quarter='Q1';if(S0.rows==='time')S0.rows='city';if(S0.cols==='time')S0.cols='city';if(S0.rows!=='book'&&S0.cols!=='book'){S0.rows='book'}}
+    if(o==='dice'){S0.lv.time=0;S0.lv.book=0;S0.f={quarter:'Q1',genre:'Magic Realism'};S0.rows='city';S0.cols=null}
+    if(o==='pivot'){const r=S0.rows;S0.rows=S0.cols;S0.cols=r}
+    set('cb-tag',T[o][0]);set('cb-name',T[o][1]);set('cb-why',T[o][2]);draw()});
+  draw();set('cb-why',T.reset[2]);
+})();
+
+/* ---------- 26 ETL / ELT / OData ---------- */
+(function(){
+  const P={etl:{s:[['Sources','MySQL: Orders, OrderItems, Customers, Books',''],['Extract','Nightly snapshot into a staging area',''],['Transform','Separate tool or server: standardize cities, drop test orders, compute revenue','tr'],['Load','Append FACT_SALES, upsert dimensions','wh']],
+      n:'<b>ETL</b>: the cleaning happens <b>before</b> the warehouse, on its own server. The raw data is often discarded afterwards. Still used to mask sensitive data before it lands, and in older systems.'},
+    elt:{s:[['Sources','MySQL: Orders, OrderItems, Customers, Books',''],['Extract + Load','Copy the raw data straight in',''],['Raw','In the warehouse, as loaded, never edited','wh'],['Cleaned','Types fixed, duplicates removed, names standardized (SQL / dbt)','wh tr'],['Modeled','Fact and dimension tables, ready for analysis','wh']],
+      n:'<b>ELT</b>: load first, then transform <b>inside</b> the warehouse, usually in SQL (dbt). The raw layer is kept, so when the questions change you can re-transform without extracting again. The default for cloud warehouses and lakehouses.'}};
+  function pipe(v){const p=P[v];$('#et-pipe').innerHTML=p.s.map(([b,s,c],i)=>`${i?'<span class="ar">→</span>':''}<div class="st ${c}"><b>${b}</b><span>${s}</span></div>`).join('');set('et-note',p.n)}
+  seg($('#et-pick'),pipe);pipe('etl');
+  const O=[['filter',"$filter=genre eq 'Magic Realism'",'Selection σ',"WHERE genre = 'Magic Realism'"],['select','$select=title,price','Projection π','SELECT title, price'],['expand','$expand=Author','Follow a foreign key (join)','JOIN Authors'],['apply','$apply=groupby((genre), aggregate(price with sum as total))','Grouping and aggregation','GROUP BY genre'],['order','$orderby=price desc&$top=10','Sort and limit','ORDER BY price DESC LIMIT 10']];
+  const on=new Set(['filter','select','expand']);
+  $('#od-opts').innerHTML=O.map(o=>`<label><input type="checkbox" data-k="${o[0]}" ${on.has(o[0])?'checked':''}>${o[0]==='order'?'$orderby + $top':'$'+o[0]}</label>`).join('');
+  function url(){const parts=O.filter(o=>on.has(o[0]));$('#od-url').innerHTML='…/odata/<b>Books</b>'+(parts.length?'?'+parts.map(o=>`<b>${esc(o[1].split('=')[0])}</b>=${esc(o[1].slice(o[1].indexOf('=')+1))}`).join('&amp;'):'');
+    $('#od-map').innerHTML='<tr><th>OData</th><th>Operation</th><th>SQL</th></tr>'+(parts.length?parts.map(o=>`<tr><td class="mono" style="font-size:13px">${esc(o[1])}</td><td>${o[2]}</td><td class="mono" style="font-size:13px">${esc(o[3])}</td></tr>`).join(''):'<tr><td colspan="3">No options: the whole Books feed, like SELECT * FROM Books.</td></tr>')}
+  $('#od-opts').addEventListener('change',e=>{const k=e.target.dataset.k;e.target.checked?on.add(k):on.delete(k);url()});url();
+})();
+
+/* ---------- 27 linear vs binary search ---------- */
+(function(){
+  const SORTED=[5,12,18,25,33,45,51,67,84],UNS=[33,5,84,45,12,67,18,51,25];
+  let A=SORTED,t=45,L,B;
+  function reset(){L={done:false,found:-1,n:0};B={lo:0,hi:A.length-1,mid:-1,done:false,found:-1,n:0,seen:[],msg:'–'};draw()}
+  function stepL(){if(L.done)return;const k=L.n;L.n++;if(A[k]===t){L.found=k;L.done=true}else if(L.n===A.length)L.done=true}
+  function stepB(){if(B.done)return;if(B.lo>B.hi){B.done=true;B.msg='Not found';return}
+    const m=Math.floor((B.lo+B.hi)/2);B.mid=m;B.n++;B.seen.push(m);
+    if(A[m]===t){B.found=m;B.done=true;B.msg=`Found at index ${m}`;return}
+    if(t<A[m]){B.msg=`${t} < ${A[m]} → left`;B.hi=m-1}else{B.msg=`${t} > ${A[m]} → right`;B.lo=m+1}
+    if(B.lo>B.hi){B.done=true;B.msg+=' · nothing left: not found'}}
+  function draw(){
+    $('#bs-lin').innerHTML=A.map((v,i)=>`<div class="c ${L.found===i?'hit':i<L.n?'touch':''}">${v}<small>[${i}]</small></div>`).join('');
+    $('#bs-bin').innerHTML=A.map((v,i)=>{let c='';if(B.found===i)c='hit';else if(B.seen.includes(i))c='touch';else if(B.n&&(i<B.lo||i>B.hi))c='out';return`<div class="c ${c}">${v}<small>[${i}]</small></div>`}).join('');
+    set('bs-nl',L.n+(L.done?(L.found>=0?' · found':' · not found'):''));set('bs-nb',B.n);set('bs-say',B.msg);
+    $('#bs-step').disabled=L.done&&B.done}
+  $('#bs-t').innerHTML=[...SORTED,40].map(v=>`<button data-v="${v}" aria-pressed="${v===45}">${v}${v===40?' (absent)':''}</button>`).join('');
+  seg($('#bs-t'),v=>{t=+v;reset()});
+  $('#bs-step').onclick=()=>{stepL();stepB();draw()};
+  $('#bs-all').onclick=()=>{for(let k=0;k<20;k++){stepL();stepB()}draw()};
+  $('#bs-reset').onclick=reset;
+  $('#bs-uns').onclick=()=>{const u=A===SORTED;A=u?UNS:SORTED;$('#bs-uns').setAttribute('aria-pressed',u);$('#bs-uns').classList.toggle('pri',u);reset()};
+  reset();
+})();
+
+/* ---------- 28 sort once, search many ---------- */
+(function(){
+  let lN=6,lk=1.3;
+  const big=v=>v>=1e9?(v/1e9).toFixed(v>=1e10?0:1)+' billion':v>=1e6?(v/1e6).toFixed(v>=1e7?0:1)+' million':Math.round(v).toLocaleString();
+  const render=chart($('#so-chart'),260,(svg,w,h)=>{const N=10**lN,L2=Math.log2(N),m={l:50,r:16,t:14,b:36},k0=0,k1=5;
+    const lin_=k=>k*N,bin_=k=>N*L2+k*L2;const ymin=Math.log10(Math.min(lin_(1),bin_(1)))-0.3,ymax=Math.log10(Math.max(lin_(1e5),bin_(1e5)))+0.2;
+    const sx=lin(k0,k1,m.l,w-m.r),sy=lin(ymin,ymax,h-m.b,m.t);
+    for(let e=Math.ceil(ymin);e<=ymax;e+=Math.max(1,Math.ceil((ymax-ymin)/6))){S('line',{x1:m.l,x2:w-m.r,y1:sy(e),y2:sy(e),stroke:'var(--line)','stroke-dasharray':'2 3'},svg);S('text',{x:m.l-6,y:sy(e)+4,'text-anchor':'end',text:'10'+String(e).replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d])},svg)}
+    xAxis(svg,sx,[0,1,2,3,4,5],h-m.b,t=>(10**t).toLocaleString());S('text',{x:(m.l+w-m.r)/2,y:h-4,'text-anchor':'middle',cls:'sans',text:'number of searches k'},svg);
+    const p=f=>{let d='';for(let i=0;i<=100;i++){const x=k0+(k1-k0)*i/100;d+=(i?'L':'M')+sx(x).toFixed(1)+','+sy(Math.log10(f(10**x))).toFixed(1)}return d};
+    S('path',{d:p(lin_),fill:'none',stroke:'var(--tail)','stroke-width':2.5},svg);S('path',{d:p(bin_),fill:'none',stroke:'var(--accent)','stroke-width':2.5},svg);
+    const be=N*L2/(N-L2);if(be>=1&&be<=1e5){const x=sx(Math.log10(be));S('line',{x1:x,x2:x,y1:m.t,y2:h-m.b,stroke:'var(--muted)','stroke-dasharray':'4 3'},svg);S('text',{x:x+4,y:m.t+10,text:'break-even'},svg)}
+    const xk=sx(lk);S('line',{x1:xk,x2:xk,y1:m.t,y2:h-m.b,stroke:'var(--ink)'},svg);
+    S('circle',{cx:xk,cy:sy(Math.log10(lin_(10**lk))),r:4,fill:'var(--tail)'},svg);S('circle',{cx:xk,cy:sy(Math.log10(bin_(10**lk))),r:4,fill:'var(--accent)'},svg);
+    S('text',{x:w-m.r,y:sy(Math.log10(lin_(1e5)))+14,'text-anchor':'end',cls:'tt b sans',text:'linear every time'},svg);
+    S('text',{x:w-m.r,y:sy(Math.log10(bin_(1e5)))+14,'text-anchor':'end',cls:'ta b sans',text:'sort once + binary'},svg)});
+  function upd(){const N=Math.round(10**lN),k=Math.max(1,Math.round(10**lk)),L2=Math.log2(N),a=k*N,b=N*L2+k*L2,be=N*L2/(N-L2);
+    set('so-lin',big(a));set('so-bin',big(b));set('so-be',`k > ${be.toFixed(1)} (log₂N = ${L2.toFixed(1)})`);set('so-win',a<b?'<span class="pill rej">Linear</span>':a>b?'<span class="pill keep">Sort + binary</span>':'Tie');render()}
+  const a=range('so-n',v=>{lN=v;upd()},v=>Math.round(10**v).toLocaleString()),b=range('so-k',v=>{lk=v;upd()},v=>Math.max(1,Math.round(10**v)).toLocaleString());a.go();b.go();
+})();
+
+/* ---------- 29 Big-O ---------- */
+(function(){
+  const C=[['O(1)',n=>1,'var(--good)','read an array element by index'],['O(log n)',n=>Math.max(1,Math.log2(n)),'var(--c3)','binary search'],['O(n)',n=>n,'var(--c1)','linear search'],['O(n log n)',n=>n*Math.max(1,Math.log2(n)),'var(--c4)','merge sort'],['O(n²)',n=>n*n,'var(--c2)','nested loops, bubble sort'],['O(2ⁿ)',n=>2**n,'var(--tail)','brute-force subsets']];
+  let ln=4;
+  const sup=e=>String(e).replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
+  const fmt=(f,n,i)=>{if(i===5){const e=n*Math.log10(2);return e<7?Math.round(2**n).toLocaleString():'≈ 10'+sup(Math.floor(e))}const v=f(n);return v<1e7?Math.round(v).toLocaleString():'≈ '+(v/10**Math.floor(Math.log10(v))).toFixed(1)+' × 10'+sup(Math.floor(Math.log10(v)))};
+  const render=chart($('#bo-chart'),280,(svg,w,h)=>{const m={l:46,r:84,t:12,b:34},sx=lin(0,6,m.l,w-m.r),YM=12,sy=lin(0,YM,h-m.b,m.t);
+    [0,3,6,9,12].forEach(e=>{S('line',{x1:m.l,x2:w-m.r,y1:sy(e),y2:sy(e),stroke:'var(--line)','stroke-dasharray':e?'2 3':''},svg);S('text',{x:m.l-6,y:sy(e)+4,'text-anchor':'end',text:'10'+sup(e)},svg)});
+    xAxis(svg,sx,[0,1,2,3,4,5,6],h-m.b,t=>t<4?(10**t).toLocaleString():'10'+sup(t));S('text',{x:(m.l+w-m.r)/2,y:h-3,'text-anchor':'middle',cls:'sans',text:'input size n'},svg);
+    const cp=S('clipPath',{id:'bo-clip'},svg);S('rect',{x:m.l,y:m.t-2,width:w-m.l-m.r,height:h-m.b-m.t+2},cp);
+    C.forEach(([nm,f,col],i)=>{let d='',lx=6,ly=null;for(let j=0;j<=200;j++){const x=6*j/200,n=10**x,v=i===5?n*Math.log10(2):Math.log10(f(n));d+=(j?'L':'M')+sx(x).toFixed(1)+','+sy(Math.min(v,YM+2)).toFixed(1);if(v>YM&&ly===null){lx=x;ly=YM}}
+      S('path',{d,fill:'none',stroke:col,'stroke-width':2.5,'clip-path':'url(#bo-clip)'},svg);
+      const endv=ly===null?(i===5?1e6*Math.log10(2):Math.log10(f(1e6))):YM;S('text',{x:ly===null?w-m.r+6:sx(lx)+4,y:sy(Math.min(endv,YM))+(ly===null?4:12),cls:'b sans',style:`fill:${col}`,text:nm},svg)});
+    const x=sx(ln);S('line',{x1:x,x2:x,y1:m.t,y2:h-m.b,stroke:'var(--ink)','stroke-dasharray':'4 3'},svg)});
+  function upd(){const n=Math.round(10**ln);$('#bo-table').innerHTML=`<tr><th>Class</th><th>Example</th><th>Steps at n = ${n.toLocaleString()}</th></tr>`+C.map(([nm,f,col,ex],i)=>`<tr><td class="mono" style="color:${col};font-weight:600">${nm}</td><td>${ex}</td><td class="n">${fmt(f,n,i)}</td></tr>`).join('');render()}
+  range('bo-n',v=>{ln=v;upd()},v=>Math.round(10**v).toLocaleString()).go();
+  const O=['O(1)','O(log n)','O(n)','O(n log n)','O(n²)','O(2ⁿ)'];
+  const D=[['4n + 7',2,'The n term dominates; drop the 4 and the 7.'],['3n² + 100n + 50',4,'n² outgrows 100n once n passes 33; keep n², drop the 3.'],['n · log(n) + n',3,'n log n grows faster than n.'],['5',0,'A constant: it doesn\'t depend on n at all.'],['5n log n + 3n',3,'Keep n log n, drop the 5 and the 3n.'],['100',0,'Still constant, just slow.'],['2ⁿ + n¹⁰',5,'Exponential eventually beats any power of n.'],['log₂(n) + 20',1,'The log term is the only part that grows.']];
+  const st={};
+  function drill(){$('#bo-drill').innerHTML=D.map(([e,a,w],i)=>{const g=st[i];return`<div class="qgroup" data-i="${i}"><span class="mono" style="font-size:15px;color:var(--ink)">${e} → ?</span><div class="seg">${O.map((o,j)=>`<button data-v="${j}" aria-pressed="${g===j}" style="${g!=null&&j===a?'color:var(--good);font-weight:600':''}${g===j&&j!==a?';color:var(--tail)':''}">${o}</button>`).join('')}</div>${g==null?'':`<span>${g===a?'<b style="color:var(--good)">Right.</b>':`<b style="color:var(--tail)">It's ${O[a]}.</b>`} ${w}</span>`}</div>`}).join('')}
+  $('#bo-drill').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[+b.closest('.qgroup').dataset.i]=+b.dataset.v;drill()});drill();
+})();
+
+/* ---------- 30 arrays vs linked lists ---------- */
+(function(){
+  const F=['Orange','Apple','Grape','Lemon','Tomato'],CAP=6;let i=2,op='read';
+  const cell=(v,idx,c)=>`<div class="c ${c||''}${v==null?' empty':''}">${v==null?'·':v}<small>[${idx}]</small></div>`;
+  const node=(v,c)=>`<div class="c ${c||''}">${v}<small>node</small></div>`;
+  function draw(){const n=F.length,ii=Math.min(i,op==='ins'?n:n-1);let arr=[...F],aC=[],lC=[],an='',ln='',lst=[...F];
+    if(op==='read'){aC[ii]='hit';an=`<b>1 step, O(1).</b> Address = base + ${ii} × element size, so the computer jumps straight to index ${ii}.`;
+      for(let k=0;k<ii;k++)lC[k]='touch';lC[ii]='hit';ln=`<b>${ii} pointer hop${ii===1?'':'s'}, O(n).</b> Start at the head and follow ${ii} "next" link${ii===1?'':'s'} to reach node ${ii}.`}
+    if(op==='find'){for(let k=0;k<3;k++){aC[k]='touch';lC[k]='touch'}aC[3]='hit';lC[3]='hit';an='<b>4 checks, O(n).</b> No index to compute from a value: scan from index 0 until "Lemon" turns up (assuming the array is not sorted).';ln='<b>4 checks, O(n).</b> Same scan, following pointers. Neither structure helps you find a value.'}
+    if(op==='ins'){arr.splice(ii,0,'Cake');for(let k=ii+1;k<arr.length;k++)aC[k]='touch';aC[ii]='new';const sh=n-ii;
+      an=`<b>${sh} shift${sh===1?'':'s'}, O(n).</b> ${sh?`Each element from index ${ii} on moves one slot right (starting from the end) to make room. `:'Index 5 was a free slot, so nothing moves: O(1). '}The array is now full: one more insert means copying all ${CAP} elements into a bigger block.`;
+      lst.splice(ii,0,'Cake');for(let k=0;k<ii;k++)lC[k]='touch';lC[ii]='new';ln=`<b>${ii?`${ii-1} hop${ii===2?'':'s'} to reach node ${ii-1}, then `:''}2 pointer updates.</b> ${ii?`Walk to the node before position ${ii} (O(n) to get there), then point it at Cake and Cake at the next node: O(1) once you're there.`:'At the head, no walking: point Cake at Orange and head at Cake. O(1).'}`}
+    if(op==='del'){const gone=arr[ii];arr.splice(ii,1);for(let k=ii;k<arr.length;k++)aC[k]='touch';const sh=n-1-ii;
+      an=`<b>${sh} shift${sh===1?'':'s'}, O(n).</b> ${gone} is removed${sh?` and every later element moves one slot left to close the gap.`:'. It was the last element, so nothing moves: O(1).'}`;
+      lst.splice(ii,1);for(let k=0;k<ii;k++)lC[k]='touch';ln=`<b>${ii?`${ii-1} hop${ii===2?'':'s'}, then `:''}1 pointer update.</b> ${ii?`Walk to node ${ii-1} and point it past ${gone}. The other nodes never move.`:`Point head at ${F[1]}. Nothing else changes.`}`}
+    const slots=[...arr];while(slots.length<CAP)slots.push(null);
+    $('#ar-a').innerHTML=slots.map((v,k)=>cell(v,k,aC[k])).join('');
+    $('#ar-l').innerHTML='<span class="head">head →</span>'+lst.map((v,k)=>node(v,lC[k])+'<span class="lk">→</span>').join('')+'<span class="lk">null</span>';
+    set('ar-an',an);set('ar-ln',ln);
+    const r=$('#ar-i');r.max=op==='ins'?5:4;if(+r.value>+r.max){r.value=r.max}$('#ar-i-o').textContent=r.value;r.disabled=op==='find'}
+  const R=range('ar-i',v=>{i=v;draw()});seg($('#ar-op'),v=>{op=v;i=+$('#ar-i').value;draw()});R.go();
+})();
+
+/* ---------- 31 hash tables ---------- */
+(function(){
+  const M=8,START=['Ford','Volvo','BMW'];let T,order,hl=null;
+  const h=k=>[...k].reduce((s,c)=>s+c.charCodeAt(0),0);
+  function reset(){T=Array.from({length:M},()=>[]);order=[];START.forEach(k=>{T[h(k)%M].push(k);order.push(k)});hl=null;draw();set('hs-math','Ford, Volvo and BMW are already stored. Volvo and BMW both hash to slot 6: a collision, so slot 6 holds a short chain.');set('hs-c','–');set('hs-l','–')}
+  function math(k){const parts=[...k].map(c=>`${c}(${c.charCodeAt(0)})`),s=h(k);return`${esc(parts.join(' + '))} = ${s} → ${s} mod ${M} = <b>${s%M}</b>`}
+  function draw(){$('#hs-b').innerHTML=T.map((ch,i)=>`<div class="${hl&&hl.slot===i?'on':''}"><span class="i">[${i}]</span><div class="s">${ch.map((k,j)=>`<span class="${hl&&hl.slot===i?(j===hl.hit?'hit':j<hl.n?'chk':''):''}">${esc(k)}</span>`).join('')}</div></div>`).join('')}
+  function key(){return $('#hs-key').value.trim().slice(0,14)}
+  $('#hs-ins').onclick=()=>{const k=key();if(!k)return;const s=h(k)%M;if(T[s].includes(k)){hl={slot:s,hit:T[s].indexOf(k),n:T[s].indexOf(k)};draw();set('hs-math',math(k)+` · "${esc(k)}" is already in slot ${s}.`);return}
+    const col=T[s].length;T[s].push(k);order.push(k);hl={slot:s,hit:T[s].length-1,n:T[s].length-1};draw();set('hs-math',math(k)+(col?` · collision: slot ${s} already holds ${esc(T[s].slice(0,-1).join(', '))}, so "${esc(k)}" joins its chain.`:` · slot ${s} was empty.`));set('hs-c','1 hash + '+(col+1)+' write');set('hs-l','–')};
+  $('#hs-find').onclick=()=>{const k=key();if(!k)return;const s=h(k)%M,j=T[s].indexOf(k),n=j<0?T[s].length:j+1;hl={slot:s,hit:j,n:j<0?T[s].length:j};draw();
+    set('hs-math',math(k)+(j<0?` · slot ${s} ${T[s].length?'doesn\'t contain it':'is empty'}: not found.`:` · found in slot ${s}.`));
+    const li=order.indexOf(k);set('hs-c',`${n} comparison${n===1?'':'s'}`);set('hs-l',li<0?`${order.length} (checked them all)`:`${li+1} of ${order.length}`)};
+  $('#hs-reset').onclick=reset;$('#hs-key').addEventListener('keydown',e=>{if(e.key==='Enter')$('#hs-find').click()});reset();
+})();
+
+/* ---------- 32 stacks & queues ---------- */
+(function(){
+  let nx=0,s=[],q=[],so=[],qo=[];
+  const L=i=>String.fromCharCode(65+i%26)+(i>=26?Math.floor(i/26):'');
+  function draw(){$('#sq-s').innerHTML=s.map((v,i)=>`<span class="${i===s.length-1?'top':''}">${v}${i===s.length-1?' ← top':''}</span>`).join('')||'<span style="opacity:.4">empty</span>';
+    $('#sq-q').innerHTML=q.length?'<em style="font-size:12px;color:var(--muted)">front</em>'+q.map((v,i)=>`<span class="${i===0?'top':''}">${v}</span>`).join('')+'<em style="font-size:12px;color:var(--muted)">back</em>':'<span style="opacity:.4">empty</span>';
+    set('sq-so','Popped: '+(so.join(', ')||'–'));set('sq-qo','Dequeued: '+(qo.join(', ')||'–'));
+    $('#sq-rem').disabled=!s.length;$('#sq-add').disabled=s.length>=7}
+  $('#sq-add').onclick=()=>{const v=L(nx++);s.push(v);q.push(v);set('sq-cap',`${v} pushed onto the top of the stack and enqueued at the back of the queue. Both O(1).`);draw()};
+  $('#sq-rem').onclick=()=>{const a=s.pop(),b=q.shift();so.push(a);qo.push(b);set('sq-cap',a===b?`Both gave ${a}: with one item left, last in and first in are the same item.`:`The stack gave <b>${a}</b> (the last one in). The queue gave <b>${b}</b> (the first one in). Both O(1): you only touch an end.`);draw()};
+  $('#sq-reset').onclick=()=>{nx=0;s=[];q=[];so=[];qo=[];set('sq-cap','Add A, B and C, then remove one from each.');draw()};draw();
+})();
+
+/* ---------- 33 BST ---------- */
+(function(){
+  const ORD=[[30,20,40,10,50],[10,20,30,40,50],[5,3,7,1,4],[8,4,12,2,6,10,14,1,3,5,7,9,11,13,15],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]];
+  const DEF=[50,50,4,13,15];let oi=0,target=50,root,nodes;
+  function build(){root=null;nodes=[];const ins=(t,v,d)=>{if(!t){const n={v,l:null,r:null,d};nodes.push(n);return n}if(v<t.v)t.l=ins(t.l,v,d+1);else if(v>t.v)t.r=ins(t.r,v,d+1);return t};ORD[oi].forEach(v=>{root=ins(root,v,0)});
+    const s=[...nodes].sort((a,b)=>a.v-b.v);s.forEach((n,i)=>n.x=i);
+    $('#bt-f').innerHTML=s.map(n=>`<button data-v="${n.v}" aria-pressed="${n.v===target}">${n.v}</button>`).join('')}
+  build();
+  function path(){const p=[];let t=root;while(t){p.push(t);if(t.v===target)break;t=target<t.v?t.l:t.r}return p}
+  const height=t=>t?1+Math.max(height(t.l),height(t.r)):-1;
+  const render=chart($('#bt-chart'),()=>{const hh=height(root);return Math.max(170,50+hh*(hh>6?30:48))},(svg,w,h)=>{const n=nodes.length,hh=Math.max(1,height(root)),sx=i=>20+(w-40)*(n===1?.5:i/(n-1)),sy=d=>24+(h-48)*d/hh,P=path(),ps=new Set(P);
+    const ed=t=>{[t.l,t.r].forEach(c=>{if(!c)return;S('line',{x1:sx(t.x),y1:sy(t.d),x2:sx(c.x),y2:sy(c.d),stroke:ps.has(t)&&ps.has(c)?'var(--good)':'var(--line)','stroke-width':ps.has(t)&&ps.has(c)?3:1.5},svg);ed(c)})};ed(root);
+    const r=n>10?13:16;nodes.forEach(t=>{const g=S('g',{cls:'nd'+(t.v===target?' hit':ps.has(t)?' path':'')},svg);S('circle',{cx:sx(t.x),cy:sy(t.d),r},g);S('text',{x:sx(t.x),y:sy(t.d)+4,'text-anchor':'middle',style:n>10?'font-size:11px':'',text:t.v},g)})});
+  function upd(){const P=path(),hh=height(root);set('bt-n',nodes.length);set('bt-h',hh);set('bt-l',Math.log2(nodes.length).toFixed(2));set('bt-c',P.length);
+    set('bt-cap',`Path: ${P.map((t,i)=>i===P.length-1?`<b>${t.v}</b>`:`${t.v} (${target<t.v?'go left':'go right'})`).join(' → ')}. `+(hh>=nodes.length-1&&nodes.length>3?'Every node went right: this tree is a linked list, so search is O(n).':`Height ${hh} ≈ log₂(${nodes.length}) = ${Math.log2(nodes.length).toFixed(1)}: balanced, so search is O(log n).`));render()}
+  seg($('#bt-o'),v=>{oi=+v;target=DEF[oi];build();upd()});seg($('#bt-f'),v=>{target=+v;upd()});
+  upd();
+})();
+
+/* ---------- 34 BFS & DFS ---------- */
+(function(){
+  const GR={g:{nb:{A:['B','D'],B:['C','E','G'],C:['A'],D:['C'],E:['H'],F:[],G:['F'],H:['F','G']},pos:{A:[.30,.10],D:[.12,.50],B:[.40,.50],C:[.26,.90],E:[.58,.10],H:[.78,.36],G:[.58,.90],F:[.78,.90]},root:'A',dir:true},
+    t:{nb:{1:['2','7','8'],2:['3','6'],3:['4','5'],4:[],5:[],6:[],7:[],8:['9','12'],9:['10','11'],10:[],11:[],12:[]},pos:{1:[.5,.08],2:[.3,.36],7:[.5,.36],8:[.7,.36],3:[.2,.64],6:[.38,.64],9:[.66,.64],12:[.84,.64],4:[.12,.92],5:[.28,.92],10:[.58,.92],11:[.74,.92]},root:'1',dir:false}};
+  let g='g',al='bfs',St={ds:[],ex:new Set(),ord:[],cur:null,msg:''};
+  function reset(){const G=GR[g];St=al==='bfs'?{ds:[G.root],ex:new Set([G.root]),ord:[],cur:null,msg:`Start: label ${G.root} as explored and enqueue it.`}:{ds:[G.root],ex:new Set(),ord:[],cur:null,msg:`Start: push ${G.root} onto the stack.`};draw()}
+  function step(){const G=GR[g];if(!St.ds.length)return false;
+    if(al==='bfs'){const v=St.ds.shift();St.ord.push(v);St.cur=v;const add=G.nb[v].filter(w=>!St.ex.has(w));add.forEach(w=>{St.ex.add(w);St.ds.push(w)});
+      St.msg=`Dequeue <b>${v}</b> and visit it. ${G.nb[v].length?`Neighbors ${G.nb[v].join(', ')}: `+(add.length?`enqueue ${add.join(', ')} (labelled explored now, so nothing is queued twice)`:'all already explored, nothing to enqueue')+'.':'No neighbors.'}`}
+    else{const v=St.ds.pop();if(St.ex.has(v)){St.cur=null;St.msg=`Pop <b>${v}</b>: already explored, skip it.`;return true}
+      St.ex.add(v);St.ord.push(v);St.cur=v;const add=[...G.nb[v]].reverse().filter(w=>!St.ex.has(w));add.forEach(w=>St.ds.push(w));
+      St.msg=`Pop <b>${v}</b>, label it explored and visit it. `+(add.length?`Push ${add.join(', ')} (reversed, so ${add[add.length-1]} ends on top and is explored next).`:'No unexplored neighbors to push.')}
+    if(!St.ds.length)St.msg+=` The ${al==='bfs'?'queue':'stack'} is empty: done.`;return true}
+  const render=chart($('#tv-chart'),w=>w<520?260:300,(svg,w,h)=>{const G=GR[g],P=k=>[24+(w-48)*G.pos[k][0],22+(h-44)*G.pos[k][1]],R=17;
+    const defs=S('defs',{},svg),mk=S('marker',{id:'tv-arw',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'},defs);S('path',{d:'M0,0L10,5L0,10Z',fill:'var(--muted)'},mk);
+    Object.entries(G.nb).forEach(([a,ns])=>ns.forEach(b=>{const[p,q]=[P(a),P(b)],dx=q[0]-p[0],dy=q[1]-p[1],L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+      S('line',{x1:p[0]+ux*R,y1:p[1]+uy*R,x2:q[0]-ux*(R+2),y2:q[1]-uy*(R+2),stroke:'var(--muted)','stroke-width':1.4,'marker-end':G.dir?'url(#tv-arw)':''},svg)}));
+    const inDS=new Set(St.ds);Object.keys(G.nb).forEach(k=>{const[x,y]=P(k),vis=St.ord.includes(k),c='nd'+(vis?' v':inDS.has(k)?' q':'')+(St.cur===k?' cur':'');const gg=S('g',{cls:c},svg);S('circle',{cx:x,cy:y,r:R},gg);S('text',{x,y:y+4.5,'text-anchor':'middle',text:k},gg);
+      const n=St.ord.indexOf(k);if(n>=0)S('text',{x:x+R+3,y:y-R+6,style:'font-size:10px;fill:var(--accent);font-weight:600',text:n+1},svg)})});
+  function draw(){const ds=St.ds;set('tv-dsl',al==='bfs'?'Queue (front → back)':'Stack (bottom → top)');
+    $('#tv-ds').innerHTML=ds.length?ds.map((v,i)=>`<span class="${(al==='bfs'?i===0:i===ds.length-1)?'next':''}">${v}</span>`).join('')+`<em>${al==='bfs'?'← next out is the front':'← next out is the top'}</em>`:'<em>empty</em>';
+    $('#tv-ord').innerHTML=St.ord.length?St.ord.map(v=>`<span>${v}</span>`).join(''):'<em>nothing visited yet</em>';
+    set('tv-cap',St.msg);$('#tv-step').disabled=!ds.length;render()}
+  $('#tv-step').onclick=()=>{step();draw()};$('#tv-run').onclick=()=>{let k=0;while(step()&&k++<80);draw()};$('#tv-reset').onclick=reset;
+  seg($('#tv-g'),v=>{g=v;reset()});seg($('#tv-a'),v=>{al=v;reset()});reset();
+})();
+
+/* ---------- 35 choosing a structure ---------- */
+(function(){
+  const R=[['Array','O(1) by index · O(n) by value','O(1) end · O(n) middle','O(1) end · O(n) middle','list, np.array, pandas column','Reads by position'],
+    ['Linked list','O(n)','O(1) once found','O(1) once found','(rarely used directly)','Inserts where you are'],
+    ['Stack','O(1) top','O(1)','O(1)','list','DFS, undo'],
+    ['Queue','O(1) front','O(1)','O(1)','collections.deque','BFS, scheduling'],
+    ['Hash table','O(1) avg by key','O(1) avg','O(1) avg','dict, set','Lookups, counting, joins, groupby'],
+    ['Balanced BST','O(log n)','O(log n)','O(log n)','database indexes (B-trees)','Sorted order, ranges']];
+  const P=[['pos','Read item #i',0,'Position maps straight to a memory address: O(1). Vectorized NumPy and pandas columns are arrays.'],
+    ['key','Look up or count by ID',4,'Hash the key and jump to its slot: O(1) on average. This is what dict, set, Counter, groupby and merge do.'],
+    ['range','Find everything between two values',5,'Keeps keys in sorted order, so a range is "find the start in O(log n), then walk." Hash tables can\'t do this.'],
+    ['undo','Undo the last action',2,'Last in, first out: the most recent action is on top. O(1) push and pop.'],
+    ['fifo','Serve requests in arrival order',3,'First in, first out. Use collections.deque: append and popleft are both O(1).'],
+    ['here','Insert and delete next to items you hold',1,'Only two pointers change, with no shifting. (Getting to the spot is still O(n).)']];
+  $('#cd-pick').innerHTML=P.map((p,i)=>`<button data-v="${i}" aria-pressed="${!i}">${p[1]}</button>`).join('');
+  function draw(i){const p=P[i],r=R[p[2]];set('cd-name',r[0]+' <span class="mono" style="font-size:14px;color:var(--muted)">('+esc(r[4])+')</span>');set('cd-why',p[3]);
+    $('#cd-table').innerHTML='<tr><th>Structure</th><th>Read / search</th><th>Insert</th><th>Delete</th><th>In Python</th><th>Best for</th></tr>'+R.map((r,j)=>`<tr class="${j===p[2]?'hl':''}">${r.map((v,k)=>`<td class="${k&&k<4?'mono':''}" style="${k&&k<4?'font-size:13px':''}">${k?esc(v):'<b>'+v+'</b>'}</td>`).join('')}</tr>`).join('')}
+  seg($('#cd-pick'),v=>draw(+v));draw(0);
+})();
+
+/* ---------- check questions, Lectures 6 & 7 ---------- */
+const Q2={
+  keys:[
+    ['In the usability-trials table (participant_id, gender, age, method, trial, time_seconds), which columns form the primary key?',['participant_id','participant_id, method, trial','time_seconds, because it never repeats','participant_id, gender, age'],1,'One row is one participant trying one method once. participant_id repeats (participant 1 has four rows), and time_seconds is unique only by luck.'],
+    ['OrderItems has columns item_id, order_id, book_id, qty, price. What is order_id in this table?',['Its primary key','A foreign key that must match a primary key in Orders','A domain'],1,'order_id repeats (one order has many items), so it can\'t be the PK here. It links each item back to its row in Orders.']],
+  algebra:[
+    ['Which SQL clause performs relational selection σ?',['SELECT','WHERE','GROUP BY','FROM'],1,'Selection filters rows, and WHERE filters rows. The SELECT keyword lists columns, which is projection π.'],
+    ['Books has 4 rows; two of them are Magic Realism. How many rows does π genre (Books) return?',['4','3','2','1'],1,'Three distinct genres. Projection returns a relation, which is a set, so the repeated Magic Realism row appears once.']],
+  'normal-form':[
+    ['A table stores each book with its author\'s name and bio. You delete the only book by one author and lose that author\'s bio. Which anomaly is this?',['Update anomaly','Insert anomaly','Delete anomaly'],2,'Deleting one fact (the book) erased a different fact (the author), because the author had no row of her own.'],
+    ['What does normalization do?',['Merges tables so queries need fewer joins','Splits tables so each represents one entity and each fact is stored once','Sorts every table by its primary key'],1,'Normalization decomposes a table into smaller related tables linked by keys. Merging tables back together is what joins (and denormalized warehouses) do.']],
+  join:[
+    ['Books has 5 rows, but book 105 has author_id 9 and there is no author 9. How many rows does Books ⋈ Authors (on author_id) return?',['5','4','6','0'],1,'A join only keeps rows with a match on both sides. Book 105 has no partner, so 4 rows remain (the lecture poll).'],
+    ['Murakami wrote two of the four books. How many times does his name appear in Books ⋈ Authors?',['Once, since it is stored once','Twice, once per matching book','Zero, joins drop duplicates'],1,'Each book row finds its author. Stored once, shown twice: that is what a denormalized result looks like.']],
+  'olap-store':[
+    ['Why do data warehouses usually store data column by column?',['It makes inserting a single new row faster','Analytical queries read a few columns of many rows, so only those columns are read from disk','Columns cannot hold duplicate values'],1,'SUM(revenue) reads one run of values instead of every column of every row. Inserting one whole row is what row storage is good at.'],
+    ['Which workload is OLTP?',['A store recording each customer\'s checkout as it happens','An analyst comparing revenue by genre and city for 2024','A dashboard of monthly sales trends'],0,'OLTP is many short, concurrent reads and writes of single rows, like orders, payments and bookings. The other two are analytical (OLAP).']],
+  star:[
+    ['In the BookDB star schema, where does a book\'s genre belong?',['In FACT_SALES, as a measure','In DIM_BOOK, as a descriptive attribute','In DIM_TIME'],1,'Genre describes the book: a label you group by. Fact tables hold numeric measures and foreign keys only.'],
+    ['FACT_SALES is stored at "one genre per month." What can you no longer answer?',['Total revenue for January','Revenue by customer city','Revenue per month for Magic Realism'],1,'Customers were summed away when rows were merged to genre-month. A coarse grain can\'t be split back apart, which is why you store the finest grain.']],
+  shapes:[
+    ['How does a snowflake schema differ from a star schema?',['It has several fact tables','It normalizes the dimension tables into sub-dimensions, like DIM_BOOK → DIM_AUTHOR','It stores everything in one wide table'],1,'Snowflaking splits dimensions further. That cuts repetition but adds joins.'],
+    ['Why is it acceptable to denormalize dimension tables in a warehouse?',['Warehouses don\'t allow updates','Analysts mostly read, so update anomalies matter less, and fewer joins make queries simpler and faster','Denormalized tables use less storage'],1,'They do use more storage, but column storage compresses repeated labels, so the copies cost little.']],
+  cube:[
+    ['In Tableau you chart total waste collected by city for 2019, then click Newark to see its three stations. What operation is that?',['Slice','Roll up','Drill down','Pivot'],2,'You moved from city to the stations within it, a finer level of the location hierarchy. That is drilling down.'],
+    ['You restrict a sales cube to Q1 2024 and Fiction, then look at revenue by customer city. What is that?',['Slice','Dice','Roll up'],1,'Fixing several dimensions at once is a dice. Fixing just one (only Q1) would be a slice.']],
+  etl:[
+    ['What is the main difference between ETL and ELT?',['ELT doesn\'t transform the data','In ELT the raw data is loaded first and transformed inside the warehouse, so it can be re-transformed later','ETL is only for cloud warehouses'],1,'ELT is now the default for cloud warehouses: raw → cleaned → modeled layers, usually in SQL with dbt. ETL cleans on a separate server before loading.'],
+    ['In the OData URL …/odata/Books?$filter=genre eq \'Fiction\'&$select=title,price, what does $select do?',['Selection: filters rows','Projection: keeps only the title and price columns','Joins the Authors table'],1,'$select is projection (SQL SELECT title, price). $filter is selection (WHERE), and $expand follows a foreign key.']],
+  search:[
+    ['You have a sorted array of 1,000,000 customer IDs and use binary search. In the worst case, about how many elements do you check?',['About 20','About 1,000','About 500,000','1,000,000'],0,'log₂(1,000,000) ≈ 19.9, so about 20 checks. Each check halves what is left.'],
+    ['What does binary search require that linear search doesn\'t?',['The data must be sorted','The data must fit in memory','The items must be unique numbers'],0,'Binary search decides which half to throw away by comparing with the middle. That only works if the data is sorted.']],
+  sortonce:[
+    ['You will search a 1,000,000-item unsorted list exactly once. Which is cheaper?',['Linear search','Sort first, then binary search','They cost the same'],0,'Linear: up to 1,000,000 checks. Sorting alone costs about N log₂ N ≈ 20,000,000 steps.'],
+    ['For large N, after roughly how many searches does "sort once, then binary search" beat linear search?',['About log₂ N searches','About N searches','About N² searches'],0,'k > N log₂ N / (N − log₂ N), which is about log₂ N when N is large: about 20 searches for a million items.']],
+  bigo:[
+    ['What is the Big-O of 3n² + 100n + 50?',['O(n)','O(n²)','O(3n²)','O(n² + n)'],1,'Keep the dominant term and drop constants: n² swamps 100n for large n, and the 3 doesn\'t change how it grows.'],
+    ['ids is a list of n customer IDs. This code finds the ones that appear more than once, where ids.count(a) scans the whole list. What is its Big-O?',['O(n)','O(n log n)','O(n²)','O(1)'],2,'The loop runs n times and each ids.count(a) is another O(n) scan: n × n. Counter(ids) does it in O(n).']],
+  arrays:[
+    ['Why can an array read any index in O(1)?',['It keeps the elements sorted','Elements are the same size and contiguous, so the address is base + i × size','It stores a pointer to every element'],1,'The computer computes where element i lives instead of searching for it.'],
+    ['You need to insert at the front of a list over and over, and you never read by position. Which structure fits?',['Array: every front insert shifts all elements, O(n)','Linked list: a front insert updates a pointer, O(1)','They are the same'],1,'Inserting at the head needs no walking and no shifting in a linked list.']],
+  hash:[
+    ['Each structure holds the same 1,000,000 names: a list, a set, and a dict of name → price. Which lookup is the slowest?',['"Volvo" in car_list','"Volvo" in car_set','car_dict["Volvo"]'],0,'Sets and dicts are hash tables: O(1) on average. "in" on a list is a linear scan, O(n).'],
+    ['What can a hash table NOT do efficiently?',['Check whether a key exists','Count how often each value appears','Return all keys between 100 and 200 in order'],2,'Hashing scatters keys on purpose, so there is no sorted order. Range queries need a sorted array or a balanced tree.']],
+  stackq:[
+    ['You push A, B, C onto a stack, then pop twice. What comes out?',['A, then B','C, then B','C, then A'],1,'Last in, first out: C was pushed last, so it pops first, then B.'],
+    ['Which structure does BFS use, and why?',['A stack, to go deep first','A queue, so nodes found first are visited first, level by level','A hash table, to sort the nodes'],1,'FIFO order means all depth-1 nodes come out before any depth-2 node. (BFS also marks explored nodes, often in a set.)']],
+  bst:[
+    ['You insert 10, 20, 30, 40, 50 into an empty BST in that order. How many checks to find 50?',['3','5','About log₂(5) ≈ 2.3'],1,'Each value goes right of the last one, so the tree is a chain of height 4. Finding 50 checks every node: 5.'],
+    ['In a BST, finding 4 in the tree with root 5, left child 3 and 3\'s right child 4 goes…',['5 → right → 4','5 → left (4 < 5) → 3 → right (4 > 3) → 4','3 → 4 directly'],1,'Left subtrees hold smaller values and right subtrees larger ones, so each comparison picks a side.']],
+  bfsdfs:[
+    ['On the practice graph, BFS from A visits A, B, D first. Why does D come before C?',['D is alphabetically smaller','D is A\'s neighbor (depth 1); C is only reached from B or D (depth 2)','BFS visits leaves first'],1,'BFS finishes a whole level before the next. A\'s neighbors are B and D, so both come before anything two hops away.'],
+    ['Why must BFS and DFS mark nodes as explored on a graph but not on a tree?',['Graphs are always bigger','Graphs can have cycles, so without marks you could loop forever (A → B → C → A)','Trees have no root'],1,'A tree is connected and acyclic, so you never reach a node twice. Graphs may have cycles.']],
+  'choose-ds':[
+    ['You need to find all orders between two dates, fast, on a big table. Which structure fits?',['Hash table on order_date','Balanced tree / B-tree index on order_date','Stack'],1,'A sorted structure finds the start of the range in O(log n), then walks in order. A hash table has no order.'],
+    ['Brute-force k-NN beat the k-d tree in the lecture\'s table when…',['There were 100,000 points with 3 features','There were 50 features','There were 10,000 points'],1,'In high dimensions the tree can\'t rule regions out, so it checks nearly everything plus its own overhead: 18 s vs 0.52 s.']]};
+
 /* ---------- checks ---------- */
 const Q={
   sample:[
@@ -1317,22 +2556,114 @@ const Q={
   rules:[
     ['Your bar chart gives each of its 12 bars a different bright color, even though color encodes nothing. Which rule does this break?',['Provide context','Use color sparingly and meaningfully','Organize for comparison'],1,'Color should highlight or encode something. Twelve arbitrary colors add noise and imply categories that don\'t exist.'],
     ['You show temperature from cold to hot with a rainbow color scale. What is the problem?',['Nothing, rainbows are colorful','Rainbow hues don\'t read as an ordered scale; use a sequential or diverging scale','It uses too few colors'],1,'Quantities need luminance or saturation that clearly runs low to high. A rainbow has no perceptual order.']]};
+Object.assign(Q,Q2);
 document.querySelectorAll('.check').forEach(el=>{const qs=Q[el.dataset.q];
   el.innerHTML=qs.map(([q,o],k)=>`<div class="cq"><p class="q"><small>Check ${k+1} of ${qs.length}</small>${q}</p><div class="opts">${o.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div><p class="fb" hidden></p></div>`).join('');
   el.querySelectorAll('.cq').forEach((cq,k)=>{const [,,a,why]=qs[k];cq.querySelector('.opts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,bs=cq.querySelectorAll('.opts button');bs.forEach(x=>x.classList.remove('right','wrong'));b.classList.add(i===a?'right':'wrong');if(i!==a)bs[a].classList.add('right');
     const fb=cq.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===a?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--tail)">Not quite.</b> ')+why})})});
 
+/* ---------- review deck, Lectures 6 & 7 (spaced repeats within a round, same as DS 110) ---------- */
+const DECKS=[];let lastDeck=null;
+document.addEventListener('keydown',ev=>{if(ev.target.closest&&ev.target.closest('textarea,input,select'))return;if(ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  const vis=DECKS.filter(d=>{const r=d.card.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});if(!vis.length)return;
+  const d=vis.includes(lastDeck)?lastDeck:vis[0];d.key(ev)});
+function makeDeck(P,KEY,EX,orderName){
+  const N=EX.length,GAP={again:3,almost:6},TOPIC=i=>document.getElementById(EX[i].to)?.dataset.t||'';
+  const $p=id=>document.getElementById(P+'-'+id),setp=(id,v)=>{$p(id).innerHTML=v};
+  let shuffle=true,S=null;
+  function fresh(ids){const q=[...ids];if(shuffle)for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}return{queue:q,deck:[...ids],got:[],lapses:{},reviews:0,shown:false,drafts:{}}}
+  try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.queue)&&v.deck.every(i=>i<N)){S=v;shuffle=v.shuffle!==false}}catch(_){}
+  if(!S)S=fresh(EX.map((_,i)=>i));S.drafts=S.drafts||{};
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({...S,shuffle}))}catch(_){}};
+  const card=$p('card'),toast=t=>setp('toast',t);
+  const norm=t=>t.replace(/\r/g,'').split('\n').map(l=>l.trim().replace(/^(['"])(.*)\1$/,'$2')).filter(Boolean);
+  const tok=t=>t.toLowerCase().replace(/×/g,'x').replace(/\$/g,'').replace(/[\[\](),;→]/g,' ').replace(/(\d)\s*x\s*(\d)/g,'$1x$2').split(/\s+/).filter(Boolean).join(' ');
+  function matches(u,x){return x.split('|').some(x=>{const ul=norm(u),xl=x.split('\n');if(ul.join('\n')===xl.join('\n'))return true;return tok(u)===tok(x)})}
+  function status(){const cur=S.queue[0],back=new Set(S.queue.filter(i=>S.lapses[i]));
+    setp('counts',`<span class="pill neu">Left in round ${S.queue.length}</span><span class="pill rej">Coming back ${back.size}</span><span class="pill keep">Got it ${S.got.length} / ${S.deck.length}</span><span class="pill" style="background:var(--paper);color:var(--muted)">Reviews ${S.reviews}</span>`);
+    setp('strip',EX.map((_,i)=>{let c='';if(!S.deck.includes(i))c='out';else if(i===cur&&S.queue.length)c='now';else if(S.got.includes(i))c='got';else if(back.has(i))c='back';return`<a class="${c}" href="#${EX[i].to}" title="Card ${i+1}: review the concept">${i+1}</a>`}).join(''));
+    const o=$p('order');o.textContent=shuffle?'Shuffled':orderName;o.setAttribute('aria-pressed',shuffle)}
+  function render(){status();if(!S.queue.length)return summary();
+    const i=S.queue[0],e=EX[i],d=S.drafts[i]||'',lap=S.lapses[i]||0;
+    card.innerHTML=`<div class="ex-h"><b>${e.lab||'C'}${i+1}${lap?`<span class="seen">seen ${lap+1}×</span>`:''}</b><a href="#${e.to}">${esc(TOPIC(i))} · review the concept →</a></div>
+      <div class="qq">${e.q}</div>${e.code?`<pre class="code sm">${esc(e.code)}</pre>`:''}${e.pre||''}
+      ${S.shown?answer(i):`<textarea class="inp" id="${P}-ans" rows="3" spellcheck="true" placeholder="${e.x?'Type your answer…':'Answer from memory first…'}" aria-label="Your answer to card ${i+1}">${esc(d)}</textarea>`}
+      ${S.shown?`<div class="dk-rate"><button class="a" data-r="again"><b>Again</b><small>back in ${GAP.again} cards</small></button><button class="m" data-r="almost"><b>Almost</b><small>back in ${GAP.almost} cards</small></button><button class="g" data-r="got"><b>Got it</b><small>done this round</small></button></div>`:`<button class="show" id="${P}-show">Show answer</button>`}`;
+    const ta=$p('ans');if(ta){ta.addEventListener('input',()=>{S.drafts[i]=ta.value;save()});ta.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&(ev.ctrlKey||ev.metaKey)){ev.preventDefault();reveal()}})}
+    const sh=$p('show');if(sh)sh.onclick=reveal;card.querySelectorAll('.dk-rate button').forEach(b=>b.onclick=()=>rate(b.dataset.r))}
+  function answer(i){const e=EX[i],u=S.drafts[i]||'';const badge=e.x&&u.trim()?(matches(u,e.x)?'<span class="match y">Matches</span>':'<span class="match n">Doesn\'t match</span>'):'';
+    return`<div class="lab2">Your answer ${badge}</div><div class="yours${u.trim()?'':' empty'}">${u.trim()?esc(u):'You didn\'t write anything this time.'}</div><div class="model"><h4>Model answer</h4>${e.a}</div>`}
+  function reveal(){S.shown=true;save();render();toast('');card.querySelector('.dk-rate .g')?.focus({preventScroll:true})}
+  const nm=i=>(EX[i].lab||'C')+(i+1);
+  function rate(r){const i=S.queue.shift();S.reviews++;S.shown=false;
+    if(r==='got'){S.got.push(i);delete S.drafts[i];toast(`${nm(i)} done for this round.`)}
+    else{S.lapses[i]=(S.lapses[i]||0)+1;const pos=Math.min(GAP[r],S.queue.length);S.queue.splice(pos,0,i);S.drafts[i]='';
+      toast(pos===0?`${nm(i)} again right away (it's the last card left).`:`${nm(i)} comes back after ${pos} more card${pos>1?'s':''}.`)}
+    save();render();const top=card.getBoundingClientRect().top;if(top<0||top>innerHeight*0.6)card.scrollIntoView({block:'start',behavior:'smooth'})}
+  function summary(){const missed=S.deck.filter(i=>S.lapses[i]),first=S.deck.length-missed.length;
+    card.innerHTML=`<div class="ex-h"><b>ROUND DONE</b><span style="font-size:13px;color:var(--muted)">${S.reviews} reviews</span></div>
+      <div class="qq" style="font-family:var(--f-display);font-size:24px">${missed.length?`${first} of ${S.deck.length} right the first time.`:`All ${S.deck.length} right the first time.`}</div>
+      ${missed.length?`<p>These took more than one try. Practice them next:</p><div class="dk-list">${missed.sort((a,b)=>S.lapses[b]-S.lapses[a]).map(i=>`<div><span class="n">${nm(i)}</span><span>${EX[i].q}</span><span class="c">${S.lapses[i]+1} tries</span></div>`).join('')}</div>`:'<p>Nothing came back this round. Run it again tomorrow to make it stick.</p>'}
+      <div class="row"><button class="btn pri" id="${P}-missed" ${missed.length?'':'disabled'}>Practice the ${missed.length||''} I missed</button><button class="btn" id="${P}-all">Start all ${N} again</button></div>`;
+    $p('missed').onclick=()=>{S=fresh(missed);save();render()};$p('all').onclick=()=>{S=fresh(EX.map((_,i)=>i));save();render()}}
+  const me={card,key(ev){if(!S.queue.length)return;
+    if(!S.shown&&(ev.key===' '||ev.key==='Enter')){if(ev.target.closest&&ev.target.closest('button,a'))return;ev.preventDefault();reveal()}
+    else if(S.shown&&['1','2','3'].includes(ev.key)){ev.preventDefault();rate(['again','almost','got'][+ev.key-1])}}};
+  DECKS.push(me);card.closest('section').addEventListener('pointerdown',()=>{lastDeck=me});card.closest('section').addEventListener('focusin',()=>{lastDeck=me});
+  $p('order').onclick=()=>{shuffle=!shuffle;save();status();toast(shuffle?'New rounds will start shuffled.':`New rounds will follow the ${orderName.toLowerCase()}.`)};
+  $p('restart').onclick=()=>{$p('confirm').hidden=false};$p('no').onclick=()=>{$p('confirm').hidden=true};
+  $p('yes').onclick=()=>{$p('confirm').hidden=true;S=fresh(EX.map((_,i)=>i));save();render();toast(`Fresh round with all ${N} cards.`)};
+  render()}
+(function(){
+  const GRAPH='<p class="note mono" style="font-size:13px">Directed edges: A→B, A→D, B→C, B→E, B→G, C→A, D→C, E→H, G→F, H→F, H→G. Take neighbors in alphabetical order.</p>';
+  const EX=[
+    {to:'keys',q:'What two properties make a set of columns a primary key? What is a foreign key?',a:'<p>A primary key is <b>unique</b> (no two rows share it) and <b>minimal</b> (drop any column and it stops being unique). It must be unique by what a row means, not by luck. A <b>foreign key</b> is a column whose values must match a primary key in another table, like <code>OrderItems.order_id → Orders.order_id</code>. It is what links tables.</p>'},
+    {to:'keys',q:'Define relation, tuple, attribute and domain, with a BookDB example of each.',a:'<ul><li><b>Relation</b>: a named two-dimensional table (Orders, OrderItems).</li><li><b>Tuple</b>: one row, a single record (one order, or one line item).</li><li><b>Attribute</b>: one column, a property of the entity (order_id, price, qty).</li><li><b>Domain</b>: the allowed values of an attribute (price must be a positive number).</li></ul><p>No two rows in a relation can be identical.</p>'},
+    {to:'algebra',q:'Name the five most common relational operations and give the SQL and pandas for each.',a:'<ul><li><b>Selection σ</b>: <code>WHERE genre = \'Fiction\'</code> · <code>df[df.genre == \'Fiction\']</code></li><li><b>Projection π</b>: <code>SELECT title, genre</code> · <code>df[[\'title\', \'genre\']]</code></li><li><b>Join ⋈</b>: <code>JOIN authors a ON b.author_id = a.author_id</code> · <code>pd.merge(books, authors, on=\'author_id\')</code></li><li><b>Union ∪</b>: <code>UNION</code> · <code>pd.concat([df1, df2])</code></li><li><b>Grouping γ</b>: <code>GROUP BY genre</code> + SUM / COUNT / AVG · <code>df.groupby(\'genre\').price.mean()</code></li></ul>'},
+    {to:'algebra',q:'What is the closure property, and why does SQL need SELECT DISTINCT to match projection?',a:'<p><b>Closure</b>: every operation takes relations in and produces a relation out, so operations can be chained (the output of σ can feed π). A relation is a mathematical <b>set</b> of tuples, with no duplicates and no order, so π removes duplicate rows. SQL keeps duplicates unless you write <code>SELECT DISTINCT</code>.</p>'},
+    {to:'algebra',q:'Books has two Magic Realism titles priced 19.95 and 29.95. What AVG(price) does GROUP BY genre give for Magic Realism?',x:'24.95',a:'<p><b>24.95</b>. The two rows collapse into one: COUNT = 2, AVG = (19.95 + 29.95) / 2 = 24.95.</p>'},
+    {to:'normal-form',q:'Name the three anomalies caused by redundancy and give the BookDB example of each.',a:'<ul><li><b>Update</b>: Murakami\'s bio is on every one of his book rows; miss one when updating and you have two bios for the same author.</li><li><b>Insert</b>: a new author with no book yet has nowhere to go, since author info only exists inside book rows.</li><li><b>Delete</b>: deleting Runaway, the only Alice Munro book, also deletes her bio.</li></ul>'},
+    {to:'normal-form',q:'What is the goal of database normalization, and what are its three merits?',a:'<p>Goal: decompose large tables into smaller, related tables, each representing a single entity or concept, linked by keys.</p><ul><li><b>Reduces redundancy</b>: each piece of data is stored once, saving space and removing inconsistencies.</li><li><b>Improves data integrity</b>: changes happen in one place.</li><li><b>Easier to maintain</b>: a clear structure is easier to update over time.</li></ul>'},
+    {to:'join',q:'You add book 105 with author_id 9 to Books, but there is no author 9. How many rows does Books ⋈ Authors (on author_id) return? Books had 4 rows before.',x:'4',a:'<p><b>4</b>. A join keeps only rows where <code>Books.author_id</code> equals some <code>Authors.author_id</code>. Book 105 has no match, so it drops out.</p>'},
+    {to:'olap-store',q:'Compare OLTP and OLAP: purpose, storage, schema and query style.',a:'<ul><li><b>Purpose</b>: OLTP records transactions reliably; OLAP analyzes trends to support decisions.</li><li><b>Storage</b>: row by row vs column by column.</li><li><b>Schema</b>: normalized tables vs star schema (or one big table).</li><li><b>Queries</b>: small and fast, one row at a time (INSERT, UPDATE, DELETE) vs few columns over millions of rows (SELECT with joins and GROUP BY).</li><li>Tools: MySQL / PostgreSQL vs Snowflake, BigQuery, Redshift, Databricks.</li></ul>'},
+    {to:'olap-store',q:'What is a data warehouse, and what are its four key characteristics?',a:'<p>A separate, subject-specific, read-optimized database that consolidates historical data from many sources into a consistent structure for analytical queries (OLAP).</p><ul><li><b>Subject-oriented</b>: organized around business subjects (Sales, Books, Authors).</li><li><b>Integrated</b>: data cleaned and standardized from different sources.</li><li><b>Non-volatile</b>: historical records are never deleted; it grows over time.</li><li><b>Time-variant</b>: every fact is timestamped for trend analysis.</li></ul>'},
+    {to:'olap-store',q:'FACT_SALES has 4 rows and 4 columns. How many values must SUM(revenue) read in row storage vs column storage, and why?',a:'<p><b>16 vs 4.</b> A disk is read in long runs of neighboring values. In row storage the revenue values are interleaved with the other columns, so the whole table is read. In column storage all revenue values sit together in one run. With 40 columns and millions of rows, reading one or two columns is often 10 to 100× less data.</p>'},
+    {to:'star',q:'Compare fact tables and dimension tables: grain, content, normalization, size and growth.',a:'<ul><li><b>Grain</b>: one row per event (a sale line) vs one row per thing (book, customer, day).</li><li><b>Content</b>: numeric measures + foreign keys vs descriptive attributes / labels.</li><li><b>Normalization</b>: highly normalized (keys and numbers only) vs denormalized on purpose.</li><li><b>Size</b>: tall and narrow (millions to billions of rows) vs short and wide.</li><li><b>Growth</b>: grows with every event vs grows slowly.</li></ul>'},
+    {to:'star',q:'What is the grain of a fact table, and why store the finest (atomic) grain?',a:'<p>The grain is the level of detail one row represents; in BookDB it is one book in one order. A fine grain lets you aggregate to any coarser level later (day → month, book → genre). A coarse grain can\'t be split back apart: store "genre per month" and you can never ask about customers or days again.</p>'},
+    {to:'shapes',q:'Star vs snowflake vs one big table: shape, joins, repetition, and one strength and weakness each.',a:'<ul><li><b>Star</b>: fact + flat dimensions; one join per dimension used; some repetition. Clear and standard (Power BI recommends it); joins at query time.</li><li><b>Snowflake</b>: dimensions split into sub-dimensions (DIM_BOOK → DIM_AUTHOR); more joins; least repetition. Easier to maintain a large or shared dimension; harder for analysts and BI tools.</li><li><b>One big table</b>: everything pre-joined; no joins; most repetition. Simplest to query, cheap with column storage; changing a label rewrites many rows, and often one table per question.</li></ul>'},
+    {to:'cube',q:'Define the five OLAP operations, with a BookDB example of each.',a:'<ul><li><b>Slice</b>: fix one dimension to a value (time = Jan 2024, see all genres and cities).</li><li><b>Dice</b>: fix several dimensions (Q1 2024 + Fiction → revenue by city).</li><li><b>Drill down</b>: move to a finer hierarchy level (Fiction → literary fiction → titles).</li><li><b>Roll up</b>: move to a coarser level (daily → monthly → quarterly).</li><li><b>Pivot</b>: swap the row and column dimensions (genres on rows → cities on rows).</li></ul>'},
+    {to:'cube',q:'In Tableau you chart total waste collected by city for 2019, then click Newark to see its three stations. What OLAP operation did that click do?',x:'drill down|drill-down|drilldown',a:'<p><b>Drill down.</b> You moved from city to the stations inside it, a finer level of the location hierarchy. (Hierarchies are what power drill down and roll up.)</p>'},
+    {to:'etl',q:'Compare ETL and ELT. What layers does ELT usually use inside the warehouse?',a:'<ul><li><b>ETL</b>: extract → transform → load. Cleaning happens on a separate tool or server before the warehouse; raw data is often discarded. Used to mask sensitive data before it lands, and in older systems.</li><li><b>ELT</b>: extract → load → transform. Cleaning happens inside the warehouse, usually in SQL (dbt); raw data is kept, so you can re-transform when questions change. The default for cloud warehouses.</li></ul><p>Layers: <b>raw</b> (as loaded, never edited) → <b>cleaned</b> (types fixed, duplicates removed, names standardized) → <b>modeled</b> (fact and dimension tables). Sometimes called bronze, silver, gold.</p>'},
+    {to:'etl',q:'Map the OData options $filter, $select, $expand and $apply=groupby to relational operations and SQL.',a:'<ul><li><code>$filter</code> → selection, <code>WHERE</code></li><li><code>$select</code> → projection, <code>SELECT title, price</code></li><li><code>$expand</code> → follow a foreign key (join), <code>JOIN Authors</code></li><li><code>$apply=groupby(…)</code> → grouping and aggregation, <code>GROUP BY</code></li><li><code>$orderby … &amp;$top=10</code> → <code>ORDER BY … LIMIT 10</code></li></ul><p>OData is for pulling data out (the E in ELT), not heavy analysis.</p>'},
+    {to:'search',q:'Describe linear and binary search. How many checks does each need to find 45 in [5, 12, 18, 25, 33, 45, 51, 67, 84]?',a:'<p><b>Linear</b>: check each element from the start until found: <b>6 checks</b> (45 is at index 5). <b>Binary</b>: check the middle and discard the half that can\'t contain the target: 33 (45 &gt; 33, go right) → 51 (45 &lt; 51, go left) → 45: <b>3 checks</b>. Binary needs about log₂(N) checks but requires sorted data.</p>'},
+    {to:'search',q:'You have a sorted array of 1,000,000 customer IDs. About how many elements does binary search check in the worst case?',x:'20|about 20|~20',a:'<p><b>About 20</b>, since log₂(1,000,000) ≈ 19.9. Linear search could need all 1,000,000. For 100 items: about 7 vs up to 100.</p>'},
+    {to:'sortonce',q:'With k searches on N items, when should you sort and use binary search instead of linear search? Give the rule of thumb.',a:'<p>Sorting (merge sort) costs about N log₂ N, then each search costs log₂ N. Choose binary when <b>k · N &gt; N log₂ N + k log₂ N</b>, i.e. <b>k &gt; N log₂ N / (N − log₂ N)</b>. Rule of thumb: <b>k ≈ log₂ N</b>, about 20 searches for a million items. For a single search, linear is simpler. Database indexes apply this "sort once, search many" idea.</p>'},
+    {to:'bigo',q:'Give the Big-O of: 4n + 7 · 3n² + 100n + 50 · n·log(n) + n · 5.',x:'O(n), O(n²), O(n log n), O(1)|O(n) O(n^2) O(n log n) O(1)',a:'<p><b>O(n)</b>, <b>O(n²)</b>, <b>O(n log n)</b>, <b>O(1)</b>. Keep the dominant term and drop the constants.</p>'},
+    {to:'bigo',q:'List the common Big-O classes from fastest to slowest growth, with an example of each. Which are practical?',a:'<ul><li><b>O(1)</b> read an array element by index</li><li><b>O(log n)</b> binary search</li><li><b>O(n)</b> linear search</li><li><b>O(n log n)</b> merge sort, efficient sorting</li><li><b>O(n²)</b> bubble sort, nested loops</li><li><b>O(2ⁿ)</b> brute-force subset enumeration</li></ul><p>O(1) and O(log n) are excellent; O(n) and O(n log n) are fine for most tasks; O(n²) gets painful past n ≈ 10,000; O(2ⁿ) only for very small n. Same Big-O can still differ in speed: a Python loop vs NumPy for the same O(n) sum is ≈ 30 ms vs ≈ 1 ms.</p>'},
+    {to:'arrays',q:'Compare arrays and linked lists: read by index, search by value, insert/delete in the middle, memory layout, size. When do you use each?',a:'<ul><li><b>Read by index</b>: array O(1) (base + i × size); list O(n), traverse from the head.</li><li><b>Search by value</b>: both O(n).</li><li><b>Insert/delete in the middle</b>: array O(n), shift elements; list O(1) once you\'re there, O(n) to get there.</li><li><b>Layout</b>: contiguous vs scattered. <b>Size</b>: fixed vs dynamic.</li></ul><p>Arrays: lots of reads by position, known size. Linked lists: frequent inserts/deletes at positions you hold, dynamic size, no random access needed.</p>'},
+    {to:'hash',q:'How does a hash table look up a key? What are collisions, and what does a hash table cost you?',a:'<p>The hash function turns the key into an array index; reading that slot is O(1), so lookup is <b>O(1) on average</b> with no scanning. A <b>collision</b> is two keys hashing to the same slot; with spare room and a good hash function they are rare, but the worst case is O(n). Costs: extra memory and <b>no sorted order</b>, so ranges ("IDs between 100 and 200") still need a sorted array or tree. Used by dict, set, Counter, groupby, merge, value_counts, isin, drop_duplicates.</p>'},
+    {to:'hash',q:'ids is a list of 1,000,000 IDs. You check 1,000 new IDs with [x in ids for x in new_ids]. Worst case, how many comparisons? How do you fix it?',x:'1,000,000,000|1000000000|1 billion|one billion',a:'<p><b>1,000 × 1,000,000 = 1,000,000,000</b> comparisons (≈ 4 s), because <code>in</code> on a list is a linear scan. Build <code>ids_set = set(ids)</code> once (O(n)) and each lookup is ~1 step: ≈ 0.04 s.</p>'},
+    {to:'stackq',q:'Compare a stack and a queue: rule, operations and their Big-O, Python implementation, and what each is used for.',a:'<ul><li><b>Stack</b>: LIFO. push and pop at the same end, both O(1). Python <code>list</code> (append/pop) or a linked list with a top pointer. Used for DFS and undo.</li><li><b>Queue</b>: FIFO. enqueue at one end, dequeue at the other, both O(1). <code>collections.deque</code> (append/popleft) or a linked list with first and last pointers. Used for BFS and scheduling.</li></ul>'},
+    {to:'bst',q:'State the BST property. Insert 30, 20, 40, 10, 50 vs 10, 20, 30, 40, 50: what are the heights, and how many checks to find 50?',a:'<p>For every node N: all values in the left subtree are &lt; N and all in the right subtree are &gt; N.</p><ul><li>30, 20, 40, 10, 50 → height 2, find 50 in <b>3 checks</b> (balanced, O(log n)).</li><li>10, 20, 30, 40, 50 → height 4, find 50 in <b>5 checks</b>: it is a linked list, O(n).</li></ul><p>Balanced trees (AVL, red-black, B-trees) rebalance on insert to keep height ≈ log₂(n).</p>'},
+    {to:'bfsdfs',q:'What order does BFS visit the practice graph, starting from A?',pre:GRAPH,x:'A, B, D, C, E, G, H, F',a:'<p><b>A, B, D, C, E, G, H, F.</b> Dequeue A → enqueue B, D. Dequeue B → enqueue C, E, G. Dequeue D (C already explored). Dequeue C, then E → enqueue H, then G → enqueue F, then H, then F.</p>'},
+    {to:'bfsdfs',q:'What order does DFS visit the practice graph, starting from A (neighbors pushed in reverse)?',pre:GRAPH,x:'A, B, C, E, H, F, G, D',a:'<p><b>A, B, C, E, H, F, G, D.</b> Pop A → push D, B (B on top). Pop B → push G, E, C. Pop C (A explored). Pop E → push H. Pop H → push G, F. Pop F, pop G, pop G again (skip), pop D. Without the reverse you get A, D, C, B, …</p>'},
+    {to:'bfsdfs',q:'Which data structure does each of BFS and DFS use, and why does a graph traversal need "explored" labels when a tree traversal doesn\'t?',a:'<p><b>BFS uses a queue</b> (FIFO): children are visited before grandchildren, level by level. <b>DFS uses a stack</b> (LIFO): the most recently discovered node is explored next, so it dives deep before backtracking. The data structure determines the order. A tree is connected and acyclic, so you never revisit a node; a graph can have cycles (A → B → C → A), so without labels you would loop forever.</p>'},
+    {to:'choose-ds',q:'Pick a structure for each: (a) look up customers by ID, (b) all orders between two dates, (c) undo, (d) serve requests in arrival order, (e) read row #i.',a:'<ul><li>(a) <b>Hash table</b> (dict / set): O(1) average by key.</li><li>(b) <b>Balanced BST / B-tree index</b>: O(log n), keeps sorted order for ranges.</li><li>(c) <b>Stack</b>: LIFO, O(1).</li><li>(d) <b>Queue</b> (<code>collections.deque</code>): FIFO, O(1).</li><li>(e) <b>Array</b>: O(1) by index.</li></ul><p>Choose based on your most frequent operation.</p>'}
+  ];
+  makeDeck('rv','is465-deck67-v1',EX,'Lecture order');
+})();
+
 /* ---------- nav + progress ---------- */
 (function(){
-  const secs=[...document.querySelectorAll('section.concept')];let done={};
+  const all=[...document.querySelectorAll('section.concept')],secs=all.filter(s=>s.querySelector('.done'));let done={};set('prog-tot',secs.length);
   try{done=JSON.parse(localStorage.getItem('is465-lab')||'{}')}catch(e){}
   const save=()=>{try{localStorage.setItem('is465-lab',JSON.stringify(done))}catch(e){}};
-  secs.forEach((s,i)=>{const li=document.createElement('li');li.innerHTML=`<a href="#${s.id}" data-id="${s.id}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="t">${s.dataset.t}</span><span class="ck">✓</span></a>`;$('#toc-'+s.dataset.lec).appendChild(li)});
+  all.forEach(s=>{const i=secs.indexOf(s),li=document.createElement('li');li.innerHTML=`<a href="#${s.id}" data-id="${s.id}"><span class="n">${i<0?'↻':String(i+1).padStart(2,'0')}</span><span class="t">${s.dataset.t}</span><span class="ck">✓</span></a>`;$('#toc-'+s.dataset.lec).appendChild(li)});
   function paint(){let k=0;secs.forEach(s=>{const on=!!done[s.id];if(on)k++;const b=s.querySelector('.done');b.setAttribute('aria-pressed',on);b.textContent=on?'Understood ✓':'Mark as understood';document.querySelector(`.toc a[data-id="${s.id}"]`).classList.toggle('done',on)});set('prog-n',k);$('#prog-bar').style.width=(k/secs.length*100)+'%'}
   document.querySelectorAll('.done').forEach(b=>b.onclick=()=>{const id=b.dataset.id;done[id]=!done[id];save();paint()});
   paint();
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.toc a').forEach(a=>a.classList.toggle('on',a.dataset.id===e.target.id));const a=document.querySelector(`.toc a[data-id="${e.target.id}"]`);if(a&&window.innerWidth<=880)a.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})}})},{rootMargin:'-30% 0px -60% 0px'});
-  secs.forEach(s=>io.observe(s));
+  all.forEach(s=>io.observe(s));
 })();
 </script>
 

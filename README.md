@@ -4,10 +4,13 @@ Interactive study pages for NJIT courses. Each course has its own tab at the top
 
 ## IS 465 · `index.html`
 
-Advanced Information Systems, Lectures 4 and 5:
+Data Analytics for Information Systems, Lectures 4 to 7:
 
-- **Part 1 · Inferential statistics**: sampling, the normal curve, the Central Limit Theorem, standard error, hypothesis testing, t-tests, Type I/II errors, choosing a test, a worked paired t-test, confidence intervals, and multiple-testing pitfalls.
-- **Part 2 · Visualization**: Anscombe's quartet, marks and channels, choosing a chart from the question, honest axes, Simpson's paradox, and rules of thumb.
+- **Part 1 · Inferential statistics** (Lecture 5): sampling, the normal curve, the Central Limit Theorem, standard error, hypothesis testing, t-tests, Type I/II errors, choosing a test, a worked paired t-test, confidence intervals, and multiple-testing pitfalls.
+- **Part 2 · Visualization** (Lecture 4): Anscombe's quartet, marks and channels, choosing a chart from the question, honest axes, Simpson's paradox, and rules of thumb.
+- **Part 3 · Data management** (Lecture 6): primary and foreign keys (find the key in the poll table), relational algebra on the Books table with SQL and pandas side by side, the three anomalies and normalization, joins (including the orphan-row poll), OLTP vs OLAP and row vs column storage, fact and dimension tables and grain, star vs snowflake vs one big table, an OLAP cube you can slice, dice, drill, roll up and pivot, and ETL/ELT with an OData URL builder.
+- **Part 4 · Data structures and algorithms** (Lecture 7): linear vs binary search (step through both), sort once / search many with the break-even k, Big-O growth and a drop-the-constants drill, arrays vs linked lists, a toy hash table with collisions, stacks and queues, binary search trees and balance, a BFS/DFS stepper on the lecture's practice graph and tree, and choosing a structure.
+- **Practice**: two check questions per concept, and a review deck for Lectures 6 and 7 (write your answer, reveal, rate yourself; cards you miss come back a few cards later, and you can drill only the ones you missed).
 
 Content is based on lecture slides by Mark Cartwright (NJIT).
 
