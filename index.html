@@ -387,6 +387,26 @@ table.t tr.hl td{background:var(--accent-soft)}
 .match.y{background:var(--good-soft);color:var(--good)}.match.n{background:var(--tail-soft);color:var(--tail)}
 @media (max-width:880px){.trio,.sq{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:520px){.dk-strip{grid-template-columns:repeat(7,minmax(0,1fr))}.tokens{grid-template-columns:minmax(0,1fr)}}
+/* quiz prep */
+.qp{border:2px solid var(--accent);border-radius:16px;padding:20px;background:var(--surface)}
+.qp-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.qp-steps a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.qp-steps a:hover{border-color:var(--accent)}
+.qp-steps b{grid-row:span 2;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--surface);font-size:13px}
+.qp-steps span{font-weight:400;font-size:13px;color:var(--muted)}
+.qz-bar{height:6px;border-radius:3px;background:var(--paper);border:1px solid var(--line);overflow:hidden}
+.qz-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.qz .opts button{display:flex;gap:10px;align-items:baseline}
+.qz .opts button:disabled{cursor:default;color:var(--ink)}
+.qz .fb{margin:0;font-size:15px}
+.qp-read ul{margin:6px 0 0;padding-left:18px;display:grid;gap:5px;font-size:15px}
+.qp-read b{font-family:var(--f-mono);font-size:13px;color:var(--accent)}
+.cs{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.cs>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper)}
+.cs .wide{grid-column:1/-1}
+.cs h4{margin:0 0 4px;font:600 11px/1.2 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.cs p{margin:0;font-size:14.5px;line-height:1.5}
+@media (max-width:640px){.qp-steps{grid-template-columns:minmax(0,1fr)}.qp{padding:14px}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 html{scroll-behavior:smooth}
 </style>
@@ -415,10 +435,69 @@ html{scroll-behavior:smooth}
   <span class="eyebrow">IS 465 · Lectures 4 to 7</span>
   <h1>Concept Lab</h1>
   <p>Thirty-five concepts in the order they build on each other: statistics and visualization (Lectures 4 and 5), then data management and data structures (Lectures 6 and 7). Each one gives you the idea in a few sentences, something you can change to see why it works, the mistake people usually make, and two check questions. A review deck for Lectures 6 and 7 is at the end.</p>
+  <p><a class="btn pri" href="#quizprep">Quiz on Lectures 6 &amp; 7? Start with the quiz prep →</a></p>
   <div class="howto"><span><b>1</b>Read the idea</span><span><b>2</b>Move the sliders</span><span><b>3</b>Answer the check</span><span><b>4</b>Mark it understood</span></div>
 </header>
 
-<details class="lab gloss" open>
+<!-- quiz prep -->
+<section class="concept qp" id="quizprep" data-lec="prac" data-t="Quiz prep: L6 & L7">
+  <header><span class="eyebrow">Quiz prep · Lectures 6 &amp; 7</span><h2>Start here for the quiz</h2></header>
+  <p class="lead">The fastest route: <b>take the practice quiz first</b> (about 20 minutes), then read only the slides for the questions you missed. Every question names the slide page it comes from. Use the cheat sheet for a last look before the quiz. The full modules below are there if one topic still doesn't click.</p>
+  <div class="qp-steps"><a href="#qp-quiz"><b>1</b>Practice quiz <span>~20 min</span></a><a href="#qp-read"><b>2</b>Slides for what you missed</a><a href="#qp-cheat"><b>3</b>Cheat sheet <span>5 min, right before</span></a></div>
+
+  <div class="lab" id="qp-quiz">
+    <div class="lab-h"><h3>Practice quiz</h3><span class="hint">questions from the lecture polls and practice slides · keys 1–4 answer, Enter next</span></div>
+    <div class="row" style="justify-content:space-between">
+      <div class="seg" id="qz-set"><button data-v="all" aria-pressed="true">Both lectures</button><button data-v="6" aria-pressed="false">Lecture 6 only</button><button data-v="7" aria-pressed="false">Lecture 7 only</button></div>
+      <div class="row"><button class="btn" id="qz-shuf" aria-pressed="true">Shuffled</button><button class="btn ghost" id="qz-restart">Start over</button></div>
+    </div>
+    <div class="qz-bar"><i id="qz-fill"></i></div>
+    <div class="ex qz" id="qz-card" aria-live="polite"></div>
+  </div>
+
+  <details class="lab" id="qp-read" open>
+    <summary><span class="lab-h"><h3>Slides worth reading</h3><span class="hint">PDF page numbers · ★ = poll or practice question</span></span></summary>
+    <div class="two qp-read">
+      <div><div class="lab2">Lecture 6 · Data management (18 pages)</div><ul>
+        <li><b>6–7</b> Primary keys and foreign keys</li><li><b>8 ★</b> Which columns form the primary key?</li>
+        <li><b>16</b> The five common operations with SQL and pandas (covers 17–20)</li>
+        <li><b>24–26</b> Three anomalies, normalization, the normalized tables</li><li><b>27</b> Join · <b>28 ★</b> how many rows does the join return?</li>
+        <li><b>32–33</b> Data warehouse and why column storage is fast</li>
+        <li><b>39–40</b> Fact vs dimension tables, BookDB star schema</li><li><b>44</b> Star vs snowflake vs one big table</li>
+        <li><b>46</b> OLAP operations · <b>47 ★</b> the Newark click</li><li><b>50</b> ETL vs ELT</li><li><b>54</b> OLTP vs OLAP summary</li></ul></div>
+      <div><div class="lab2">Lecture 7 · Data structures (23 pages)</div><ul>
+        <li><b>2 ★</b> 1,000 IDs against a list of 1,000,000</li><li><b>14 · 15 ★</b> Binary search speed, worst case on 1M</li>
+        <li><b>19–20</b> Sort once rule of thumb, linear vs binary table</li>
+        <li><b>24</b> Common Big-O classes · <b>26–27</b> Big-O practice · <b>28 ★</b> the ids.count question</li>
+        <li><b>48</b> Array operations recap · <b>57</b> arrays vs linked lists</li>
+        <li><b>59–60</b> Hash tables · <b>61 ★</b> which lookup is slowest?</li>
+        <li><b>68</b> Stack operations · <b>73</b> queue operations</li><li><b>79</b> Balanced vs unbalanced BST</li>
+        <li><b>83</b> BFS and DFS · <b>92–95 ★</b> practice graph orders</li><li><b>99</b> Complexity summary table</li></ul></div>
+    </div>
+    <p class="cap">Skip on a first pass: SQL overview and the six primitive operations (L6 10–15), attribute hierarchies (41–42), OData and the modern data stack (51–52), the array and linked-list walkthrough slides (L7 31–47, 49–56) and the k-NN timing slide (98). The summary slides cover them.</p>
+  </details>
+
+  <div class="lab" id="qp-cheat">
+    <div class="lab-h"><h3>Cheat sheet</h3><span class="hint">read this right before the quiz</span></div>
+    <div class="cs">
+      <div><h4>Keys</h4><p><b>PK</b> = unique + minimal, by what a row means (participant_id, method, trial). <b>FK</b> = must match a PK in another table (OrderItems.order_id → Orders).</p></div>
+      <div><h4>Operations</h4><p><b>σ selection</b> = rows = WHERE. <b>π projection</b> = columns = SELECT, drops duplicates. <b>⋈ join</b> drops rows with no match (book 105 → still 4 rows). <b>γ</b> = GROUP BY.</p></div>
+      <div><h4>Anomalies</h4><p><b>Update</b>: a fact in many rows gets two versions. <b>Insert</b>: can't add an author without a book. <b>Delete</b>: deleting the only book loses the author. Fix = normalize (one entity per table).</p></div>
+      <div><h4>OLTP vs OLAP</h4><p>OLTP: transactions, row storage, normalized, INSERT/UPDATE. OLAP: analysis, <b>column</b> storage (read only the columns you need), star schema, SELECT + GROUP BY. Warehouse: subject-oriented, integrated, <b>non-volatile</b>, time-variant.</p></div>
+      <div><h4>Star schema</h4><p><b>Fact</b> = events: measures (revenue, qty) + FKs, tall. <b>Dimension</b> = things: labels (title, genre, city), wide, denormalized. <b>Grain</b> = one book in one order. <b>Snowflake</b> = normalized dimensions, more joins.</p></div>
+      <div><h4>OLAP operations</h4><p><b>Slice</b> fixes one dimension. <b>Dice</b> fixes several. <b>Drill down</b> = finer (city → stations, quarter → month). <b>Roll up</b> = coarser. <b>Pivot</b> = swap rows/columns.</p></div>
+      <div><h4>ETL vs ELT</h4><p>ETL cleans before loading, on its own server. <b>ELT</b> loads raw first, transforms inside the warehouse (dbt): raw → cleaned → modeled. ELT is today's default.</p></div>
+      <div><h4>Search</h4><p>Linear: O(n), no sorting. Binary: O(log n), <b>needs sorted data</b>; 1M items ≈ <b>20</b> checks, 100 ≈ 7. Sort once pays off after about <b>log₂N</b> searches (databases: indexes).</p></div>
+      <div><h4>Big-O</h4><p>Keep the biggest term, drop constants: 3n² + 100n + 50 → <b>O(n²)</b>; 5 → O(1). Order: 1 &lt; log n &lt; n &lt; n log n &lt; n² &lt; 2ⁿ. A loop with <code>list.count</code> or <code>x in list</code> inside = <b>O(n²)</b>.</p></div>
+      <div><h4>Array vs linked list</h4><p>Array: read by index <b>O(1)</b>, insert/delete in the middle O(n) (shift). Linked list: read by index <b>O(n)</b> (follow pointers), insert/delete O(1) once you're there. Search by value: both O(n).</p></div>
+      <div><h4>Hash table</h4><p>Key → slot, lookup <b>O(1) average</b>, O(n) worst (collisions). No sorted order, so no range queries. <code>set</code>, <code>dict</code>, <code>groupby</code>, <code>merge</code>. 1,000 checks in a 1M list = <b>1 billion</b> comparisons; a set ≈ 1,000.</p></div>
+      <div><h4>Stack, queue, BST</h4><p>Stack <b>LIFO</b> (push/pop, O(1), DFS, undo). Queue <b>FIFO</b> (enqueue/dequeue, O(1), BFS). BST: left smaller, right larger; O(log n) <b>only if balanced</b>, sorted inserts make it a linked list, O(n).</p></div>
+      <div class="wide"><h4>BFS and DFS on the practice graph, from A</h4><p><b>BFS</b> (queue, level by level) = <b>A, B, D, C, E, G, H, F</b>. <b>DFS</b> (stack, push neighbors reversed, go deep) = <b>A, B, C, E, H, F, G, D</b>. On a graph, mark nodes explored so cycles don't loop forever.</p></div>
+    </div>
+  </div>
+</section>
+
+<details class="lab gloss">
   <summary><span class="lab-h"><h3>Shorthand used on this page</h3><span class="hint">each one is explained in the concept linked on the right</span></span></summary>
   <dl>
     <div><dt>μ <i>mu</i></dt><dd>Population mean</dd><a href="#sample">01</a></div>
@@ -2651,6 +2730,78 @@ function makeDeck(P,KEY,EX,orderName){
     {to:'choose-ds',q:'Pick a structure for each: (a) look up customers by ID, (b) all orders between two dates, (c) undo, (d) serve requests in arrival order, (e) read row #i.',a:'<ul><li>(a) <b>Hash table</b> (dict / set): O(1) average by key.</li><li>(b) <b>Balanced BST / B-tree index</b>: O(log n), keeps sorted order for ranges.</li><li>(c) <b>Stack</b>: LIFO, O(1).</li><li>(d) <b>Queue</b> (<code>collections.deque</code>): FIFO, O(1).</li><li>(e) <b>Array</b>: O(1) by index.</li></ul><p>Choose based on your most frequent operation.</p>'}
   ];
   makeDeck('rv','is465-deck67-v1',EX,'Lecture order');
+})();
+
+/* ---------- quiz prep: practice quiz for Lectures 6 & 7 ---------- */
+(function(){
+  /* [lecture, slide pages, concept id, question, options, answer index, why] */
+  const QZ=[
+    [6,'8','keys','A usability table has participant_id, gender, age, method, trial, time_seconds. Each participant tries each method several times. Which columns form the primary key?',['participant_id','participant_id, method, trial','time_seconds','participant_id, method'],1,'One row = one participant, one method, one trial. Drop any of the three and rows repeat. time_seconds is unique only by luck.'],
+    [6,'7','keys','In OrderItems (item_id, order_id, book_id, qty, price), order_id is…',['the primary key','a foreign key pointing to Orders','a domain','an attribute that must be unique'],1,'order_id repeats (one order, many items), and its values must match Orders.order_id.'],
+    [6,'16, 19','algebra','"Keep only the title and price columns of Books" is which operation?',['Selection σ','Projection π','Join ⋈','Grouping γ'],1,'Columns = projection. Rows = selection.'],
+    [6,'16–17','algebra','In SQL, relational selection σ is written with…',['SELECT','WHERE','GROUP BY','JOIN'],1,'Selection filters rows, which is WHERE. The SELECT keyword is projection.'],
+    [6,'28','join','Book 105 is added with author_id 9, but there is no author 9. Books ⋈ Authors used to return 4 rows. Now it returns…',['5','4','6','An error'],1,'A join keeps only matched rows, so book 105 drops out.'],
+    [6,'24','normal-form','A new author has no book yet, and author details only exist in the Books table. You can\'t add the author. Which anomaly?',['Update','Insert','Delete'],1,'You can\'t store one fact until an unrelated fact (a book) exists.'],
+    [6,'24','normal-form','Murakami\'s bio was changed on one of his two book rows but not the other. Which anomaly?',['Update','Insert','Delete'],0,'The same fact lives in many rows, so a partial update leaves two versions.'],
+    [6,'25–26','normal-form','What does normalization do?',['Pre-joins tables to avoid joins','Splits a table so each table describes one entity and each fact is stored once','Sorts a table by its key','Converts rows to columns'],1,'Less redundancy, better integrity, easier maintenance. Joins put the tables back together.'],
+    [6,'32','olap-store','A data warehouse never deletes historical records. That characteristic is called…',['Subject-oriented','Integrated','Non-volatile','Time-variant'],2,'Non-volatile = history is kept. Time-variant = every fact is timestamped.'],
+    [6,'33','olap-store','Why is SUM(revenue) fast in a column store?',['Columns are sorted','Only the revenue column is read from disk, not every column of every row','Columns can\'t contain duplicates','It uses an index on every row'],1,'Disks read long runs of neighboring values, and the revenue values sit together.'],
+    [6,'29, 54','olap-store','Which is an OLTP workload?',['A store recording each checkout as it happens','Monthly revenue by genre for the last 3 years','A BI dashboard of sales trends','Comparing cities across quarters'],0,'OLTP = many small reads and writes of single rows. The rest are OLAP.'],
+    [6,'39–40','star','In the BookDB star schema, revenue and genre go…',['both in FACT_SALES','revenue in FACT_SALES, genre in DIM_BOOK','both in DIM_BOOK','revenue in DIM_TIME, genre in FACT_SALES'],1,'Fact table = numeric measures + foreign keys. Dimensions = descriptive labels.'],
+    [6,'43–44','shapes','A snowflake schema differs from a star schema because it…',['has no fact table','normalizes the dimensions into sub-dimensions (DIM_BOOK → DIM_AUTHOR)','stores everything in one wide table','has several fact tables'],1,'Least repetition, but more joins.'],
+    [6,'47','cube','In Tableau you chart total waste by city for 2019, then click Newark to see its three stations. That click is a…',['Slice','Dice','Drill down','Roll up'],2,'City → station is a step down the location hierarchy, to a finer level.'],
+    [6,'46','cube','You show all genres and all cities, but only for January 2024. That is a…',['Slice','Dice','Pivot','Drill down'],0,'One dimension (time) fixed to one value = slice. Fixing several dimensions would be a dice.'],
+    [6,'46','cube','Going from daily revenue to monthly to quarterly revenue is a…',['Drill down','Roll up','Slice','Pivot'],1,'Moving to a coarser level of the hierarchy, aggregating as you go.'],
+    [6,'46','cube','You restrict the cube to Q1 2024 and Fiction, then look at revenue by city. That is a…',['Slice','Dice','Roll up','Pivot'],1,'Several dimensions fixed at once = dice.'],
+    [6,'50','etl','What is ELT?',['Transform on a separate server, then load','Load the raw data first, then transform inside the warehouse','Load without ever transforming','An OLAP operation'],1,'ELT keeps the raw layer, so you can re-transform later (raw → cleaned → modeled). Default for cloud warehouses.'],
+    [7,'15','search','A sorted array holds 1,000,000 customer IDs. In the worst case, binary search checks about…',['20 elements','1,000 elements','500,000 elements','1,000,000 elements'],0,'log₂(1,000,000) ≈ 19.9. Each check halves what is left.'],
+    [7,'20','search','What does binary search need that linear search doesn\'t?',['Sorted data','Unique values','A hash function','A linked list'],0,'It decides which half to throw away by comparing with the middle element.'],
+    [7,'19','sortonce','You must search an unsorted list of 1,000,000 items exactly once. Cheapest approach?',['Linear search','Sort, then binary search','They cost the same'],0,'Sorting alone costs about N log₂N ≈ 20 million steps, more than the 1 million of one linear search. Sorting pays off after about log₂N ≈ 20 searches.'],
+    [7,'2','hash','ids is a Python list of 1,000,000 IDs. You check 1,000 new IDs, none of which are in the list, with x in ids. How many comparisons?',['1,000','1,000,000','1,001,000','1,000,000,000'],3,'Each `in` on a list scans all 1,000,000 elements: 1,000 × 1,000,000. With a set it would be about 1,000.'],
+    [7,'28','bigo','for a in ids: if ids.count(a) > 1: … where ids has n items. Big-O?',['O(n)','O(n log n)','O(n²)','O(1)'],2,'n iterations, each with an O(n) count: n × n. Counter(ids) does it in O(n).'],
+    [7,'61','hash','The same 1,000,000 names are in a list, a set and a dict. Which lookup is the slowest?',['"Volvo" in car_list','"Volvo" in car_set','car_dict["Volvo"]','They are all O(1)'],0,'Sets and dicts are hash tables, O(1) on average. A list is a linear scan, O(n).'],
+    [7,'26–27','bigo','What is the Big-O of 3n² + 100n + 50?',['O(n)','O(n²)','O(3n²)','O(n² + n)'],1,'Keep the dominant term, drop the constants.'],
+    [7,'26–27','bigo','What is the Big-O of n·log(n) + n?',['O(n)','O(n log n)','O(n²)','O(log n)'],1,'n log n grows faster than n.'],
+    [7,'24','bigo','Which grows the fastest as n gets large?',['O(n log n)','O(n²)','O(2ⁿ)','O(n)'],2,'Order: 1 < log n < n < n log n < n² < 2ⁿ.'],
+    [7,'44–45','arrays','You insert "Cake" at index 0 of [Orange, Apple, Grape, Lemon, Tomato] stored in an array. How many elements must move?',['0','1','4','5'],3,'All five shift one slot right to make room: O(n).'],
+    [7,'57','arrays','Reading the element at index i costs…',['O(1) in an array, O(n) in a linked list','O(n) in both','O(1) in both','O(n) in an array, O(1) in a linked list'],0,'An array computes the address (base + i × size). A linked list follows i pointers from the head.'],
+    [7,'59','hash','What can a hash table NOT do efficiently?',['Check if a key exists','Count values','Return all keys between 100 and 200 in order','Look up a value by key'],2,'Hashing scatters keys, so there is no sorted order. Use a sorted array or a balanced tree for ranges.'],
+    [7,'63–68','stackq','Push A, B, C onto a stack, then pop once. What comes out?',['A','B','C'],2,'LIFO: last in, first out.'],
+    [7,'88','bfsdfs','Which structure does BFS use?',['A stack','A queue','A hash table','A BST'],1,'FIFO order visits a whole level before the next. DFS uses a stack.'],
+    [7,'93','bfsdfs','Practice graph, BFS from A (neighbors alphabetical). Which order?',['A, B, D, C, E, G, H, F','A, B, C, E, H, F, G, D','A, D, C, B, E, G, H, F','A, B, C, D, E, F, G, H'],0,'Level by level: A → B, D → C, E, G → H, F.'],
+    [7,'95','bfsdfs','Practice graph, DFS from A (neighbors pushed in reverse). Which order?',['A, B, D, C, E, G, H, F','A, B, C, E, H, F, G, D','A, D, C, B, G, F, E, H','A, B, E, H, G, F, C, D'],1,'Go deep first: A → B → C (dead end) → E → H → F → G, then back to D.'],
+    [7,'79','bst','You insert 10, 20, 30, 40, 50 into an empty binary search tree in that order. Search becomes…',['O(log n), it is balanced','O(n), the tree is a chain (a linked list)','O(1)'],1,'Every value goes right of the last one, so the height is n − 1.'],
+    [7,'98','choose-ds','Brute-force k-NN beat the k-d tree in the lecture\'s table when the data had…',['10,000 points','100,000 points and 3 features','50 features'],2,'In high dimensions the tree can\'t rule out regions, so it checks nearly everything plus its own overhead.']];
+  const KEY='is465-quiz67-v1';let S=null;
+  const pool=set=>QZ.map((q,i)=>i).filter(i=>set==='all'||String(QZ[i][0])===set);
+  function fresh(ids,set,shuf){const q=[...ids];if(shuf)for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}return{set,shuf,order:q,pos:0,ans:{}}}
+  try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.order)&&v.order.every(i=>i<QZ.length))S=v}catch(_){}
+  if(!S)S=fresh(pool('all'),'all',true);
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(_){}};
+  const card=$('#qz-card');
+  function bar(){const n=S.order.length,d=Object.keys(S.ans).length;$('#qz-fill').style.width=(n?d/n*100:0)+'%';
+    $('#qz-set').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S.set));const sh=$('#qz-shuf');sh.textContent=S.shuf?'Shuffled':'In lecture order';sh.setAttribute('aria-pressed',S.shuf)}
+  function render(){bar();if(S.pos>=S.order.length)return done();
+    const i=S.order[S.pos],[lec,pg,to,q,o,a,why]=QZ[i],g=S.ans[i],right=Object.entries(S.ans).filter(([k,v])=>QZ[k][5]===v).length;
+    card.innerHTML=`<div class="ex-h"><b>Q${S.pos+1} of ${S.order.length}</b><span style="font-size:13px;color:var(--muted)">${right} right so far · L${lec} slides p. ${pg}</span></div>
+      <div class="qq">${q}</div><div class="opts">${o.map((t,k)=>`<button data-i="${k}" class="${g==null?'':k===a?'right':k===g?'wrong':''}" ${g!=null?'disabled':''}><span class="kbd">${k+1}</span> ${esc(t)}</button>`).join('')}</div>
+      ${g==null?'':`<p class="fb">${g===a?'<b style="color:var(--good)">Correct.</b>':'<b style="color:var(--tail)">Not quite.</b>'} ${why} <a href="#${to}">Open the module →</a></p>
+      <div class="row"><button class="btn pri" id="qz-next">${S.pos+1<S.order.length?'Next question':'See my score'}</button></div>`}`;
+    card.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>pick(+b.dataset.i));const nx=$('#qz-next');if(nx)nx.onclick=next}
+  function pick(k){const i=S.order[S.pos];if(S.ans[i]!=null)return;S.ans[i]=k;save();render();$('#qz-next')?.focus({preventScroll:true})}
+  function next(){S.pos++;save();render();const t=card.getBoundingClientRect().top;if(t<0||t>innerHeight*.6)card.scrollIntoView({block:'start',behavior:'smooth'})}
+  function done(){const miss=S.order.filter(i=>S.ans[i]!==QZ[i][5]),n=S.order.length,pct=Math.round((n-miss.length)/n*100);
+    card.innerHTML=`<div class="ex-h"><b>DONE</b><span style="font-size:13px;color:var(--muted)">${S.set==='all'?'Both lectures':'Lecture '+S.set}</span></div>
+      <div class="qq" style="font-family:var(--f-display);font-size:26px">${n-miss.length} of ${n} right (${pct}%)</div>
+      ${miss.length?`<p>Read these slides, then retry the misses:</p><div class="dk-list">${miss.map(i=>`<div><span class="n">L${QZ[i][0]} p.${QZ[i][1]}</span><span>${QZ[i][3]}</span><a class="c" href="#${QZ[i][2]}" style="color:var(--accent)">module →</a></div>`).join('')}</div>`:'<p>Nothing missed. Read the cheat sheet once more right before the quiz.</p>'}
+      <div class="row"><button class="btn pri" id="qz-miss" ${miss.length?'':'disabled'}>Retry the ${miss.length||''} I missed</button><button class="btn" id="qz-again">Start over</button><a class="btn ghost" href="#qp-cheat">Cheat sheet</a></div>`;
+    $('#qz-miss').onclick=()=>{S=fresh(miss,S.set,S.shuf);save();render()};$('#qz-again').onclick=()=>{S=fresh(pool(S.set),S.set,S.shuf);save();render()}}
+  $('#qz-set').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S=fresh(pool(b.dataset.v),b.dataset.v,S.shuf);save();render()});
+  $('#qz-shuf').onclick=()=>{S=fresh(pool(S.set),S.set,!S.shuf);save();render()};
+  $('#qz-restart').onclick=()=>{S=fresh(pool(S.set),S.set,S.shuf);save();render()};
+  document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('textarea,input,select')||e.metaKey||e.ctrlKey||e.altKey)return;const r=card.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||S.pos>=S.order.length)return;
+    const i=S.order[S.pos];if(S.ans[i]==null&&/^[1-4]$/.test(e.key)&&+e.key<=QZ[i][4].length){e.preventDefault();pick(+e.key-1)}else if(S.ans[i]!=null&&e.key==='Enter'&&!(e.target.closest&&e.target.closest('button,a'))){e.preventDefault();next()}});
+  render();
 })();
 
 /* ---------- nav + progress ---------- */
